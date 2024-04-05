@@ -13,6 +13,34 @@ import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 
+/**
+ * HexUtils 是一个工具类，提供处理和操作颜色代码的方法。
+ * 它包括解析和生成渐变色、彩虹色和十六进制颜色代码的方法。
+ * 它还提供了向 CommandSender 对象发送彩色消息的方法。
+ * 这个类是 final 类，不能被继承。
+ * <p>
+ * 颜色代码示例：
+ * <rainbow|r>：这是标记，表示要生成彩虹色。可以使用<rainbow>或者<r>。
+ * (#(\\d+))?：这是可选的速度参数。如果提供，它应该是一个数字，表示彩虹色的变化速度。
+ * :(\\d*\\.?\\d+))?：这是可选的饱和度参数。如果提供，它应该是一个浮点数，表示彩虹色的饱和度。
+ * :(\\d*\\.?\\d+))?：这是可选的亮度参数。如果提供，它应该是一个浮点数，表示彩虹色的亮度。
+ * :(l|L|loop))?：这是可选的循环参数。如果提供，表示彩虹色应该循环。
+ * 渐变色：<gradient|g>(#(\d+))?((:#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})){2,})(:(l|L|loop))?>
+ * <gradient|g>：这是标记，表示要生成渐变色。可以使用<gradient>或者<g>。
+ * (#(\\d+))?：这是可选的速度参数。如果提供，它应该是一个数字，表示渐变色的变化速度。
+ * ((:#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})){2,})：这是必需的颜色参数。它应该是两个或更多的十六进制颜色代码，表示渐变色的起始和结束颜色。
+ * :(l|L|loop))?：这是可选的循环参数。如果提供，表示渐变色应该循环。
+ * <p>
+ * 示例
+ * <rainbow>这是一个彩虹色的文本。
+ * <rainbow:10>这是一个速度为10的彩虹色的文本。
+ * <rainbow:0.5>这是一个饱和度为0.5的彩虹色的文本。
+ * <rainbow:1.0:0.5>这是一个饱和度为1.0，亮度为0.5的彩虹色的文本。
+ * <rainbow:1.0:1.0:loop>这是一个饱和度为1.0，亮度为1.0的循环彩虹色的文本。
+ * <gradient:#FF0000:#00FF00>这是一个从红色到绿色的渐变色的文本。
+ * <gradient:#FF0000:#00FF00:#0000FF>这是一个从红色到绿色再到蓝色的渐变色的文本。
+ * <gradient:10:#FF0000:#00FF00:#0000FF>这是一个速度为10的从红色到绿色再到蓝色的渐变色的文本。
+ */
 public final class HexUtils {
 
     private static final int CHARS_UNTIL_LOOP = 30;
@@ -25,6 +53,13 @@ public final class HexUtils {
             Pattern.compile("#([A-Fa-f0-9]){6}")      // #FFFFFF
     );
 
+    //这个模式用于在彩色字符串中识别停止点。
+    // 它匹配各种颜色格式，包括：
+    // - 彩虹：<rainbow|r>(#(\\d+))?(:(\\d*\\.?\\d+))?(:(\\d*\\.?\\d+))?(:(l|L|loop))?>
+    // - 渐变：<gradient|g>(#(\\d+))?((:#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})){2,})(:(l|L|loop))?>
+    // - 传统颜色代码：(&[a-f0-9r])
+    // - 各种格式的十六进制颜色代码：<#([A-Fa-f0-9]){6}>, \\{#([A-Fa-f0-9]){6}}, &#([A-Fa-f0-9]){6}, #([A-Fa-f0-9]){6}
+    // - Bukkit ChatColor颜色代码：org.bukkit.ChatColor.COLOR_CHAR
     private static final Pattern STOP = Pattern.compile(
             "<(rainbow|r)(#(\\d+))?(:(\\d*\\.?\\d+))?(:(\\d*\\.?\\d+))?(:(l|L|loop))?>|" +
                     "<(gradient|g)(#(\\d+))?((:#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})){2,})(:(l|L|loop))?>|" +
@@ -41,11 +76,11 @@ public final class HexUtils {
     }
 
     /**
-     * Gets a capture group from a regex Matcher if it exists
+     * 如果存在，从正则表达式匹配器中获取捕获组
      *
-     * @param matcher The Matcher
-     * @param group The group name
-     * @return the capture group value, or null if not found
+     * @param matcher 正则表达式匹配器
+     * @param group   要获取的捕获组的名称
+     * @return 捕获组的值，如果未找到则返回null
      */
     private static String getCaptureGroup(Matcher matcher, String group) {
         try {
@@ -56,20 +91,20 @@ public final class HexUtils {
     }
 
     /**
-     * Sends a CommandSender a colored message
+     * 向 CommandSender 发送彩色消息
      *
-     * @param sender  The CommandSender to send to
-     * @param message The message to send
+     * @param sender  要发送的 CommandSender
+     * @param message 要发送的消息
      */
     public static void sendMessage(CommandSender sender, String message) {
         sender.sendMessage(colorify(message));
     }
 
     /**
-     * Parses gradients, hex colors, and legacy color codes
+     * 解析渐变色，十六进制颜色和传统颜色代码
      *
-     * @param message The message
-     * @return A color-replaced message
+     * @param message 消息
+     * @return 替换颜色后的消息
      */
     public static String colorify(String message) {
         String parsed = message;
@@ -78,7 +113,7 @@ public final class HexUtils {
             parsed = parseRainbow(parsed);
             parsed = parseGradients(parsed);
             parsed = parseHex(parsed);
-        }else {
+        } else {
             parsed = parseLegacy(parsed);
         }
         return parsed;
@@ -101,21 +136,24 @@ public final class HexUtils {
             if (speedGroup != null) {
                 try {
                     speed = Integer.parseInt(speedGroup);
-                } catch (NumberFormatException ignored) { }
+                } catch (NumberFormatException ignored) {
+                }
             }
 
             String saturationGroup = getCaptureGroup(matcher, "saturation");
             if (saturationGroup != null) {
                 try {
                     saturation = Float.parseFloat(saturationGroup);
-                } catch (NumberFormatException ignored) { }
+                } catch (NumberFormatException ignored) {
+                }
             }
 
             String brightnessGroup = getCaptureGroup(matcher, "brightness");
             if (brightnessGroup != null) {
                 try {
                     brightness = Float.parseFloat(brightnessGroup);
-                } catch (NumberFormatException ignored) { }
+                } catch (NumberFormatException ignored) {
+                }
             }
 
             int stop = findStop(parsed, matcher.end());
@@ -178,7 +216,8 @@ public final class HexUtils {
             if (speedGroup != null) {
                 try {
                     speed = Integer.parseInt(speedGroup);
-                } catch (NumberFormatException ignored) { }
+                } catch (NumberFormatException ignored) {
+                }
             }
 
             int stop = findStop(parsed, matcher.end());
