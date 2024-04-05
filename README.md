@@ -85,10 +85,10 @@ public void test(LegendarySpawnEvent.DoSpawn event) {
 注解方式需要注册,请在插件的onEnable方法中调用
 
 ```java
-/**
- * 注册forge事件
- * 第一个参数为带有@ForgeEventListener注解的方法所在的类实例
- * 第二个参数为事件总线(宝可梦就使用Pixelmon.EVENT_BUS,forge自带的事件就使用MinecraftForge.EVENT_BUS)
+/*
+  注册forge事件
+  第一个参数为带有@ForgeEventListener注解的方法所在的类实例
+  第二个参数为事件总线(宝可梦就使用Pixelmon.EVENT_BUS,forge自带的事件就使用MinecraftForge.EVENT_BUS)
  */
 public void onEnable() {
     ForgeEventListenerProcessor.register(this,Pixelmon.EVENT_BUS);
@@ -118,7 +118,7 @@ public class RandomString implements Weighted {
 
     private final String value;
     private final double weight;
-    
+
     public RandomString(String value, double weight) {
         this.value = value;
         this.weight = weight;
@@ -135,11 +135,11 @@ public class RandomString implements Weighted {
 
 ```java
 public void test(){
-        List<RandomString> randomStrings = new ArrayList<>();
-        RandomSelector<RandomString> randomSelector = RandomSelector.weighted(randomStrings)
-        RandomString pick = randomSelector.pick();
-        System.out.println(pick.getValue() + " " + pick.getWeight());
-    }
+    List<RandomString> randomStrings = new ArrayList<>();
+    RandomSelector<RandomString> randomSelector = RandomSelector.weighted(randomStrings);
+    RandomString pick = randomSelector.pick();
+    System.out.println(pick.getValue() + " " + pick.getWeight());
+}
 ```
 
 ### 菜单构建器
@@ -151,20 +151,20 @@ public void test(){
 
 ```java
 public void createMenu(Player player) {
-        //菜单必须提供标题,大小和按钮
-        String title = "测试菜单";
-        int size = 9;
-        List<Button> buttons = new ArrayList<>();
-        //创建一个Button,Button必须提供图标,位置
-        Button button = new ButtonBuilder()
-                .setSlot(0)
-                .setIcon(new ItemStack(Material.DIAMOND))
-                .build();
-        buttons.add(button);
+    //菜单必须提供标题,大小和按钮
+    String title = "测试菜单";
+    int size = 9;
+    List<Button> buttons = new ArrayList<>();
+    //创建一个Button,Button必须提供图标,位置
+    Button button = new ButtonBuilder()
+            .setSlot(0)
+            .setIcon(new ItemStack(Material.DIAMOND))
+            .build();
+    buttons.add(button);
 
-        Menu menu = new MenuBuilder(title, size, buttons).build();
-        menu.open(player);
-    }
+    Menu menu = new MenuBuilder(title, size, buttons).build();
+    menu.open(player);
+}
 ```
 
 菜单还有更多特性,比如: 需求条件,点击执行器等,请查看源码

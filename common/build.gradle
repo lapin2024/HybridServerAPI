@@ -1,0 +1,32 @@
+group = rootProject.group
+version = rootProject.version
+
+
+configurations {
+    myConfig
+    implementation.extendsFrom myConfig
+}
+
+dependencies {
+    
+    compileOnly 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
+    compileOnly "com.github.yyeerai:Spigot:1.16.5-build3096a"
+    compileOnly "com.github.yyeerai:Spigot:1.12.2-build1573k"
+
+    //myConfig 'com.squareup.okhttp3:okhttp:4.12.0'
+    //myConfig 'com.alibaba:fastjson:2.0.28'
+    myConfig 'com.zaxxer:HikariCP:4.0.3'
+
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from(configurations.myConfig.collect { it.isDirectory() ? it : zipTree(it) }) {
+        eachFile { fcd ->
+            def path = fcd.relativePath.pathString
+            if (path.startsWith('META-INF/') && (path.endsWith('.SF') || path.endsWith('.DSA') || path.endsWith('.RSA') || path.endsWith('.EC'))) {
+                fcd.exclude()
+            }
+        }
+    }
+}

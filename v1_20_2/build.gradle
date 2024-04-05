@@ -1,0 +1,30 @@
+plugins {
+    id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
+}
+
+group = rootProject.group
+version = rootProject.version
+
+def minecraft_version = '1.20.2'
+def forge_version = '48.1.0'
+
+minecraft {
+    mappings channel: 'parchment', version: '2023.12.10-1.20.2'
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    compileOnly 'org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT'
+    compileOnly "com.github.yyeerai:Pixelmon:1.20.2-9.2.6-server"
+    compileOnly 'com.github.yyeerai:purpur:1.20.2'
+    implementation project(':common')
+}

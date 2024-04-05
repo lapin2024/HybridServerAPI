@@ -1,0 +1,101 @@
+plugins {
+    id 'maven-publish'
+}
+
+group = 'com.github.yyeerai'
+version = '1.0.7-SNAPSHOT'
+
+allprojects {
+    apply plugin: 'java'
+    repositories {
+        maven { url 'https://mvnrepository.com/artifact/org.objectweb.asm/com.springsource.org.objectweb.asm' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    }
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+    }
+    javadoc {
+        options.encoding = 'UTF-8'
+        failOnError = false
+    }
+    dependencies {
+        implementation 'org.jetbrains:annotations:20.1.0'
+        compileOnly 'org.projectlombok:lombok:1.18.24'
+        annotationProcessor 'org.projectlombok:lombok:1.18.24'
+        compileOnly "com.github.yyeerai:PlaceholderAPI:2.11.5"
+        compileOnly "com.github.yyeerai:Vault:1.7.3"
+        compileOnly "com.github.yyeerai:PlayerPoints:3.2.6"
+        compileOnly "com.github.yyeerai:NyEconomy:1.6.+"
+        compileOnly "org.bstats:bstats-bukkit:3.0.1"
+    }
+}
+
+publishing {
+    publications {
+        plugin(MavenPublication) {
+            from components.java
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+        }
+    }
+    repositories {
+        maven {
+            url = uri(project.property('mavenUrl'))
+            credentials {
+                username = project.property('mavenUsername')
+                password = project.property('mavenPassword')
+            }
+        }
+    }
+}
+
+dependencies {
+    compileOnly "com.github.yyeerai:Spigot:1.16.5-build3096a"
+    implementation project(path: ':common')
+    implementation project(':v1_12_2').sourceSets.main.output
+    implementation project(':v1_16_5').sourceSets.main.output
+    implementation project(':v1_20_2').sourceSets.main.output
+}
+
+java {
+    archivesBaseName = project.name
+}
+
+processResources {
+    setFilteringCharset("UTF-8")
+    eachFile {
+        if (it.file.name == "plugin.yml") {
+            expand(['version': version])
+            //expand project.properties
+        }
+    }
+}
+
+compileJava.dependsOn(':v1_12_2:build', ':v1_16_5:build', ':v1_20_2:build', ':common:build')
+
+// 配置 JAR 设置
+jar {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    // 包含子项目的 JAR 文件
+    from {
+        subprojects.findAll { it != null && it.name == 'common' }.collect { zipTree(it.getPath().replace(':', '') + '/build/libs/common-' + rootProject.version + '.jar') }
+    }
+    from {
+        subprojects.findAll { it != null && it.name == 'v1_20_2' }.collect { zipTree(it.getPath().replace(':', '') + '/build/reobfJar/output.jar') }
+    }
+    from {
+        subprojects.findAll { it != null && it.name == 'v1_12_2' }.collect { zipTree(it.getPath().replace(':', '') + '/build/reobfJar/output.jar') }
+    }
+    from {
+        subprojects.findAll { it != null && it.name == 'v1_16_5' }.collect { zipTree(it.getPath().replace(':', '') + '/build/reobfJar/output.jar') }
+    }
+}
