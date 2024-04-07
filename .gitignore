@@ -5,3 +5,7 @@
 /gradle.properties
 /gradlew
 /gradlew.bat
+/common/build/
+/v1_12_2/build/
+/v1_16_5/build/
+/v1_20_2/build/
