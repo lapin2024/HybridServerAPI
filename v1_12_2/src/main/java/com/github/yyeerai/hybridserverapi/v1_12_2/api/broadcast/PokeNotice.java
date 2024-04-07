@@ -40,7 +40,8 @@ public class PokeNotice extends AbstractBroadcast {
             String pokemon = matcher.group(1) == null ? "mew" : matcher.group(1).trim();
             String[] split = matcher.group(2) == null ? new String[]{"&a&l你抓到了一个神奇的皮卡丘, &6&l快去抓住它吧！"} : matcher.group(2).split(",");
             for (String s : split) {
-                lines.add(HexUtils.colorify(PlaceholderAPI.setPlaceholders(player, s.trim())));
+                String finalS = player != null ? PlaceholderAPI.setPlaceholders(player, s.trim()) : s.trim();
+                lines.add(HexUtils.colorify(finalS));
             }
             int time = Integer.parseInt(matcher.group(3) == null ? "120" : matcher.group(3).trim());
             CustomNoticePacket noticePacket = NoticeOverlay.builder()

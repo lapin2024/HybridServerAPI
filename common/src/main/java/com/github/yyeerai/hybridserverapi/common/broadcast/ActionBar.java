@@ -19,6 +19,7 @@ public class ActionBar extends AbstractBroadcast {
 
     @Override
     public void broadcast(Player player) {
-        Bukkit.getOnlinePlayers().forEach(p -> p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(HexUtils.colorify(PlaceholderAPI.setPlaceholders(player, message)))));
+        String m = player != null ? PlaceholderAPI.setPlaceholders(player, message) : message;
+        Bukkit.getOnlinePlayers().forEach(p -> p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(HexUtils.colorify(m))));
     }
 }
