@@ -1,6 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.broadcast;
 
 import com.github.yyeerai.hybridserverapi.common.colour.HexUtils;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -25,7 +26,7 @@ public class Title extends AbstractBroadcast {
     }
 
     @Override
-    public void broadcast() {
+    public void broadcast(Player player) {
         Pattern pattern;
         Matcher matcher;
         String title;
@@ -48,8 +49,8 @@ public class Title extends AbstractBroadcast {
         pattern = Pattern.compile(fadeoutPattern);
         matcher = pattern.matcher(message);
         fadeOut = matcher.find() ? Integer.parseInt(matcher.group(1).trim()) : 20;
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendTitle(HexUtils.colorify(title), HexUtils.colorify(subTitle), fadeIn, stay, fadeOut);
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            p.sendTitle(HexUtils.colorify(PlaceholderAPI.setPlaceholders(player,title)), HexUtils.colorify(PlaceholderAPI.setPlaceholders(player,subTitle)), fadeIn, stay, fadeOut);
         }
     }
 }

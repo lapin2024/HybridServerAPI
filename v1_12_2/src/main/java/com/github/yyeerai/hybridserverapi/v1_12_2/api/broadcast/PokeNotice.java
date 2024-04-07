@@ -8,8 +8,10 @@ import com.pixelmonmod.pixelmon.api.overlay.notice.EnumOverlayLayout;
 import com.pixelmonmod.pixelmon.api.overlay.notice.NoticeOverlay;
 import com.pixelmonmod.pixelmon.api.pokemon.PokemonSpec;
 import com.pixelmonmod.pixelmon.comm.packetHandlers.custom.overlays.CustomNoticePacket;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.entity.player.EntityPlayerMP;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +32,7 @@ public class PokeNotice extends AbstractBroadcast {
     }
 
     @Override
-    public void broadcast() {
+    public void broadcast(Player player) {
         List<String> lines = new ArrayList<>();
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(message);
@@ -38,7 +40,7 @@ public class PokeNotice extends AbstractBroadcast {
             String pokemon = matcher.group(1) == null ? "mew" : matcher.group(1).trim();
             String[] split = matcher.group(2) == null ? new String[]{"&a&l你抓到了一个神奇的皮卡丘, &6&l快去抓住它吧！"} : matcher.group(2).split(",");
             for (String s : split) {
-                lines.add(HexUtils.colorify(s.trim()));
+                lines.add(HexUtils.colorify(PlaceholderAPI.setPlaceholders(player, s.trim())));
             }
             int time = Integer.parseInt(matcher.group(3) == null ? "120" : matcher.group(3).trim());
             CustomNoticePacket noticePacket = NoticeOverlay.builder()
@@ -46,8 +48,8 @@ public class PokeNotice extends AbstractBroadcast {
                     .setPokemonSprite(PokemonSpec.from(pokemon.trim()))
                     .setLayout(EnumOverlayLayout.LEFT_AND_RIGHT)
                     .build();
-            Bukkit.getOnlinePlayers().forEach(player -> Pixelmon.network.sendTo(noticePacket, (EntityPlayerMP) BaseApi.getMinecraftPlayer(player)));
-            Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> Bukkit.getOnlinePlayers().forEach(player -> NoticeOverlay.hide((EntityPlayerMP) BaseApi.getMinecraftPlayer(player))), time);
+            Bukkit.getOnlinePlayers().forEach(p -> Pixelmon.network.sendTo(noticePacket, (EntityPlayerMP) BaseApi.getMinecraftPlayer(p)));
+            Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> Bukkit.getOnlinePlayers().forEach(p -> NoticeOverlay.hide((EntityPlayerMP) BaseApi.getMinecraftPlayer(p))), time);
         }
     }
 }

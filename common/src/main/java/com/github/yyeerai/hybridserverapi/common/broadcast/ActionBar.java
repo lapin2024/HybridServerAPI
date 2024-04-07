@@ -1,9 +1,11 @@
 package com.github.yyeerai.hybridserverapi.common.broadcast;
 
 import com.github.yyeerai.hybridserverapi.common.colour.HexUtils;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class ActionBar extends AbstractBroadcast {
     /**
@@ -16,7 +18,7 @@ public class ActionBar extends AbstractBroadcast {
     }
 
     @Override
-    public void broadcast() {
-        Bukkit.getOnlinePlayers().forEach(p -> p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(HexUtils.colorify(message))));
+    public void broadcast(Player player) {
+        Bukkit.getOnlinePlayers().forEach(p -> p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(HexUtils.colorify(PlaceholderAPI.setPlaceholders(player, message)))));
     }
 }

@@ -10,10 +10,12 @@ import com.pixelmonmod.pixelmon.api.overlay.notice.EnumOverlayLayout;
 import com.pixelmonmod.pixelmon.api.overlay.notice.NoticeOverlay;
 import com.pixelmonmod.pixelmon.api.util.helpers.NetworkHelper;
 import com.pixelmonmod.pixelmon.comm.packetHandlers.custom.overlays.CustomNoticePacketPacket;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.LiteralContents;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ public class PokeNotice extends AbstractBroadcast {
     }
 
     @Override
-    public void broadcast() {
+    public void broadcast(Player player) {
         List<Component> lines = new ArrayList<>();
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(message);
@@ -43,7 +45,7 @@ public class PokeNotice extends AbstractBroadcast {
             ParseAttempt<PokemonSpecification> pokemonSpecificationParseAttempt = PokemonSpecificationProxy.create(pokemon.trim());
             String[] split = matcher.group(2) == null ? new String[]{"&a&l你抓到了一个神奇的皮卡丘, &6&l快去抓住它吧！"} : matcher.group(2).split(",");
             for (String s : split) {
-                lines.add(MutableComponent.create(new LiteralContents(HexUtils.colorify(s.trim()))));
+                lines.add(MutableComponent.create(new LiteralContents(HexUtils.colorify(PlaceholderAPI.setPlaceholders(player, s.trim())))));
             }
             int time = Integer.parseInt(matcher.group(3) == null ? "120" : matcher.group(3).trim());
             if (pokemonSpecificationParseAttempt.wasSuccess()) {
@@ -53,8 +55,8 @@ public class PokeNotice extends AbstractBroadcast {
                         .setPokemonSprite(pokemonSpecification)
                         .setLayout(EnumOverlayLayout.LEFT_AND_RIGHT)
                         .build();
-                Bukkit.getOnlinePlayers().forEach(player -> NetworkHelper.sendPacket(noticePacket, BaseApi.getMinecraftPlayer(player)));
-                Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> Bukkit.getOnlinePlayers().forEach(player -> NoticeOverlay.hide(BaseApi.getMinecraftPlayer(player))), time);
+                Bukkit.getOnlinePlayers().forEach(p -> NetworkHelper.sendPacket(noticePacket, BaseApi.getMinecraftPlayer(p)));
+                Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> Bukkit.getOnlinePlayers().forEach(p -> NoticeOverlay.hide(BaseApi.getMinecraftPlayer(p))), time);
             }
         }
 
