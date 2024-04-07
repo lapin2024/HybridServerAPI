@@ -14,13 +14,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-    <modules>
-        <module>common</module>
-        <module>v1_12_2</module>
-        <module>v1_16_5</module>
-        <module>v1_20_2</module>
-    </modules>
-
     <dependencies>
         <!-- Add your dependencies here -->
     </dependencies>
