@@ -8,10 +8,6 @@
     <version>1.0.7-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <modules>
-        <module>common</module>
-    </modules>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -24,6 +20,11 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
         </plugins>
     </build>
 
