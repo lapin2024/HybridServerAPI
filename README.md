@@ -249,6 +249,7 @@ public void test(Player player) {
 | %hsa_size%                           | 图鉴大小                                             |
 | %hsa_percent%                        | 图鉴收集完成度                                          |
 | %hsa_percent_format%                 | 图鉴收集完成度格式化                                       |
+| %hsa_pokemoney%                      | 玩家的宝可梦币                                          |
 | %hsa_haspokemon_[pokename]%          | 在队伍中是否有指定name的宝可梦,有返回位置没有返回false                 |
 | %hsa_original_haspokemon_[pokename]% | 在队伍中或pc中是否有原始训练师是当前玩家的指定name的宝可梦,有返回位置,没有返回false |
 | %hsa_name_[slot]%                    | 指定队伍位置的宝可梦种类                                     |
@@ -274,15 +275,15 @@ public void test(Player player) {
 
 ## 信息名称列表
 
-```yaml
-  # name: 宝可梦名称
-  # level,type,growth,nature, mintnature, ability,gender(等级,类型,体型,性格, 薄荷性格,特性,性别)
-  # evhp,evattack,evdefence,evsattack,evsdefence,evspeed,evtotal,(努力值)
-  # ivhp,ivattack,ivdefence, ivsattack,ivsdefence,ivspeed,ivtotal,(个体值)
-  # hthp,htattack,htdefence, htsattack,htsdefence,htspeed,httotal,(王冠个体值)
-  # hp,attack,defence,sattack,sdefence, speed,total(种族值)
-  # hp,nattack,ndefence,nsattack,nsdefence,nspeed,ntotal(当前属性值)
-  # friendship(亲密度),helditem(携带道具),palette(精灵皮肤)
+```
+  name: 宝可梦名称
+  level,type, form, growth,nature, mintnature, ability,gender(等级,类型,形态, 体型,性格, 薄荷性格,特性,性别)
+  evhp,evattack,evdefence,evsattack,evsdefence,evspeed,evtotal,(努力值)
+  ivhp,ivattack,ivdefence, ivsattack,ivsdefence,ivspeed,ivtotal,(个体值)
+  hthp,htattack,htdefence, htsattack,htsdefence,htspeed,httotal,(王冠个体值)
+  hp,attack,defence,sattack,sdefence, speed,total(种族值)
+  hp,nattack,ndefence,nsattack,nsdefence,nspeed,ntotal(当前属性值)
+  friendship(亲密度),helditem(携带道具),palette(精灵皮肤)
 
 ```
 
