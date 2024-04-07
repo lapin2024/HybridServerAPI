@@ -11,6 +11,7 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_20_R2.CraftServer;
 import org.bukkit.craftbukkit.v1_20_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_20_R2.entity.CraftEntity;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 /**
  * <p>这是一个常用方法API类，提供了一些常用的方法和功能。</p>
  * <p>很多方法已经被移动到</p>
+ *
  * @see com.github.yyeerai.hybridserverapi.common.util.PluginMethods
  * <p>类中，这里的方法将在后续版本中被删除。</p>
  */
@@ -126,7 +128,7 @@ public class BaseApi {
      * @return minecraft的ItemStack
      */
     @SuppressWarnings("all")
-    public static net.minecraft.world.item.ItemStack  getMinecraftItemStack(@NotNull ItemStack itemStack) {
+    public static net.minecraft.world.item.ItemStack getMinecraftItemStack(@NotNull ItemStack itemStack) {
         CraftItemStack craftItemStack = CraftItemStack.asCraftCopy(itemStack);
         net.minecraft.world.item.ItemStack nmsItemStack = CraftItemStack.asNMSCopy(craftItemStack);
         return (net.minecraft.world.item.ItemStack) ((Object) nmsItemStack);
@@ -157,6 +159,7 @@ public class BaseApi {
      *
      * @return MinecraftServer实例
      */
+    @SuppressWarnings("UnstableApiUsage")
     public static MinecraftServer getMinecraftServer() {
         return ServerLifecycleHooks.getCurrentServer();
     }
@@ -185,7 +188,7 @@ public class BaseApi {
     @SuppressWarnings("all")
     public static ServerLevel getMinecraftWorld(org.bukkit.World world) {
         CraftWorld craftWorld = (CraftWorld) world;
-        return (ServerLevel) (Object)craftWorld.getHandle();
+        return (ServerLevel) (Object) craftWorld.getHandle();
     }
 
     /**
@@ -209,7 +212,7 @@ public class BaseApi {
      */
     @SuppressWarnings("all")
     public static Entity getBukkitEntity(net.minecraft.world.entity.Entity entity, String world) {
-        return CraftEntity.getEntity(getCraftServer(),  entity);
+        return CraftEntity.getEntity(getCraftServer(), entity);
     }
 
     /**
@@ -220,7 +223,7 @@ public class BaseApi {
      */
     @SuppressWarnings("all")
     public static @Nullable ServerPlayer getMinecraftPlayer(UUID uuid) {
-        return (ServerPlayer) (Object)getMinecraftServer().ac().a(uuid);
+        return (ServerPlayer) (Object) getMinecraftServer().ac().a(uuid);
     }
 
     /**
@@ -251,14 +254,36 @@ public class BaseApi {
     }
 
     /**
+     * 获取在线玩家的名称列表。
+     *
+     * @return 在线玩家的名称列表
+     */
+    public static List<String> getPlayerNames() {
+        List<String> playerNames = new ArrayList<>();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            playerNames.add(player.getName());
+        }
+        return playerNames;
+    }
+
+    /**
      * 根据minecraft的世界获取世界名。
      *
      * @param serverLevel minecraft的世界
      * @return 世界名
      */
-    @Deprecated
     public static String getWorldName(ServerLevel serverLevel) {
-        return serverLevel.dimension().toString();
+        return serverLevel.toString().replace("ServerLevel[", "").replace("]", "");
+    }
+
+    /**
+     * 将minecraft的世界转换为bukkit的世界。
+     *
+     * @param serverLevel minecraft的世界
+     * @return bukkit的世界
+     */
+    public static @Nullable World getBukkitWorld(ServerLevel serverLevel) {
+        return Bukkit.getWorld(getWorldName(serverLevel));
     }
 
     /**

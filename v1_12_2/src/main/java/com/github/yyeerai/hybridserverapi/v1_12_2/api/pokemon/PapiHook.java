@@ -51,8 +51,9 @@ public class PapiHook extends PlaceholderExpansion {
     %hsa_seen% 玩家看见的宝可梦数量
     %hsa_caught%	返回玩家抓的宝可梦总数
     %hsa_size% 图鉴大小
-    %hsa_percent%	图鉴收集完成度
-    %hsa_percent_format%	图鉴收集完成度格式化
+    %hsa_percent% 	图鉴收集完成度
+    %hsa_percent_format% 	图鉴收集完成度格式化
+    %hsa_pokemoney%  - 玩家的宝可梦币
 
     %hsa_haspokemon_[pokename]%	在队伍中是否有指定name的宝可梦,有返回位置没有返回false
     %hsa_original_haspokemon_[pokename]%	在队伍中或pc中是否有原始训练师是当前玩家的指定name的宝可梦,有返回位置,没有返回false
@@ -94,7 +95,7 @@ public class PapiHook extends PlaceholderExpansion {
 
         if (player == null) return params;
 
-        if (params.startsWith("wins") || params.startsWith("losses") || params.startsWith("totalbattle") || params.startsWith("totalexp") || params.startsWith("totalkills") || params.startsWith("currentexp") || params.startsWith("currentkills") || params.startsWith("totalbred") || params.startsWith("totalhatched") || params.startsWith("totalevolved") || params.startsWith("seen") || params.startsWith("caught") || params.startsWith("size") || params.startsWith("percent") || params.startsWith("percent_format")) {
+        if (params.startsWith("wins") || params.startsWith("losses") || params.startsWith("totalbattle") || params.startsWith("totalexp") || params.startsWith("totalkills") || params.startsWith("currentexp") || params.startsWith("currentkills") || params.startsWith("totalbred") || params.startsWith("totalhatched") || params.startsWith("totalevolved") || params.startsWith("seen") || params.startsWith("caught") || params.startsWith("size") || params.startsWith("percent") || params.startsWith("percent_format") || params.startsWith("pokemoney")) {
             return getPartyRust(main.getPokemonApi().getPlayerPartyStorage(player), params);
         }
         if (params.startsWith("haspokemon") || params.startsWith("original_haspokemon") || params.startsWith("name") || params.startsWith("localname") || params.startsWith("nickname") || params.startsWith("form") || params.startsWith("original") || params.startsWith("egggroup") || params.startsWith("isegg") || params.startsWith("eggcycles") || params.startsWith("shiny") || params.startsWith("pokeball") || params.startsWith("cantrade") || params.startsWith("canbreed") || params.startsWith("customtexture") || params.startsWith("pokedex") || params.startsWith("move") || params.startsWith("islegendary") || params.startsWith("isultrabeast") || params.startsWith("partysize") || params.startsWith("partyegg") || params.startsWith("pcsize") || params.startsWith("pcegg")) {
@@ -391,6 +392,8 @@ public class PapiHook extends PlaceholderExpansion {
                 return String.format("%.4f", playerPartyStorage.pokedex.countCaught() / (double) Pokedex.pokedexSize);
             case "percent_format":
                 return (Math.round(playerPartyStorage.pokedex.countCaught() / (double) Pokedex.pokedexSize * 100)) + "%";
+            case "pokemoney":
+                return String.valueOf(playerPartyStorage.getMoney());
             default:
                 return params;
         }
