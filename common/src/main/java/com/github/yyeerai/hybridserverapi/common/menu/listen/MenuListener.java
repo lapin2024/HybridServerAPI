@@ -62,8 +62,10 @@ public class MenuListener {
     }
 
     private static boolean isValidPlayerInteractEvent(InventoryCloseEvent inventoryCloseEvent) {
-        return inventoryCloseEvent.getPlayer() instanceof Player
-                && inventoryCloseEvent.getInventory().getHolder() instanceof Menu;
+        if (inventoryCloseEvent.getInventory().getHolder() == null) {
+            return false;
+        }
+        return inventoryCloseEvent.getInventory().getHolder() instanceof Menu;
     }
 
     private static void handlePlayerInteractEvent(InventoryDragEvent inventoryDragEvent) {
