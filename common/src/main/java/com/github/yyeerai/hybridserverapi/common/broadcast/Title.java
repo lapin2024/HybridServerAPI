@@ -1,7 +1,6 @@
 package com.github.yyeerai.hybridserverapi.common.broadcast;
 
 import com.github.yyeerai.hybridserverapi.common.colour.HexUtils;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -26,7 +25,7 @@ public class Title extends AbstractBroadcast {
     }
 
     @Override
-    public void broadcast(Player player) {
+    public void broadcast() {
         Pattern pattern;
         Matcher matcher;
         String title;
@@ -49,10 +48,35 @@ public class Title extends AbstractBroadcast {
         pattern = Pattern.compile(fadeoutPattern);
         matcher = pattern.matcher(message);
         fadeOut = matcher.find() ? Integer.parseInt(matcher.group(1).trim()) : 20;
-        String finalTitle = player != null ? PlaceholderAPI.setPlaceholders(player, title.replace("%player%", player.getName())) : title;
-        String finalSubTitle = player != null ? PlaceholderAPI.setPlaceholders(player, subTitle.replace("%player%", player.getName())) : subTitle;
         for (Player p : Bukkit.getOnlinePlayers()) {
-            p.sendTitle(HexUtils.colorify(finalTitle), HexUtils.colorify(finalSubTitle), fadeIn, stay, fadeOut);
+            p.sendTitle(HexUtils.colorify(title), HexUtils.colorify(subTitle), fadeIn, stay, fadeOut);
         }
+    }
+
+    @Override
+    public void sendMessage(Player player) {
+        Pattern pattern;
+        Matcher matcher;
+        String title;
+        String subTitle;
+        int fadeIn;
+        int stay;
+        int fadeOut;
+        pattern = Pattern.compile(titlePattern);
+        matcher = pattern.matcher(message);
+        title = matcher.find() ? matcher.group(1).trim() : "";
+        pattern = Pattern.compile(subtitlePattern);
+        matcher = pattern.matcher(message);
+        subTitle = matcher.find() ? matcher.group(1).trim() : "";
+        pattern = Pattern.compile(fadeinPattern);
+        matcher = pattern.matcher(message);
+        fadeIn = matcher.find() ? Integer.parseInt(matcher.group(1).trim()) : 20;
+        pattern = Pattern.compile(stayPattern);
+        matcher = pattern.matcher(message);
+        stay = matcher.find() ? Integer.parseInt(matcher.group(1).trim()) : 40;
+        pattern = Pattern.compile(fadeoutPattern);
+        matcher = pattern.matcher(message);
+        fadeOut = matcher.find() ? Integer.parseInt(matcher.group(1).trim()) : 20;
+        player.sendTitle(HexUtils.colorify(title), HexUtils.colorify(subTitle), fadeIn, stay, fadeOut);
     }
 }

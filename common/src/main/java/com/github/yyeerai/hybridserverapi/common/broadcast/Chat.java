@@ -1,7 +1,6 @@
 package com.github.yyeerai.hybridserverapi.common.broadcast;
 
 import com.github.yyeerai.hybridserverapi.common.colour.HexUtils;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -16,8 +15,12 @@ public class Chat extends AbstractBroadcast{
     }
 
     @Override
-    public void broadcast(Player player) {
-        String m = player != null ? PlaceholderAPI.setPlaceholders(player, message.replace("%player%", player.getName())) : message;
-        Bukkit.broadcastMessage(HexUtils.colorify(m));
+    public void broadcast() {
+        Bukkit.broadcastMessage(HexUtils.colorify(message));
+    }
+
+    @Override
+    public void sendMessage(Player player) {
+        player.sendMessage(HexUtils.colorify(message));
     }
 }

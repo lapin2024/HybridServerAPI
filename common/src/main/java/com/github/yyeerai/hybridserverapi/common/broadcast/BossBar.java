@@ -1,7 +1,6 @@
 package com.github.yyeerai.hybridserverapi.common.broadcast;
 
 import com.github.yyeerai.hybridserverapi.common.colour.HexUtils;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -26,7 +25,7 @@ public class BossBar extends AbstractBroadcast{
     }
 
     @Override
-    public void broadcast(Player player) {
+    public void broadcast() {
         Pattern pattern;
         Matcher matcher;
         String title;
@@ -45,11 +44,38 @@ public class BossBar extends AbstractBroadcast{
         pattern = Pattern.compile(timePattern);
         matcher = pattern.matcher(message);
         time = matcher.find() ? Integer.parseInt(matcher.group(1).trim()) : 120;
-        String finalTitle = player != null ? PlaceholderAPI.setPlaceholders(player, title.replace("%player%", player.getName())) : title;
-        org.bukkit.boss.BossBar bossBar = Bukkit.createBossBar(HexUtils.colorify(finalTitle), color, style);
+        org.bukkit.boss.BossBar bossBar = Bukkit.createBossBar(HexUtils.colorify(title), color, style);
         bossBar.setVisible(true);
         bossBar.setProgress(1.0);
         Bukkit.getOnlinePlayers().forEach(bossBar::addPlayer);
         Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), bossBar::removeAll, time);
+    }
+
+
+    @Override
+    public void sendMessage(Player player) {
+        Pattern pattern;
+        Matcher matcher;
+        String title;
+        BarColor color;
+        BarStyle style;
+        int time;
+        pattern = Pattern.compile(titlePattern);
+        matcher = pattern.matcher(message);
+        title = matcher.find() ? matcher.group(1).trim() : "";
+        pattern = Pattern.compile(colorPattern);
+        matcher = pattern.matcher(message);
+        color = matcher.find() ? BarColor.valueOf(matcher.group(1).trim().toUpperCase()) : BarColor.RED;
+        pattern = Pattern.compile(stylePattern);
+        matcher = pattern.matcher(message);
+        style = matcher.find() ? BarStyle.valueOf(matcher.group(1).trim().toUpperCase()) : BarStyle.SOLID;
+        pattern = Pattern.compile(timePattern);
+        matcher = pattern.matcher(message);
+        time = matcher.find() ? Integer.parseInt(matcher.group(1).trim()) : 120;
+        org.bukkit.boss.BossBar bossBar = Bukkit.createBossBar(HexUtils.colorify(title), color, style);
+        bossBar.setVisible(true);
+        bossBar.setProgress(1.0);
+        bossBar.addPlayer(player);
+        Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), ()-> bossBar.removePlayer(player), time);
     }
 }
