@@ -50,25 +50,22 @@ public class PokeNotice extends AbstractBroadcast {
 
     private CustomNoticePacketPacket createNoticePacket() {
         List<ITextComponent> lines = new ArrayList<>();
-        System.out.println("原始信息: " + message);
 
         Pattern pokemonPattern = Pattern.compile(pokemonRegex);
         Matcher pokemonMatcher = pokemonPattern.matcher(message);
-        System.out.println("宝可梦: " + pokemonMatcher.group(1));
-        String pokemon = pokemonMatcher.find() ? pokemonMatcher.group(1).replace("pokemon:", "").trim() : "mew";
+        String pokemon = pokemonMatcher.find() ? pokemonMatcher.group(1).trim() : "mew";
 
         Pattern messagePattern = Pattern.compile(messageRegex);
         Matcher messageMatcher = messagePattern.matcher(message);
-        System.out.println("消息: " + messageMatcher.group(1));
-        String[] split = messageMatcher.find() ? messageMatcher.group(1).replace("message:[", "").replace("]", "").split(",") : new String[]{"&a&l你抓到了一个神奇的皮卡丘", " &6&l快去抓住它吧！"};
+        String[] split = messageMatcher.find() ? messageMatcher.group(1).replace("[", "").replace("]", "").split(",") : new String[]{"&a&l你抓到了一个神奇的皮卡丘", " &6&l快去抓住它吧！"};
+        System.out.println("信息: " + messageMatcher.group(1));
         for (String s : split) {
             lines.add(new StringTextComponent(HexUtils.colorify(s)));
         }
 
         Pattern timePattern = Pattern.compile(timeRegex);
         Matcher timeMatcher = timePattern.matcher(message);
-        System.out.println("时间: " + timeMatcher.group(1));
-        time = timeMatcher.find() ? Integer.parseInt(timeMatcher.group(1).replace("time:", "").trim()) : 120;
+        time = timeMatcher.find() ? Integer.parseInt(timeMatcher.group(1).trim()) : 120;
 
         return NoticeOverlay.builder()
                 .setLines(lines)

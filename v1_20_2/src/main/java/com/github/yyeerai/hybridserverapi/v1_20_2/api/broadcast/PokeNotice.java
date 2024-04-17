@@ -24,9 +24,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PokeNotice extends AbstractBroadcast {
-    private static final String pokemonRegex = "pokemon:([^,]+)";
+    private static final String pokemonRegex = "pokemon:([^,]*)";
     private static final String messageRegex = "message:(\\[.*?])";
-    private static final String timeRegex = "time:(\\d+)";
+    private static final String timeRegex = "time:(\\d*)";
 
     private int time = 120;
 
@@ -72,7 +72,7 @@ public class PokeNotice extends AbstractBroadcast {
 
         Pattern messagePattern = Pattern.compile(messageRegex);
         Matcher messageMatcher = messagePattern.matcher(message);
-        String[] split = messageMatcher.find() ? messageMatcher.group(1).replace("message:[", "").replace("]", "").split(",") : new String[]{"&a&l你抓到了一个神奇的皮卡丘", " &6&l快去抓住它吧！"};
+        String[] split = messageMatcher.find() ? messageMatcher.group(1).replace("[", "").replace("]", "").split(",") : new String[]{"&a&l你抓到了一个神奇的皮卡丘", " &6&l快去抓住它吧！"};
         for (String s : split) {
             lines.add(MutableComponent.create(new LiteralContents(HexUtils.colorify(s))));
         }
