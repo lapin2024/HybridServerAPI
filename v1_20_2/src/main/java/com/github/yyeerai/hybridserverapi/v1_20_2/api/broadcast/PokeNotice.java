@@ -45,7 +45,7 @@ public class PokeNotice extends AbstractBroadcast {
             ParseAttempt<PokemonSpecification> pokemonSpecificationParseAttempt = PokemonSpecificationProxy.create(pokemon.trim());
             String[] split = matcher.group(2) == null ? new String[]{"&a&l你抓到了一个神奇的皮卡丘, &6&l快去抓住它吧！"} : matcher.group(2).split(",");
             for (String s : split) {
-                String finalS = player != null ? PlaceholderAPI.setPlaceholders(player, s.trim()) : s.trim();
+                String finalS = player != null ? PlaceholderAPI.setPlaceholders(player, s.replace("%player%", player.getName()).trim()) : s.trim();
                 lines.add(MutableComponent.create(new LiteralContents(HexUtils.colorify(finalS))));
             }
             int time = Integer.parseInt(matcher.group(3) == null ? "120" : matcher.group(3).trim());

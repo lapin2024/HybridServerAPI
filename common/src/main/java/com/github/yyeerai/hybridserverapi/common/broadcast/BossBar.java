@@ -45,8 +45,8 @@ public class BossBar extends AbstractBroadcast{
         pattern = Pattern.compile(timePattern);
         matcher = pattern.matcher(message);
         time = matcher.find() ? Integer.parseInt(matcher.group(1).trim()) : 120;
-        String finalTitle = player != null ? PlaceholderAPI.setPlaceholders(player, title) : title;
-        org.bukkit.boss.BossBar bossBar = Bukkit.createBossBar(HexUtils.colorify(title), color, style);
+        String finalTitle = player != null ? PlaceholderAPI.setPlaceholders(player, title.replace("%player%", player.getName())) : title;
+        org.bukkit.boss.BossBar bossBar = Bukkit.createBossBar(HexUtils.colorify(finalTitle), color, style);
         bossBar.setVisible(true);
         bossBar.setProgress(1.0);
         Bukkit.getOnlinePlayers().forEach(bossBar::addPlayer);

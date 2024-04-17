@@ -17,7 +17,7 @@ public class Chat extends AbstractBroadcast{
 
     @Override
     public void broadcast(Player player) {
-        String m = player != null ? PlaceholderAPI.setPlaceholders(player, message) : message;
+        String m = player != null ? PlaceholderAPI.setPlaceholders(player, message.replace("%player%", player.getName())) : message;
         Bukkit.broadcastMessage(HexUtils.colorify(m));
     }
 }

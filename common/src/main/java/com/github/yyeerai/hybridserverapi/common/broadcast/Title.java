@@ -49,8 +49,8 @@ public class Title extends AbstractBroadcast {
         pattern = Pattern.compile(fadeoutPattern);
         matcher = pattern.matcher(message);
         fadeOut = matcher.find() ? Integer.parseInt(matcher.group(1).trim()) : 20;
-        String finalTitle = player != null ? PlaceholderAPI.setPlaceholders(player, title) : title;
-        String finalSubTitle = player != null ? PlaceholderAPI.setPlaceholders(player, subTitle) : subTitle;
+        String finalTitle = player != null ? PlaceholderAPI.setPlaceholders(player, title.replace("%player%", player.getName())) : title;
+        String finalSubTitle = player != null ? PlaceholderAPI.setPlaceholders(player, subTitle.replace("%player%", player.getName())) : subTitle;
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.sendTitle(HexUtils.colorify(finalTitle), HexUtils.colorify(finalSubTitle), fadeIn, stay, fadeOut);
         }
