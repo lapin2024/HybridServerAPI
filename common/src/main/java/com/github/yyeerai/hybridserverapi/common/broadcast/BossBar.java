@@ -78,4 +78,9 @@ public class BossBar extends AbstractBroadcast{
         bossBar.addPlayer(player);
         Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), ()-> bossBar.removePlayer(player), time);
     }
+
+    @Override
+    public void broadcast(Player player) {
+        broadcast();
+    }
 }

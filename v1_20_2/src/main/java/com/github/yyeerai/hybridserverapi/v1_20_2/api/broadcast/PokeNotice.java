@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 
 public class PokeNotice extends AbstractBroadcast {
     private static final String regex = "(?:pokemon:([^,]+),\\s*)?(?:message:\\[([^]]*)],\\s*)?(?:time:(\\d+))?";
+
     /**
      * 构造一个新的 AbstractBroadcast 实例。
      *
@@ -85,5 +86,10 @@ public class PokeNotice extends AbstractBroadcast {
                 Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> NoticeOverlay.hide(BaseApi.getMinecraftPlayer(player)), time);
             }
         }
+    }
+
+    @Override
+    public void broadcast(Player player) {
+        broadcast();
     }
 }

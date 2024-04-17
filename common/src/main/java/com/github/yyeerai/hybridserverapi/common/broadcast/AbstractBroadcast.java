@@ -10,7 +10,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public abstract class AbstractBroadcast implements IBroadcast, ISendMessage {
+public abstract class AbstractBroadcast implements IBroadcast, ISendMessage, IOldBroadcast {
     // 广播的消息内容
     protected String message;
 

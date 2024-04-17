@@ -73,4 +73,9 @@ public class PokeNotice extends AbstractBroadcast {
             Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> NoticeOverlay.hide((EntityPlayerMP) BaseApi.getMinecraftPlayer(player)), time);
         }
     }
+
+    @Override
+    public void broadcast(Player player) {
+        broadcast();
+    }
 }

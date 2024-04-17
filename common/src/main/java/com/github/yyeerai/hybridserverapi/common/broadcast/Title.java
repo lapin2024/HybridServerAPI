@@ -77,6 +77,11 @@ public class Title extends AbstractBroadcast {
         pattern = Pattern.compile(fadeoutPattern);
         matcher = pattern.matcher(message);
         fadeOut = matcher.find() ? Integer.parseInt(matcher.group(1).trim()) : 20;
-        player.sendTitle(HexUtils.colorify(title), HexUtils.colorify(subTitle), fadeIn, stay, fadeOut);
+        player.sendTitle(HexUtils.colorify(title), HexUtils.colorify(title), fadeIn, stay, fadeOut);
+    }
+
+    @Override
+    public void broadcast(Player player) {
+        broadcast();
     }
 }

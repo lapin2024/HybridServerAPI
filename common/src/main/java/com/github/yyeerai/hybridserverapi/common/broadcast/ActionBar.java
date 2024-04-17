@@ -25,4 +25,9 @@ public class ActionBar extends AbstractBroadcast {
     public void sendMessage(Player player) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(HexUtils.colorify(message)));
     }
+
+    @Override
+    public void broadcast(Player player) {
+        broadcast();
+    }
 }

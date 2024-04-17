@@ -30,4 +30,9 @@ public class Chat extends AbstractBroadcast{
     public void sendMessage(Player player) {
         player.sendMessage(HexUtils.colorify(message));
     }
+
+    @Override
+    public void broadcast(Player player) {
+        broadcast();
+    }
 }
