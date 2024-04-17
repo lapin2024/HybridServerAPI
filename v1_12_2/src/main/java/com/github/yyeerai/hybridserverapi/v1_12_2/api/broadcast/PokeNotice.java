@@ -19,7 +19,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PokeNotice extends AbstractBroadcast {
-    private static final String regex = "(?:pokemon:([^,]+),\\s*)?(?:message:\\[([^]]*)],\\s*)?(?:time:(\\d+))?";
+    private static final String pokemonRegex = "pokemon:([^,]+)";
+    private static final String messageRegex = "message:(\\[.*?])";
+    private static final String timeRegex = "time:(\\d+)";
+
+    private int time = 120;
 
     /**
      * 构造一个新的 AbstractBroadcast 实例。
@@ -32,50 +36,41 @@ public class PokeNotice extends AbstractBroadcast {
 
     @Override
     public void broadcast() {
-        List<String> lines = new ArrayList<>();
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(message);
-        if (matcher.find()) {
-            String pokemon = matcher.group(1) == null ? "mew" : matcher.group(1).trim();
-            String[] split = matcher.group(2) == null ? new String[]{"&a&l你抓到了一个神奇的皮卡丘, &6&l快去抓住它吧！"} : matcher.group(2).split(",");
-            for (String s : split) {
-                lines.add(HexUtils.colorify(s));
-            }
-            int time = Integer.parseInt(matcher.group(3) == null ? "120" : matcher.group(3).trim());
-            CustomNoticePacket noticePacket = NoticeOverlay.builder()
-                    .setLines(lines)
-                    .setPokemonSprite(PokemonSpec.from(pokemon.trim()))
-                    .setLayout(EnumOverlayLayout.LEFT_AND_RIGHT)
-                    .build();
-            Bukkit.getOnlinePlayers().forEach(p -> Pixelmon.network.sendTo(noticePacket, (EntityPlayerMP) BaseApi.getMinecraftPlayer(p)));
-            Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> Bukkit.getOnlinePlayers().forEach(p -> NoticeOverlay.hide((EntityPlayerMP) BaseApi.getMinecraftPlayer(p))), time);
-        }
+        Bukkit.getOnlinePlayers().forEach(p -> Pixelmon.network.sendTo(createNoticePacket(), (EntityPlayerMP) BaseApi.getMinecraftPlayer(p)));
+        Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> Bukkit.getOnlinePlayers().forEach(p -> NoticeOverlay.hide((EntityPlayerMP) BaseApi.getMinecraftPlayer(p))), time);
     }
 
     @Override
     public void sendMessage(Player player) {
-        List<String> lines = new ArrayList<>();
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(message);
-        if (matcher.find()) {
-            String pokemon = matcher.group(1) == null ? "mew" : matcher.group(1).trim();
-            String[] split = matcher.group(2) == null ? new String[]{"&a&l你抓到了一个神奇的皮卡丘, &6&l快去抓住它吧！"} : matcher.group(2).split(",");
-            for (String s : split) {
-                lines.add(HexUtils.colorify(s));
-            }
-            int time = Integer.parseInt(matcher.group(3) == null ? "120" : matcher.group(3).trim());
-            CustomNoticePacket noticePacket = NoticeOverlay.builder()
-                    .setLines(lines)
-                    .setPokemonSprite(PokemonSpec.from(pokemon.trim()))
-                    .setLayout(EnumOverlayLayout.LEFT_AND_RIGHT)
-                    .build();
-            Pixelmon.network.sendTo(noticePacket, (EntityPlayerMP) BaseApi.getMinecraftPlayer(player));
-            Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> NoticeOverlay.hide((EntityPlayerMP) BaseApi.getMinecraftPlayer(player)), time);
-        }
+        Pixelmon.network.sendTo(createNoticePacket(), (EntityPlayerMP) BaseApi.getMinecraftPlayer(player));
+        Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> NoticeOverlay.hide((EntityPlayerMP) BaseApi.getMinecraftPlayer(player)), time);
     }
 
     @Override
     public void broadcast(Player player) {
         broadcast();
+    }
+
+    private CustomNoticePacket createNoticePacket() {
+        List<String> lines = new ArrayList<>();
+        Pattern pokemonPattern = Pattern.compile(pokemonRegex);
+        Matcher pokemonMatcher = pokemonPattern.matcher(message);
+        String pokemon = pokemonMatcher.find() ? pokemonMatcher.group(1).trim() : "mew";
+
+        Pattern messagePattern = Pattern.compile(messageRegex);
+        Matcher messageMatcher = messagePattern.matcher(message);
+        String[] split = messageMatcher.find() ? messageMatcher.group(1).split(",") : new String[]{"&a&l你抓到了一个神奇的皮卡丘, &6&l快去抓住它吧！"};
+        for (String s : split) {
+            lines.add(HexUtils.colorify(s));
+        }
+
+        Pattern timePattern = Pattern.compile(timeRegex);
+        Matcher timeMatcher = timePattern.matcher(message);
+        time = timeMatcher.find() ? Integer.parseInt(timeMatcher.group(1).trim()) : 120;
+        return NoticeOverlay.builder()
+                .setLines(lines)
+                .setPokemonSprite(PokemonSpec.from(pokemon))
+                .setLayout(EnumOverlayLayout.LEFT_AND_RIGHT)
+                .build();
     }
 }
