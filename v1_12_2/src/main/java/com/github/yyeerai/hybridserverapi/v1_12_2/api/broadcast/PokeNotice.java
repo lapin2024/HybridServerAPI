@@ -14,11 +14,15 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PokeNotice extends AbstractBroadcast {
+
+    private final PokeNoticeManger pokeNoticeManger = new PokeNoticeManger();
+    private final List<Player> players = new ArrayList<>();
+    private CustomNoticePacket packet;
+
     private static final String pokemonRegex = "pokemon:([^,]*)";
     private static final String messageRegex = "message:(\\[.*?])";
     private static final String timeRegex = "time:(\\d*)";
@@ -36,14 +40,18 @@ public class PokeNotice extends AbstractBroadcast {
 
     @Override
     public void broadcast() {
-        Bukkit.getOnlinePlayers().forEach(p -> Pixelmon.network.sendTo(createNoticePacket(), (EntityPlayerMP) BaseApi.getMinecraftPlayer(p)));
-        Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> Bukkit.getOnlinePlayers().forEach(p -> NoticeOverlay.hide((EntityPlayerMP) BaseApi.getMinecraftPlayer(p))), time);
+        players.clear();
+        players.addAll(Bukkit.getOnlinePlayers());
+        packet = createNoticePacket();
+        pokeNoticeManger.addPokeNotice(this, time);
     }
 
     @Override
     public void sendMessage(Player player) {
-        Pixelmon.network.sendTo(createNoticePacket(), (EntityPlayerMP) BaseApi.getMinecraftPlayer(player));
-        Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> NoticeOverlay.hide((EntityPlayerMP) BaseApi.getMinecraftPlayer(player)), time);
+        players.clear();
+        players.add(player);
+        packet = createNoticePacket();
+        pokeNoticeManger.addPokeNotice(this, time);
     }
 
     @Override
@@ -73,4 +81,12 @@ public class PokeNotice extends AbstractBroadcast {
                 .setLayout(EnumOverlayLayout.LEFT_AND_RIGHT)
                 .build();
     }
+
+    public void playPokemonNotice() {
+        if (players.isEmpty()) {
+            return;
+        }
+        players.forEach(p -> Pixelmon.network.sendTo(packet, (EntityPlayerMP) BaseApi.getMinecraftPlayer(p)));
+    }
+
 }

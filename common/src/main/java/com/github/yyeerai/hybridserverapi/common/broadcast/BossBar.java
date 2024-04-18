@@ -6,15 +6,21 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class BossBar extends AbstractBroadcast{
+public class BossBar extends AbstractBroadcast {
+
+    private final BossBarManager bossBarManager = new BossBarManager();
+
+    private int time = 120;
+
+
     private static final String titlePattern = "title:([^,]*)";
     private static final String colorPattern = "color:([^,]*)";
     private static final String stylePattern = "style:([^,]*)";
     private static final String timePattern = "time:(.*)";
+
     /**
      * 构造一个新的 AbstractBroadcast 实例。
      *
@@ -26,40 +32,30 @@ public class BossBar extends AbstractBroadcast{
 
     @Override
     public void broadcast() {
-        Pattern pattern;
-        Matcher matcher;
-        String title;
-        BarColor color;
-        BarStyle style;
-        int time;
-        pattern = Pattern.compile(titlePattern);
-        matcher = pattern.matcher(message);
-        title = matcher.find() ? matcher.group(1).trim() : "";
-        pattern = Pattern.compile(colorPattern);
-        matcher = pattern.matcher(message);
-        color = matcher.find() ? BarColor.valueOf(matcher.group(1).trim().toUpperCase()) : BarColor.RED;
-        pattern = Pattern.compile(stylePattern);
-        matcher = pattern.matcher(message);
-        style = matcher.find() ? BarStyle.valueOf(matcher.group(1).trim().toUpperCase()) : BarStyle.SOLID;
-        pattern = Pattern.compile(timePattern);
-        matcher = pattern.matcher(message);
-        time = matcher.find() ? Integer.parseInt(matcher.group(1).trim()) : 120;
-        org.bukkit.boss.BossBar bossBar = Bukkit.createBossBar(HexUtils.colorify(title), color, style);
-        bossBar.setVisible(true);
-        bossBar.setProgress(1.0);
+        org.bukkit.boss.BossBar bossBar = createBossBar();
         Bukkit.getOnlinePlayers().forEach(bossBar::addPlayer);
-        Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), bossBar::removeAll, time);
+        bossBarManager.addBossBar(bossBar, time);
     }
 
 
     @Override
     public void sendMessage(Player player) {
+        org.bukkit.boss.BossBar bossBar = createBossBar();
+        bossBar.addPlayer(player);
+        bossBarManager.addBossBar(bossBar, time);
+    }
+
+    @Override
+    public void broadcast(Player player) {
+        broadcast();
+    }
+
+    private org.bukkit.boss.BossBar createBossBar() {
         Pattern pattern;
         Matcher matcher;
         String title;
         BarColor color;
         BarStyle style;
-        int time;
         pattern = Pattern.compile(titlePattern);
         matcher = pattern.matcher(message);
         title = matcher.find() ? matcher.group(1).trim() : "";
@@ -73,14 +69,8 @@ public class BossBar extends AbstractBroadcast{
         matcher = pattern.matcher(message);
         time = matcher.find() ? Integer.parseInt(matcher.group(1).trim()) : 120;
         org.bukkit.boss.BossBar bossBar = Bukkit.createBossBar(HexUtils.colorify(title), color, style);
-        bossBar.setVisible(true);
+        bossBar.setVisible(false);
         bossBar.setProgress(1.0);
-        bossBar.addPlayer(player);
-        Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), ()-> bossBar.removePlayer(player), time);
-    }
-
-    @Override
-    public void broadcast(Player player) {
-        broadcast();
+        return bossBar;
     }
 }

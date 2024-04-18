@@ -15,11 +15,14 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PokeNotice extends AbstractBroadcast {
+
+    private final PokeNoticeManger pokeNoticeManger = new PokeNoticeManger();
+    private final List<Player> players = new ArrayList<>();
+    private CustomNoticePacketPacket packet;
 
     private static final String pokemonRegex = "pokemon:([^,]*)";
     private static final String messageRegex = "message:(\\[.*?])";
@@ -38,14 +41,23 @@ public class PokeNotice extends AbstractBroadcast {
 
     @Override
     public void broadcast() {
-        Bukkit.getOnlinePlayers().forEach(p -> NetworkHelper.sendPacket(createNoticePacket(), BaseApi.getMinecraftPlayer(p)));
-        Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> Bukkit.getOnlinePlayers().forEach(p -> NoticeOverlay.hide(BaseApi.getMinecraftPlayer(p))), time);
+        players.clear();
+        players.addAll(Bukkit.getOnlinePlayers());
+        packet = createNoticePacket();
+        pokeNoticeManger.addPokeNotice(this, time);
     }
 
     @Override
     public void sendMessage(Player player) {
-        NetworkHelper.sendPacket(createNoticePacket(), BaseApi.getMinecraftPlayer(player));
-        Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> NoticeOverlay.hide(BaseApi.getMinecraftPlayer(player)), time);
+        players.clear();
+        players.add(player);
+        packet = createNoticePacket();
+        pokeNoticeManger.addPokeNotice(this, time);
+    }
+
+    @Override
+    public void broadcast(Player player) {
+        broadcast();
     }
 
     private CustomNoticePacketPacket createNoticePacket() {
@@ -73,8 +85,10 @@ public class PokeNotice extends AbstractBroadcast {
                 .build();
     }
 
-    @Override
-    public void broadcast(Player player) {
-        broadcast();
+    public void playPokemonNotice() {
+        if (players.isEmpty()) {
+            return;
+        }
+        players.forEach(p -> NetworkHelper.sendPacket(packet, BaseApi.getMinecraftPlayer(p)));
     }
 }

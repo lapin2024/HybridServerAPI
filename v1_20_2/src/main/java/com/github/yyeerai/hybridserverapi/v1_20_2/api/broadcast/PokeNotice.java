@@ -19,11 +19,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PokeNotice extends AbstractBroadcast {
+
+    private final PokeNoticeManger pokeNoticeManger = new PokeNoticeManger();
+    private final List<Player> players = new ArrayList<>();
+    private CustomNoticePacketPacket packet;
+
     private static final String pokemonRegex = "pokemon:([^,]*)";
     private static final String messageRegex = "message:(\\[.*?])";
     private static final String timeRegex = "time:(\\d*)";
@@ -41,22 +45,18 @@ public class PokeNotice extends AbstractBroadcast {
 
     @Override
     public void broadcast() {
-        CustomNoticePacketPacket noticePacket = createNoticePacket();
-        if (noticePacket == null) {
-            return;
-        }
-        Bukkit.getOnlinePlayers().forEach(p -> NetworkHelper.sendPacket(noticePacket, BaseApi.getMinecraftPlayer(p)));
-        Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> Bukkit.getOnlinePlayers().forEach(p -> NoticeOverlay.hide(BaseApi.getMinecraftPlayer(p))), time);
+        players.clear();
+        players.addAll(Bukkit.getOnlinePlayers());
+        packet = createNoticePacket();
+        pokeNoticeManger.addPokeNotice(this, time);
     }
 
     @Override
     public void sendMessage(Player player) {
-        CustomNoticePacketPacket noticePacket = createNoticePacket();
-        if (noticePacket == null) {
-            return;
-        }
-        NetworkHelper.sendPacket(noticePacket, BaseApi.getMinecraftPlayer(player));
-        Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> NoticeOverlay.hide(BaseApi.getMinecraftPlayer(player)), time);
+        players.clear();
+        players.add(player);
+        packet = createNoticePacket();
+        pokeNoticeManger.addPokeNotice(this, time);
     }
 
     @Override
@@ -92,5 +92,12 @@ public class PokeNotice extends AbstractBroadcast {
         } else {
             return null;
         }
+    }
+
+    public void playPokemonNotice() {
+        if (players.isEmpty() || packet == null) {
+            return;
+        }
+        players.forEach(p -> NetworkHelper.sendPacket(packet, BaseApi.getMinecraftPlayer(p)));
     }
 }
