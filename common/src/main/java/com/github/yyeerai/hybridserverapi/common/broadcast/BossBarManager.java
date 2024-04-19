@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * BossBarManager 是一个管理 BossBar 的工具类。
@@ -17,7 +18,7 @@ import java.util.Objects;
  */
 public class BossBarManager {
 
-    private final Map<BossBar, Integer> bossBarMap = new LinkedHashMap<>();
+    private final Map<BossBar, Integer> bossBarMap = new ConcurrentHashMap<>();
     private BossBar currentBossBar = null;
 
     /**

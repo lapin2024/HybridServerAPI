@@ -6,13 +6,13 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import org.bukkit.Bukkit;
 
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PokeNoticeManger {
 
-    private final Map<PokeNotice, Integer> pokeNoticeMap = new LinkedHashMap<>();
+    private final Map<PokeNotice, Integer> pokeNoticeMap = new ConcurrentHashMap<>();
     private PokeNotice currentPokeNotice = null;
 
     public synchronized void addPokeNotice(PokeNotice pokeNotice, int time) {
