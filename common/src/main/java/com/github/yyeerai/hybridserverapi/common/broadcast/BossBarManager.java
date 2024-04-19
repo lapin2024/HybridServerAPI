@@ -3,11 +3,7 @@ package com.github.yyeerai.hybridserverapi.common.broadcast;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BossBar;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
 /**
  * BossBarManager 是一个管理 BossBar 的工具类。
@@ -18,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class BossBarManager {
 
-    private final Map<BossBar, Integer> bossBarMap = new ConcurrentHashMap<>();
+    private final Map<BossBar, Integer> bossBarMap = Collections.synchronizedMap(new LinkedHashMap<>());
     private BossBar currentBossBar = null;
 
     /**
@@ -38,16 +34,15 @@ public class BossBarManager {
      */
     private synchronized void playNextBossBar() {
         if (currentBossBar == null || !currentBossBar.isVisible()) {
-            Iterator<Map.Entry<BossBar, Integer>> iterator = bossBarMap.entrySet().iterator();
-            if (iterator.hasNext()) {
-                Map.Entry<BossBar, Integer> entry = iterator.next();
-                currentBossBar = entry.getKey();
-                int time = entry.getValue();
-                iterator.remove();
+            Map<BossBar, Integer> copy = new LinkedHashMap<>(bossBarMap);
+            for (Map.Entry<BossBar, Integer> bossBarIntegerEntry :  copy.entrySet()) {
+                currentBossBar = bossBarIntegerEntry.getKey();
+                int time = bossBarIntegerEntry.getValue();
                 currentBossBar.setVisible(true);
                 Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> {
                     currentBossBar.setVisible(false);
                     currentBossBar.removeAll();
+                    bossBarMap.remove(currentBossBar);
                     currentBossBar = null;
                     playNextBossBar();
                 }, time);

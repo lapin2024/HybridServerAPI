@@ -91,4 +91,11 @@ public class PokeNotice extends AbstractBroadcast {
         }
         players.forEach(p -> NetworkHelper.sendPacket(packet, BaseApi.getMinecraftPlayer(p)));
     }
+
+    public void hidePokemonNotice() {
+        if (players.isEmpty()) {
+            return;
+        }
+        players.forEach(p -> NoticeOverlay.hide(BaseApi.getMinecraftPlayer(p)));
+    }
 }
