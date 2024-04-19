@@ -1,9 +1,10 @@
 package com.github.yyeerai.hybridserverapi.common.broadcast;
 
 import org.bukkit.Bukkit;
-import org.bukkit.boss.BossBar;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Objects;
+import java.util.Queue;
 
 /**
  * BossBarManager 是一个管理 BossBar 的工具类。
@@ -14,17 +15,27 @@ import java.util.*;
  */
 public class BossBarManager {
 
-    private final Map<BossBar, Integer> bossBarMap = Collections.synchronizedMap(new LinkedHashMap<>());
+    private static BossBarManager instance;
+    private final Queue<BossBar> bossBarQueue = new LinkedList<>();
     private BossBar currentBossBar = null;
+
+    private BossBarManager() {
+    }
+
+    public static BossBarManager getInstance() {
+        if (instance == null) {
+            instance = new BossBarManager();
+        }
+        return instance;
+    }
 
     /**
      * 添加一个 BossBar 到队列中。
      *
      * @param bossBar BossBar 实例
-     * @param time    BossBar 显示的时间，单位为 Tick
      */
-    public synchronized void addBossBar(BossBar bossBar, int time) {
-        bossBarMap.put(bossBar, time);
+    public synchronized void addBossBar(BossBar bossBar) {
+        bossBarQueue.add(bossBar);
         playNextBossBar();
     }
 
@@ -33,20 +44,17 @@ public class BossBarManager {
      * 如果当前有 BossBar 正在显示，则不会播放下一个 BossBar。
      */
     private synchronized void playNextBossBar() {
-        if (currentBossBar == null || !currentBossBar.isVisible()) {
-            Map<BossBar, Integer> copy = new LinkedHashMap<>(bossBarMap);
-            for (Map.Entry<BossBar, Integer> bossBarIntegerEntry :  copy.entrySet()) {
-                currentBossBar = bossBarIntegerEntry.getKey();
-                int time = bossBarIntegerEntry.getValue();
-                currentBossBar.setVisible(true);
-                Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> {
-                    currentBossBar.setVisible(false);
-                    currentBossBar.removeAll();
-                    bossBarMap.remove(currentBossBar);
-                    currentBossBar = null;
-                    playNextBossBar();
-                }, time);
+        if (currentBossBar == null || !currentBossBar.getBossBar().isVisible()) {
+            currentBossBar = bossBarQueue.poll();
+            if (currentBossBar == null) {
+                return;
             }
+            int time = currentBossBar.getTime();
+            currentBossBar.getBossBar().setVisible(true);
+            Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> {
+                currentBossBar.getBossBar().setVisible(false);
+                playNextBossBar();
+            }, time);
         }
     }
 }

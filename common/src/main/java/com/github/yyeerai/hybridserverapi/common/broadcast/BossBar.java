@@ -1,6 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.broadcast;
 
 import com.github.yyeerai.hybridserverapi.common.colour.HexUtils;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -9,11 +10,14 @@ import org.bukkit.entity.Player;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Getter
 public class BossBar extends AbstractBroadcast {
 
-    private final BossBarManager bossBarManager = new BossBarManager();
+    private static final BossBarManager bossBarManager = BossBarManager.getInstance();
 
     private int time = 120;
+
+    private org.bukkit.boss.BossBar bossBar;
 
 
     private static final String titlePattern = "title:([^,]*)";
@@ -32,9 +36,9 @@ public class BossBar extends AbstractBroadcast {
 
     @Override
     public void broadcast() {
-        org.bukkit.boss.BossBar bossBar = createBossBar();
+        bossBar = createBossBar();
         Bukkit.getOnlinePlayers().forEach(bossBar::addPlayer);
-        bossBarManager.addBossBar(bossBar, time);
+        bossBarManager.addBossBar(this);
     }
 
 
@@ -42,7 +46,7 @@ public class BossBar extends AbstractBroadcast {
     public void sendMessage(Player player) {
         org.bukkit.boss.BossBar bossBar = createBossBar();
         bossBar.addPlayer(player);
-        bossBarManager.addBossBar(bossBar, time);
+        bossBarManager.addBossBar(this);
     }
 
     @Override

@@ -13,7 +13,8 @@ public enum BroadcastType {
     ACTIONBAR,
     CHAT,
     BOSSBAR,
-    POKENOTICE;
+    POKENOTICE,
+    JSON;
 
     // 映射广播类型到相应的广播类
     public static final Map<BroadcastType, Class<? extends AbstractBroadcast>> BROADCAST_TYPE_CLASS_MAP = new HashMap<>();

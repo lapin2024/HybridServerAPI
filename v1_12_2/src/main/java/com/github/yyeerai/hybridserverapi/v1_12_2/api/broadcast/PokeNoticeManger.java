@@ -1,38 +1,47 @@
 package com.github.yyeerai.hybridserverapi.v1_12_2.api.broadcast;
 
-import com.github.yyeerai.hybridserverapi.v1_12_2.api.BaseApi;
-import com.pixelmonmod.pixelmon.api.overlay.notice.NoticeOverlay;
-import net.minecraft.entity.player.EntityPlayerMP;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class PokeNoticeManger {
 
-    private final Map<PokeNotice, Integer> pokeNoticeMap = new ConcurrentHashMap<>();
+    private static PokeNoticeManger instance;
+
+    private final Queue<PokeNotice> pokeNoticeQueue = new LinkedList<>();
     private PokeNotice currentPokeNotice = null;
 
-    public synchronized void addPokeNotice(PokeNotice pokeNotice, int time) {
-        pokeNoticeMap.put(pokeNotice, time);
+    private PokeNoticeManger() {}
+
+    public static synchronized PokeNoticeManger getInstance() {
+        if (instance == null) {
+            instance = new PokeNoticeManger();
+        }
+        return instance;
+    }
+
+    public synchronized void addPokeNotice(PokeNotice pokeNotice) {
+        pokeNoticeQueue.add(pokeNotice);
         playNextPokeNotice();
     }
 
     private synchronized void playNextPokeNotice() {
-        if (currentPokeNotice == null && !pokeNoticeMap.isEmpty()) {
-            Iterator<Map.Entry<PokeNotice, Integer>> iterator = pokeNoticeMap.entrySet().iterator();
-            Map.Entry<PokeNotice, Integer> entry = iterator.next();
-            currentPokeNotice = entry.getKey();
-            int time = entry.getValue();
-            iterator.remove();
-            currentPokeNotice.playPokemonNotice();
-            Bukkit.getScheduler().runTaskLater(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("HybridServerAPI")), () -> {
-                Bukkit.getOnlinePlayers().forEach(p -> NoticeOverlay.hide((EntityPlayerMP) BaseApi.getMinecraftPlayer(p)));
-                currentPokeNotice = null;
-                playNextPokeNotice();
-            }, time);
+        if (currentPokeNotice == null || !currentPokeNotice.isVisible()) {
+            currentPokeNotice = pokeNoticeQueue.poll();
+            if (currentPokeNotice == null) {
+                return;
+            }
+            int time = currentPokeNotice.getTime();
+            currentPokeNotice.setVisibility(true);
+            Plugin plugin = Bukkit.getPluginManager().getPlugin("HybridServerAPI");
+            if (plugin != null) {
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    currentPokeNotice.setVisibility(false);
+                    playNextPokeNotice();
+                }, time);
+            }
         }
     }
 }

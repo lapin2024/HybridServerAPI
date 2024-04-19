@@ -8,8 +8,10 @@ import com.pixelmonmod.pixelmon.api.overlay.notice.EnumOverlayLayout;
 import com.pixelmonmod.pixelmon.api.overlay.notice.NoticeOverlay;
 import com.pixelmonmod.pixelmon.api.pokemon.PokemonSpec;
 import com.pixelmonmod.pixelmon.comm.packetHandlers.custom.overlays.CustomNoticePacket;
+import lombok.Getter;
 import net.minecraft.entity.player.EntityPlayerMP;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import java.util.regex.Pattern;
 
 public class PokeNotice extends AbstractBroadcast {
 
-    private final PokeNoticeManger pokeNoticeManger = new PokeNoticeManger();
+    private static final PokeNoticeManger pokeNoticeManger = PokeNoticeManger.getInstance();
     private final List<Player> players = new ArrayList<>();
     private CustomNoticePacket packet;
 
@@ -27,6 +29,9 @@ public class PokeNotice extends AbstractBroadcast {
     private static final String messageRegex = "message:(\\[.*?])";
     private static final String timeRegex = "time:(\\d*)";
 
+    @Getter
+    private boolean visible = false;
+    @Getter
     private int time = 120;
 
     /**
@@ -43,7 +48,7 @@ public class PokeNotice extends AbstractBroadcast {
         players.clear();
         players.addAll(Bukkit.getOnlinePlayers());
         packet = createNoticePacket();
-        pokeNoticeManger.addPokeNotice(this, time);
+        pokeNoticeManger.addPokeNotice(this);
     }
 
     @Override
@@ -51,7 +56,7 @@ public class PokeNotice extends AbstractBroadcast {
         players.clear();
         players.add(player);
         packet = createNoticePacket();
-        pokeNoticeManger.addPokeNotice(this, time);
+        pokeNoticeManger.addPokeNotice(this);
     }
 
     @Override
@@ -82,11 +87,13 @@ public class PokeNotice extends AbstractBroadcast {
                 .build();
     }
 
-    public void playPokemonNotice() {
-        if (players.isEmpty()) {
-            return;
+    public void setVisibility(boolean visible) {
+        this.visible = visible;
+        if(this.visible) {
+            players.stream().filter(OfflinePlayer::isOnline).forEach(p -> Pixelmon.network.sendTo(packet, (EntityPlayerMP) BaseApi.getMinecraftPlayer(p)));
+        }else {
+            players.stream().filter(OfflinePlayer::isOnline).forEach(p -> NoticeOverlay.hide((EntityPlayerMP) BaseApi.getMinecraftPlayer(p)));
         }
-        players.forEach(p -> Pixelmon.network.sendTo(packet, (EntityPlayerMP) BaseApi.getMinecraftPlayer(p)));
     }
 
 }

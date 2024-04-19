@@ -97,6 +97,7 @@ public class HybridServerAPI extends JavaPlugin {
         BroadcastType.registerBroadcast(BroadcastType.ACTIONBAR, ActionBar.class);
         BroadcastType.registerBroadcast(BroadcastType.TITLE, Title.class);
         BroadcastType.registerBroadcast(BroadcastType.BOSSBAR, BossBar.class);
+        BroadcastType.registerBroadcast(BroadcastType.JSON, JsonBroadcast.class);
         if (versionNumber == 12) {
             BroadcastType.registerBroadcast(BroadcastType.POKENOTICE, com.github.yyeerai.hybridserverapi.v1_12_2.api.broadcast.PokeNotice.class);
         } else if (versionNumber == 16) {
