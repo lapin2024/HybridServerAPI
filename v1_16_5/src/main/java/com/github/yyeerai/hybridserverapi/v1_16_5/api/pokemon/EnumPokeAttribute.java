@@ -5,8 +5,9 @@ import com.pixelmonmod.pixelmon.api.pokemon.stats.BattleStatsType;
 
 @SuppressWarnings("unused")
 public enum EnumPokeAttribute {
-    DISPLAY_NAME,
     UUID,
+    DISPLAY_NAME,
+    NICKNAME,
     LEVEL,
     SHINY,
     ABILITY,
@@ -17,29 +18,32 @@ public enum EnumPokeAttribute {
     HELD_ITEM,
     POKEBALL,
     FRIENDSHIP,
+    OT_NAME,
+    OT_UUID,
+    CUSTOM_TEXTURE,
     HP,
     ATTACK,
-    DEFENSE,
+    DEFENCE,
     SPECIAL_ATTACK,
-    SPECIAL_DEFENSE,
+    SPECIAL_DEFENCE,
     SPEED,
     IV_HP,
     IV_ATTACK,
-    IV_DEFENSE,
+    IV_DEFENCE,
     IV_SPECIAL_ATTACK,
-    IV_SPECIAL_DEFENSE,
+    IV_SPECIAL_DEFENCE,
     IV_SPEED,
     EV_HP,
     EV_ATTACK,
-    EV_DEFENSE,
+    EV_DEFENCE,
     EV_SPECIAL_ATTACK,
-    EV_SPECIAL_DEFENSE,
+    EV_SPECIAL_DEFENCE,
     EV_SPEED,
     HT_HP,
     HT_ATTACK,
-    HT_DEFENSE,
+    HT_DEFENCE,
     HT_SPECIAL_ATTACK,
-    HT_SPECIAL_DEFENSE,
+    HT_SPECIAL_DEFENCE,
     HT_SPEED,
     MOVE_1,
     MOVE_2,
@@ -79,6 +83,8 @@ public enum EnumPokeAttribute {
         switch (this) {
             case DISPLAY_NAME:
                 return pokemon.getFormattedDisplayName().getString();
+            case NICKNAME:
+                return pokemon.getNickname();
             case UUID:
                 return pokemon.getUUID();
             case LEVEL:
@@ -101,15 +107,21 @@ public enum EnumPokeAttribute {
                 return pokemon.getBall().getLocalizedName();
             case FRIENDSHIP:
                 return pokemon.getFriendship();
+            case OT_NAME:
+                return pokemon.getOriginalTrainer() != null ? pokemon.getOriginalTrainer(): "无";
+            case OT_UUID:
+                return pokemon.getOriginalTrainerUUID() != null ? pokemon.getOriginalTrainerUUID().toString() : "无";
+            case CUSTOM_TEXTURE:
+                return pokemon.getPalette() != null ? pokemon.getPalette().getLocalizedName() : "无";
             case HP:
                 return pokemon.getStats().getHP();
             case ATTACK:
                 return pokemon.getStats().getAttack();
-            case DEFENSE:
+            case DEFENCE:
                 return pokemon.getStats().getDefense();
             case SPECIAL_ATTACK:
                 return pokemon.getStats().getSpecialAttack();
-            case SPECIAL_DEFENSE:
+            case SPECIAL_DEFENCE:
                 return pokemon.getStats().getSpecialDefense();
             case SPEED:
                 return pokemon.getStats().getSpeed();
@@ -117,11 +129,11 @@ public enum EnumPokeAttribute {
                 return pokemon.getIVs().getStat(BattleStatsType.HP);
             case IV_ATTACK:
                 return pokemon.getIVs().getStat(BattleStatsType.ATTACK);
-            case IV_DEFENSE:
+            case IV_DEFENCE:
                 return pokemon.getIVs().getStat(BattleStatsType.DEFENSE);
             case IV_SPECIAL_ATTACK:
                 return pokemon.getIVs().getStat(BattleStatsType.SPECIAL_ATTACK);
-            case IV_SPECIAL_DEFENSE:
+            case IV_SPECIAL_DEFENCE:
                 return pokemon.getIVs().getStat(BattleStatsType.SPECIAL_DEFENSE);
             case IV_SPEED:
                 return pokemon.getIVs().getStat(BattleStatsType.SPEED);
@@ -129,11 +141,11 @@ public enum EnumPokeAttribute {
                 return pokemon.getEVs().getStat(BattleStatsType.HP);
             case EV_ATTACK:
                 return pokemon.getEVs().getStat(BattleStatsType.ATTACK);
-            case EV_DEFENSE:
+            case EV_DEFENCE:
                 return pokemon.getEVs().getStat(BattleStatsType.DEFENSE);
             case EV_SPECIAL_ATTACK:
                 return pokemon.getEVs().getStat(BattleStatsType.SPECIAL_ATTACK);
-            case EV_SPECIAL_DEFENSE:
+            case EV_SPECIAL_DEFENCE:
                 return pokemon.getEVs().getStat(BattleStatsType.SPECIAL_DEFENSE);
             case EV_SPEED:
                 return pokemon.getEVs().getStat(BattleStatsType.SPEED);
@@ -141,11 +153,11 @@ public enum EnumPokeAttribute {
                 return pokemon.getIVs().isHyperTrained(BattleStatsType.HP) ? 31 : 0;
             case HT_ATTACK:
                 return pokemon.getIVs().isHyperTrained(BattleStatsType.ATTACK) ? 31 : 0;
-            case HT_DEFENSE:
+            case HT_DEFENCE:
                 return pokemon.getIVs().isHyperTrained(BattleStatsType.DEFENSE) ? 31 : 0;
             case HT_SPECIAL_ATTACK:
                 return pokemon.getIVs().isHyperTrained(BattleStatsType.SPECIAL_ATTACK) ? 31 : 0;
-            case HT_SPECIAL_DEFENSE:
+            case HT_SPECIAL_DEFENCE:
                 return pokemon.getIVs().isHyperTrained(BattleStatsType.SPECIAL_DEFENSE) ? 31 : 0;
             case HT_SPEED:
                 return pokemon.getIVs().isHyperTrained(BattleStatsType.SPEED) ? 31 : 0;

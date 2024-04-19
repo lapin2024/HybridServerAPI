@@ -6,8 +6,9 @@ import com.pixelmonmod.pixelmon.api.pokemon.stats.BattleStatsType;
 
 @SuppressWarnings("unused")
 public enum EnumPokeAttribute {
-    DISPLAY_NAME,
     UUID,
+    DISPLAY_NAME,
+    NICKNAME,
     LEVEL,
     SHINY,
     ABILITY,
@@ -18,29 +19,32 @@ public enum EnumPokeAttribute {
     HELD_ITEM,
     POKEBALL,
     FRIENDSHIP,
+    OT_NAME,
+    OT_UUID,
+    CUSTOM_TEXTURE,
     HP,
     ATTACK,
-    DEFENSE,
+    DEFENCE,
     SPECIAL_ATTACK,
-    SPECIAL_DEFENSE,
+    SPECIAL_DEFENCE,
     SPEED,
     IV_HP,
     IV_ATTACK,
-    IV_DEFENSE,
+    IV_DEFENCE,
     IV_SPECIAL_ATTACK,
-    IV_SPECIAL_DEFENSE,
+    IV_SPECIAL_DEFENCE,
     IV_SPEED,
     EV_HP,
     EV_ATTACK,
-    EV_DEFENSE,
+    EV_DEFENCE,
     EV_SPECIAL_ATTACK,
-    EV_SPECIAL_DEFENSE,
+    EV_SPECIAL_DEFENCE,
     EV_SPEED,
     HT_HP,
     HT_ATTACK,
-    HT_DEFENSE,
+    HT_DEFENCE,
     HT_SPECIAL_ATTACK,
-    HT_SPECIAL_DEFENSE,
+    HT_SPECIAL_DEFENCE,
     HT_SPEED,
     MOVE_1,
     MOVE_2,
@@ -77,98 +81,62 @@ public enum EnumPokeAttribute {
      * FORM: 形态 返回String
      */
     public Object getAttribute(Pokemon pokemon) {
-        switch (this) {
-            case DISPLAY_NAME:
-                return pokemon.getDisplayName();
-            case UUID:
-                return pokemon.getUUID();
-            case LEVEL:
-                return pokemon.getPokemonLevel();
-            case SHINY:
-                return pokemon.isShiny();
-            case ABILITY:
-                return pokemon.getAbility().getLocalizedName();
-            case GROWTH:
-                return pokemon.getGrowth().getLocalizedName();
-            case NATURE:
-                return pokemon.getNature().getLocalizedName();
-            case MINT_NATURE:
-                return (pokemon.getMintNature() != null ? pokemon.getMintNature().getLocalizedName() : "无");
-            case GENDER:
-                return pokemon.getGender().getLocalizedName();
-            case HELD_ITEM:
-                return BaseApi.getBukkitItemStack(pokemon.getHeldItem()).getType().toString();
-            case POKEBALL:
-                return pokemon.getBall().getLocalizedName();
-            case FRIENDSHIP:
-                return pokemon.getFriendship();
-            case HP:
-                return pokemon.getStats().getHP();
-            case ATTACK:
-                return pokemon.getStats().getAttack();
-            case DEFENSE:
-                return pokemon.getStats().getDefense();
-            case SPECIAL_ATTACK:
-                return pokemon.getStats().getSpecialAttack();
-            case SPECIAL_DEFENSE:
-                return pokemon.getStats().getSpecialDefense();
-            case SPEED:
-                return pokemon.getStats().getSpeed();
-            case IV_HP:
-                return pokemon.getIVs().getStat(BattleStatsType.HP);
-            case IV_ATTACK:
-                return pokemon.getIVs().getStat(BattleStatsType.ATTACK);
-            case IV_DEFENSE:
-                return pokemon.getIVs().getStat(BattleStatsType.DEFENSE);
-            case IV_SPECIAL_ATTACK:
-                return pokemon.getIVs().getStat(BattleStatsType.SPECIAL_ATTACK);
-            case IV_SPECIAL_DEFENSE:
-                return pokemon.getIVs().getStat(BattleStatsType.SPECIAL_DEFENSE);
-            case IV_SPEED:
-                return pokemon.getIVs().getStat(BattleStatsType.SPEED);
-            case EV_HP:
-                return pokemon.getEVs().getStat(BattleStatsType.HP);
-            case EV_ATTACK:
-                return pokemon.getEVs().getStat(BattleStatsType.ATTACK);
-            case EV_DEFENSE:
-                return pokemon.getEVs().getStat(BattleStatsType.DEFENSE);
-            case EV_SPECIAL_ATTACK:
-                return pokemon.getEVs().getStat(BattleStatsType.SPECIAL_ATTACK);
-            case EV_SPECIAL_DEFENSE:
-                return pokemon.getEVs().getStat(BattleStatsType.SPECIAL_DEFENSE);
-            case EV_SPEED:
-                return pokemon.getEVs().getStat(BattleStatsType.SPEED);
-            case HT_HP:
-                return pokemon.getIVs().isHyperTrained(BattleStatsType.HP) ? 31 : 0;
-            case HT_ATTACK:
-                return pokemon.getIVs().isHyperTrained(BattleStatsType.ATTACK) ? 31 : 0;
-            case HT_DEFENSE:
-                return pokemon.getIVs().isHyperTrained(BattleStatsType.DEFENSE) ? 31 : 0;
-            case HT_SPECIAL_ATTACK:
-                return pokemon.getIVs().isHyperTrained(BattleStatsType.SPECIAL_ATTACK) ? 31 : 0;
-            case HT_SPECIAL_DEFENSE:
-                return pokemon.getIVs().isHyperTrained(BattleStatsType.SPECIAL_DEFENSE) ? 31 : 0;
-            case HT_SPEED:
-                return pokemon.getIVs().isHyperTrained(BattleStatsType.SPEED) ? 31 : 0;
-            case MOVE_1:
-                return (pokemon.getMoveset().get(0) != null ? pokemon.getMoveset().get(0).getMove().getLocalizedName() : "无");
-            case MOVE_2:
-                return (pokemon.getMoveset().get(1) != null ? pokemon.getMoveset().get(1).getMove().getLocalizedName() : "无");
-            case MOVE_3:
-                return (pokemon.getMoveset().get(2) != null ? pokemon.getMoveset().get(2).getMove().getLocalizedName() : "无");
-            case MOVE_4:
-                return (pokemon.getMoveset().get(3) != null ? pokemon.getMoveset().get(3).getMove().getLocalizedName() : "无");
-            case TRADEABLE:
-                return pokemon.hasFlag("untradeable");
-            case BREEDABLE:
-                return pokemon.hasFlag("unbreedable");
-            case CATCHABLE:
-                return pokemon.hasFlag("uncatchable");
-            case FORM:
-                return pokemon.getForm().getLocalizedName();
-            default:
-                return null;
-        }
+        return switch (this) {
+            case DISPLAY_NAME -> pokemon.getDisplayName();
+            case NICKNAME -> pokemon.getNickname();
+            case UUID -> pokemon.getUUID();
+            case LEVEL -> pokemon.getPokemonLevel();
+            case SHINY -> pokemon.isShiny();
+            case ABILITY -> pokemon.getAbility().getLocalizedName();
+            case GROWTH -> pokemon.getGrowth().getLocalizedName();
+            case NATURE -> pokemon.getNature().getLocalizedName();
+            case MINT_NATURE -> (pokemon.getMintNature() != null ? pokemon.getMintNature().getLocalizedName() : "无");
+            case GENDER -> pokemon.getGender().getLocalizedName();
+            case HELD_ITEM -> BaseApi.getBukkitItemStack(pokemon.getHeldItem()).getType().toString();
+            case POKEBALL -> pokemon.getBall().getLocalizedName();
+            case FRIENDSHIP -> pokemon.getFriendship();
+            case OT_NAME -> pokemon.getOriginalTrainer() != null ? pokemon.getOriginalTrainer() : "无";
+            case OT_UUID ->
+                    pokemon.getOriginalTrainerUUID() != null ? pokemon.getOriginalTrainerUUID().toString() : "无";
+            case CUSTOM_TEXTURE -> pokemon.getPalette() != null ? pokemon.getPalette().getLocalizedName() : "无";
+            case HP -> pokemon.getStats().getHP();
+            case ATTACK -> pokemon.getStats().getAttack();
+            case DEFENCE -> pokemon.getStats().getDefense();
+            case SPECIAL_ATTACK -> pokemon.getStats().getSpecialAttack();
+            case SPECIAL_DEFENCE -> pokemon.getStats().getSpecialDefense();
+            case SPEED -> pokemon.getStats().getSpeed();
+            case IV_HP -> pokemon.getIVs().getStat(BattleStatsType.HP);
+            case IV_ATTACK -> pokemon.getIVs().getStat(BattleStatsType.ATTACK);
+            case IV_DEFENCE -> pokemon.getIVs().getStat(BattleStatsType.DEFENSE);
+            case IV_SPECIAL_ATTACK -> pokemon.getIVs().getStat(BattleStatsType.SPECIAL_ATTACK);
+            case IV_SPECIAL_DEFENCE -> pokemon.getIVs().getStat(BattleStatsType.SPECIAL_DEFENSE);
+            case IV_SPEED -> pokemon.getIVs().getStat(BattleStatsType.SPEED);
+            case EV_HP -> pokemon.getEVs().getStat(BattleStatsType.HP);
+            case EV_ATTACK -> pokemon.getEVs().getStat(BattleStatsType.ATTACK);
+            case EV_DEFENCE -> pokemon.getEVs().getStat(BattleStatsType.DEFENSE);
+            case EV_SPECIAL_ATTACK -> pokemon.getEVs().getStat(BattleStatsType.SPECIAL_ATTACK);
+            case EV_SPECIAL_DEFENCE -> pokemon.getEVs().getStat(BattleStatsType.SPECIAL_DEFENSE);
+            case EV_SPEED -> pokemon.getEVs().getStat(BattleStatsType.SPEED);
+            case HT_HP -> pokemon.getIVs().isHyperTrained(BattleStatsType.HP) ? 31 : 0;
+            case HT_ATTACK -> pokemon.getIVs().isHyperTrained(BattleStatsType.ATTACK) ? 31 : 0;
+            case HT_DEFENCE -> pokemon.getIVs().isHyperTrained(BattleStatsType.DEFENSE) ? 31 : 0;
+            case HT_SPECIAL_ATTACK -> pokemon.getIVs().isHyperTrained(BattleStatsType.SPECIAL_ATTACK) ? 31 : 0;
+            case HT_SPECIAL_DEFENCE -> pokemon.getIVs().isHyperTrained(BattleStatsType.SPECIAL_DEFENSE) ? 31 : 0;
+            case HT_SPEED -> pokemon.getIVs().isHyperTrained(BattleStatsType.SPEED) ? 31 : 0;
+            case MOVE_1 ->
+                    (pokemon.getMoveset().get(0) != null ? pokemon.getMoveset().get(0).getMove().getLocalizedName() : "无");
+            case MOVE_2 ->
+                    (pokemon.getMoveset().get(1) != null ? pokemon.getMoveset().get(1).getMove().getLocalizedName() : "无");
+            case MOVE_3 ->
+                    (pokemon.getMoveset().get(2) != null ? pokemon.getMoveset().get(2).getMove().getLocalizedName() : "无");
+            case MOVE_4 ->
+                    (pokemon.getMoveset().get(3) != null ? pokemon.getMoveset().get(3).getMove().getLocalizedName() : "无");
+            case TRADEABLE -> pokemon.hasFlag("untradeable");
+            case BREEDABLE -> pokemon.hasFlag("unbreedable");
+            case CATCHABLE -> pokemon.hasFlag("uncatchable");
+            case FORM -> pokemon.getForm().getLocalizedName();
+            default -> null;
+        };
     }
 
 }

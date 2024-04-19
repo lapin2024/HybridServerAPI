@@ -72,7 +72,7 @@ public class PokeNotice extends AbstractBroadcast {
 
         Pattern messagePattern = Pattern.compile(messageRegex);
         Matcher messageMatcher = messagePattern.matcher(message);
-        String[] split = messageMatcher.find() ? messageMatcher.group(1).replace("[", "").replace("]", "").split(",") : new String[]{"&a&l你抓到了一个神奇的皮卡丘", " &6&l快去抓住它吧！"};
+        String[] split = messageMatcher.find() ? messageMatcher.group(1).replace("[", "").replace("]", "").split(",") : new String[]{"&a&l你抓到了一个神奇的皮卡丘", "&6&l你的信息配置有错误请检查"};
         for (String s : split) {
             lines.add(HexUtils.colorify(s));
         }
