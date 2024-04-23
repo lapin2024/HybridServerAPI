@@ -1,11 +1,13 @@
 package com.github.yyeerai.hybridserverapi.common.yaml;
 
+import com.github.yyeerai.hybridserverapi.common.yaml.boostedyaml.dvs.versioning.BasicVersioning;
 import com.github.yyeerai.hybridserverapi.common.yaml.boostedyaml.settings.dumper.DumperSettings;
 import com.github.yyeerai.hybridserverapi.common.yaml.boostedyaml.settings.general.GeneralSettings;
 import com.github.yyeerai.hybridserverapi.common.yaml.boostedyaml.settings.loader.LoaderSettings;
 import com.github.yyeerai.hybridserverapi.common.yaml.boostedyaml.settings.updater.UpdaterSettings;
 import com.github.yyeerai.hybridserverapi.common.yaml.engine.v2.common.FlowStyle;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -32,14 +34,14 @@ public class ConfigManager {
     /**
      * 构造函数，用于初始化配置管理器。
      *
-     * @param plugin            插件实例
-     * @param filePath          配置文件路径
-     * @param createIfNotExists 如果配置文件不存在，是否创建新文件
+     * @param plugin          插件实例
+     * @param filePath        配置文件路径
+     * @param createOrRelease 如果配置文件不存在，是否创建新文件
      */
-    public ConfigManager(JavaPlugin plugin, String filePath, boolean createIfNotExists) {
+    public ConfigManager(JavaPlugin plugin, String filePath, boolean createOrRelease) {
         file = new File(plugin.getDataFolder(), filePath);
         this.plugin = plugin;
-        if (!file.exists() && createIfNotExists) {
+        if (!file.exists() && createOrRelease) {
             try {
                 if (file.createNewFile()) {
                     plugin.getLogger().info("File " + filePath + " has been created");
@@ -47,7 +49,7 @@ public class ConfigManager {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        } else if (!file.exists() && !createIfNotExists) {
+        } else if (!file.exists() && !createOrRelease) {
             plugin.saveResource(filePath, false);
         }
         try {
@@ -57,12 +59,33 @@ public class ConfigManager {
         }
     }
 
+    @SneakyThrows
+    public ConfigManager(JavaPlugin plugin, String filePath, boolean createOrRelease, boolean autoUpdate) {
+        file = new File(plugin.getDataFolder(), filePath);
+        this.plugin = plugin;
+        if (!file.exists()) {
+            if (createOrRelease) {
+                if (file.createNewFile()) {
+                    plugin.getLogger().info("File " + filePath + " has been created");
+                }
+            } else {
+                plugin.saveResource(filePath, false);
+            }
+        }
+        if (autoUpdate) {
+            config = YamlDocument.create(file, GeneralSettings.builder().setSerializer(SpigotSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.builder().setVersioning(new BasicVersioning("config-version")).build());
+        } else {
+            config = YamlDocument.create(file, GeneralSettings.builder().setSerializer(SpigotSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.DEFAULT);
+        }
+    }
+
     /**
      * 构造函数，用于初始化配置管理器。
      *
      * @param plugin   插件实例
      * @param filePath 配置文件路径
      */
+    @Deprecated
     public ConfigManager(JavaPlugin plugin, String filePath) {
         file = new File(plugin.getDataFolder(), filePath);
         this.plugin = plugin;
