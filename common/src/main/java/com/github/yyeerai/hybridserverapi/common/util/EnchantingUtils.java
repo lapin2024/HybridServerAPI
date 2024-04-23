@@ -3,6 +3,7 @@ package com.github.yyeerai.hybridserverapi.common.util;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Random;
+
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -14,6 +15,7 @@ public final class EnchantingUtils {
     private static Method method_EnchantmentManager_enchantItem;
     private static Method method_CraftItemStack_asNMSCopy;
     private static Method method_CraftItemStack_asBukkitCopy;
+
     static {
         try {
             if (NMSUtil.getVersionNumber() < 17) { // 1.16.5
@@ -55,8 +57,8 @@ public final class EnchantingUtils {
      * 使用原版逻辑随机附魔一个物品
      *
      * @param itemStack 要附魔的 ItemStack
-     * @param level 附魔的等级（相当于附魔表的等级）
-     * @param treasure 是否是宝藏附魔
+     * @param level     附魔的等级（相当于附魔表的等级）
+     * @param treasure  是否是宝藏附魔
      * @return 相同的ItemStack
      */
     public static ItemStack randomlyEnchant(ItemStack itemStack, int level, boolean treasure) {
@@ -74,7 +76,7 @@ public final class EnchantingUtils {
         }
     }
 
-   /**
+    /**
      * 通过其注册键获取附魔
      *
      * @param name 注册的名称

@@ -10,7 +10,8 @@ public class CloseMenu extends AbstractActionExecutor {
     private final boolean close;
 
     public CloseMenu(JavaPlugin plugin, String content) {
-        super(plugin, content);        String substring = content.substring(10);
+        super(plugin, content);
+        String substring = content.substring(10);
         List<String> angleBracketsContent = getAngleBracketsContent(substring);
         String trim = removeAngleBracketsContent(substring).trim();
         delay = getDelay(angleBracketsContent);

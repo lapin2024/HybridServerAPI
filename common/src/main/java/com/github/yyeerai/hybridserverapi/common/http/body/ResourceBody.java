@@ -1,6 +1,6 @@
 package com.github.yyeerai.hybridserverapi.common.http.body;
 
-import com.github.yyeerai.hybridserverapi.common.util.core.io.resource.Resource;
+import com.github.yyeerai.hybridserverapi.common.core.io.resource.Resource;
 
 import java.io.OutputStream;
 
@@ -12,36 +12,36 @@ import java.io.OutputStream;
  */
 public class ResourceBody implements RequestBody {
 
-	private final Resource resource;
+    private final Resource resource;
 
-	/**
-	 * 创建 Http request body
-	 *
-	 * @param resource body内容，编码后
-	 * @return BytesBody
-	 */
-	public static ResourceBody create(Resource resource) {
-		return new ResourceBody(resource);
-	}
+    /**
+     * 构造
+     *
+     * @param resource Body内容，编码后
+     */
+    public ResourceBody(Resource resource) {
+        this.resource = resource;
+    }
 
-	/**
-	 * 构造
-	 *
-	 * @param resource Body内容，编码后
-	 */
-	public ResourceBody(Resource resource) {
-		this.resource = resource;
-	}
+    /**
+     * 创建 Http request body
+     *
+     * @param resource body内容，编码后
+     * @return BytesBody
+     */
+    public static ResourceBody create(Resource resource) {
+        return new ResourceBody(resource);
+    }
 
-	@Override
-	public void write(OutputStream out) {
-		if(null != this.resource){
-			this.resource.writeTo(out);
-		}
-	}
+    @Override
+    public void write(OutputStream out) {
+        if (null != this.resource) {
+            this.resource.writeTo(out);
+        }
+    }
 
-	@Override
-	public String toString() {
-		return this.resource.readUtf8Str();
-	}
+    @Override
+    public String toString() {
+        return this.resource.readUtf8Str();
+    }
 }

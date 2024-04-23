@@ -6,5 +6,5 @@ package com.github.yyeerai.hybridserverapi.common.http;
  * @author Looly
  */
 public enum Method {
-	GET, POST, HEAD, OPTIONS, PUT, DELETE, TRACE, CONNECT, PATCH
+    GET, POST, HEAD, OPTIONS, PUT, DELETE, TRACE, CONNECT, PATCH
 }

@@ -1,7 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.http.ssl;
 
-import com.github.yyeerai.hybridserverapi.common.util.core.net.SSLContextBuilder;
-import com.github.yyeerai.hybridserverapi.common.util.core.net.SSLProtocols;
+import com.github.yyeerai.hybridserverapi.common.core.net.SSLContextBuilder;
+import com.github.yyeerai.hybridserverapi.common.core.net.SSLProtocols;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLSocketFactory;
@@ -20,76 +20,76 @@ import java.security.SecureRandom;
 @Deprecated
 public class SSLSocketFactoryBuilder implements SSLProtocols {
 
-	SSLContextBuilder sslContextBuilder;
+    SSLContextBuilder sslContextBuilder;
 
-	/**
-	 * 构造
-	 */
-	public SSLSocketFactoryBuilder() {
-		this.sslContextBuilder = SSLContextBuilder.create();
-	}
+    /**
+     * 构造
+     */
+    public SSLSocketFactoryBuilder() {
+        this.sslContextBuilder = SSLContextBuilder.create();
+    }
 
-	/**
-	 * 创建 SSLSocketFactoryBuilder
-	 *
-	 * @return SSLSocketFactoryBuilder
-	 */
-	public static SSLSocketFactoryBuilder create() {
-		return new SSLSocketFactoryBuilder();
-	}
+    /**
+     * 创建 SSLSocketFactoryBuilder
+     *
+     * @return SSLSocketFactoryBuilder
+     */
+    public static SSLSocketFactoryBuilder create() {
+        return new SSLSocketFactoryBuilder();
+    }
 
-	/**
-	 * 设置协议
-	 *
-	 * @param protocol 协议
-	 * @return 自身
-	 */
-	public SSLSocketFactoryBuilder setProtocol(String protocol) {
-		this.sslContextBuilder.setProtocol(protocol);
-		return this;
-	}
+    /**
+     * 设置协议
+     *
+     * @param protocol 协议
+     * @return 自身
+     */
+    public SSLSocketFactoryBuilder setProtocol(String protocol) {
+        this.sslContextBuilder.setProtocol(protocol);
+        return this;
+    }
 
-	/**
-	 * 设置信任信息
-	 *
-	 * @param trustManagers TrustManager列表
-	 * @return 自身
-	 */
-	public SSLSocketFactoryBuilder setTrustManagers(TrustManager... trustManagers) {
-		this.sslContextBuilder.setTrustManagers(trustManagers);
-		return this;
-	}
+    /**
+     * 设置信任信息
+     *
+     * @param trustManagers TrustManager列表
+     * @return 自身
+     */
+    public SSLSocketFactoryBuilder setTrustManagers(TrustManager... trustManagers) {
+        this.sslContextBuilder.setTrustManagers(trustManagers);
+        return this;
+    }
 
-	/**
-	 * 设置 JSSE key managers
-	 *
-	 * @param keyManagers JSSE key managers
-	 * @return 自身
-	 */
-	public SSLSocketFactoryBuilder setKeyManagers(KeyManager... keyManagers) {
-		this.sslContextBuilder.setKeyManagers(keyManagers);
-		return this;
-	}
+    /**
+     * 设置 JSSE key managers
+     *
+     * @param keyManagers JSSE key managers
+     * @return 自身
+     */
+    public SSLSocketFactoryBuilder setKeyManagers(KeyManager... keyManagers) {
+        this.sslContextBuilder.setKeyManagers(keyManagers);
+        return this;
+    }
 
-	/**
-	 * 设置 SecureRandom
-	 *
-	 * @param secureRandom SecureRandom
-	 * @return 自己
-	 */
-	public SSLSocketFactoryBuilder setSecureRandom(SecureRandom secureRandom) {
-		this.sslContextBuilder.setSecureRandom(secureRandom);
-		return this;
-	}
+    /**
+     * 设置 SecureRandom
+     *
+     * @param secureRandom SecureRandom
+     * @return 自己
+     */
+    public SSLSocketFactoryBuilder setSecureRandom(SecureRandom secureRandom) {
+        this.sslContextBuilder.setSecureRandom(secureRandom);
+        return this;
+    }
 
-	/**
-	 * 构建SSLSocketFactory
-	 *
-	 * @return SSLSocketFactory
-	 * @throws NoSuchAlgorithmException 无此算法
-	 * @throws KeyManagementException   Key管理异常
-	 */
-	public SSLSocketFactory build() throws NoSuchAlgorithmException, KeyManagementException {
-		return this.sslContextBuilder.buildChecked().getSocketFactory();
-	}
+    /**
+     * 构建SSLSocketFactory
+     *
+     * @return SSLSocketFactory
+     * @throws NoSuchAlgorithmException 无此算法
+     * @throws KeyManagementException   Key管理异常
+     */
+    public SSLSocketFactory build() throws NoSuchAlgorithmException, KeyManagementException {
+        return this.sslContextBuilder.buildChecked().getSocketFactory();
+    }
 }

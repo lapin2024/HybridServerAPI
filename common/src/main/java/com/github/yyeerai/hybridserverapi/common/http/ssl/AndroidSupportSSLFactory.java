@@ -1,7 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.http.ssl;
 
-import com.github.yyeerai.hybridserverapi.common.util.core.io.IORuntimeException;
-import com.github.yyeerai.hybridserverapi.common.util.core.net.SSLProtocols;
+import com.github.yyeerai.hybridserverapi.common.core.io.IORuntimeException;
+import com.github.yyeerai.hybridserverapi.common.core.net.SSLProtocols;
 
 /**
  * 兼容android低版本SSL连接<br>
@@ -14,12 +14,12 @@ import com.github.yyeerai.hybridserverapi.common.util.core.net.SSLProtocols;
  */
 public class AndroidSupportSSLFactory extends CustomProtocolsSSLFactory {
 
-	// Android低版本不重置的话某些SSL访问就会失败
-	private static final String[] protocols = {
-			SSLProtocols.SSLv3, SSLProtocols.TLSv1, SSLProtocols.TLSv11, SSLProtocols.TLSv12};
+    // Android低版本不重置的话某些SSL访问就会失败
+    private static final String[] protocols = {
+            SSLProtocols.SSLv3, SSLProtocols.TLSv1, SSLProtocols.TLSv11, SSLProtocols.TLSv12};
 
-	public AndroidSupportSSLFactory() throws IORuntimeException {
-		super(protocols);
-	}
+    public AndroidSupportSSLFactory() throws IORuntimeException {
+        super(protocols);
+    }
 
 }

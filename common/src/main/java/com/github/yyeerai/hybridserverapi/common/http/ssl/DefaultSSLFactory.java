@@ -8,7 +8,7 @@ package com.github.yyeerai.hybridserverapi.common.http.ssl;
  */
 public class DefaultSSLFactory extends CustomProtocolsSSLFactory {
 
-	public DefaultSSLFactory() {
-	}
+    public DefaultSSLFactory() {
+    }
 
 }

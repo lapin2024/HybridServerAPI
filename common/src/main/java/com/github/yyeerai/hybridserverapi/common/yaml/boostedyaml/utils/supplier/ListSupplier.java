@@ -31,6 +31,7 @@ public interface ListSupplier {
      * @param <T>  the type of the list
      * @return the list of the given size
      */
-    @NotNull <T> List<T> supply(int size);
+    @NotNull
+    <T> List<T> supply(int size);
 
 }

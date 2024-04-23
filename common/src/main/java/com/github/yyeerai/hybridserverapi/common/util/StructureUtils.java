@@ -1,9 +1,11 @@
 package com.github.yyeerai.hybridserverapi.common.util;
 
 import com.google.common.collect.BiMap;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
 import org.bukkit.Location;
 import org.bukkit.StructureType;
 import org.bukkit.World;
@@ -57,10 +59,10 @@ public final class StructureUtils {
         }
     }
 
-   /**
+    /**
      * 检查给定位置是否在某种类型的结构内
      *
-     * @param location 要检查的位置
+     * @param location      要检查的位置
      * @param structureType 要检查的 StructureType
      * @return 如果位置在结构内，则返回 true，否则返回 false
      */

@@ -15,12 +15,13 @@ import java.io.IOException;
 @FunctionalInterface
 public interface HttpFilter {
 
-	/**
-	 * 执行过滤
-	 * @param req {@link HttpServerRequest} 请求对象，用于获取请求内容
-	 * @param res {@link HttpServerResponse} 响应对象，用于写出内容
-	 * @param chain {@link Filter.Chain}
-	 * @throws IOException IO异常
-	 */
-	void doFilter(HttpServerRequest req, HttpServerResponse res, Filter.Chain chain) throws IOException;
+    /**
+     * 执行过滤
+     *
+     * @param req   {@link HttpServerRequest} 请求对象，用于获取请求内容
+     * @param res   {@link HttpServerResponse} 响应对象，用于写出内容
+     * @param chain {@link Filter.Chain}
+     * @throws IOException IO异常
+     */
+    void doFilter(HttpServerRequest req, HttpServerResponse res, Filter.Chain chain) throws IOException;
 }

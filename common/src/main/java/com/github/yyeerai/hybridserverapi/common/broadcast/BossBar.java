@@ -14,16 +14,12 @@ import java.util.regex.Pattern;
 public class BossBar extends AbstractBroadcast {
 
     private static final BossBarManager bossBarManager = BossBarManager.getInstance();
-
-    private int time = 120;
-
-    private org.bukkit.boss.BossBar bossBar;
-
-
     private static final String titlePattern = "title:([^,]*)";
     private static final String colorPattern = "color:([^,]*)";
     private static final String stylePattern = "style:([^,]*)";
     private static final String timePattern = "time:(.*)";
+    private int time = 120;
+    private org.bukkit.boss.BossBar bossBar;
 
     /**
      * 构造一个新的 AbstractBroadcast 实例。

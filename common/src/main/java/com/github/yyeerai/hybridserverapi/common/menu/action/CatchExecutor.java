@@ -19,8 +19,8 @@ public class CatchExecutor extends AbstractActionExecutor {
 
 
     private final List<AbstractActionExecutor> actionExecutors = new ArrayList<>();
-    private Player player;
     private final String askText;
+    private Player player;
 
 
     public CatchExecutor(JavaPlugin plugin, String content) {
@@ -39,7 +39,7 @@ public class CatchExecutor extends AbstractActionExecutor {
         matcher = pattern.matcher(trim);
         if (matcher.find()) {
             askText = matcher.group(1).trim();
-        }else {
+        } else {
             askText = "请输入: ";
         }
         pattern = Pattern.compile(actionsPattern);

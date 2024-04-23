@@ -32,6 +32,7 @@ public interface MapSupplier {
      * @param <V>  value type
      * @return the map of the given size
      */
-    @NotNull <K, V> Map<K, V> supply(int size);
+    @NotNull
+    <K, V> Map<K, V> supply(int size);
 
 }

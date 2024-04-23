@@ -31,6 +31,7 @@ public interface SetSupplier {
      * @param <T>  the type of the list
      * @return the set of the given size
      */
-    @NotNull <T> Set<T> supply(int size);
+    @NotNull
+    <T> Set<T> supply(int size);
 
 }

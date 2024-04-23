@@ -10,8 +10,8 @@ import com.sun.net.httpserver.Filter;
  */
 public abstract class SimpleFilter extends Filter {
 
-	@Override
-	public String description() {
-		return "Anonymous Filter";
-	}
+    @Override
+    public String description() {
+        return "Anonymous Filter";
+    }
 }

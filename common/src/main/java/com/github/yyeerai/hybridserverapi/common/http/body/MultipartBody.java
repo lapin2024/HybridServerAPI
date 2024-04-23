@@ -1,7 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.http.body;
 
-import com.github.yyeerai.hybridserverapi.common.util.core.io.IoUtil;
-import com.github.yyeerai.hybridserverapi.common.util.core.map.MapUtil;
+import com.github.yyeerai.hybridserverapi.common.core.io.IoUtil;
+import com.github.yyeerai.hybridserverapi.common.core.map.MapUtil;
 import com.github.yyeerai.hybridserverapi.common.http.ContentType;
 import com.github.yyeerai.hybridserverapi.common.http.HttpGlobalConfig;
 import com.github.yyeerai.hybridserverapi.common.http.MultipartOutputStream;
@@ -20,70 +20,70 @@ import java.util.Map;
  */
 public class MultipartBody implements RequestBody {
 
-	private static final String CONTENT_TYPE_MULTIPART_PREFIX = ContentType.MULTIPART.getValue() + "; boundary=";
+    private static final String CONTENT_TYPE_MULTIPART_PREFIX = ContentType.MULTIPART.getValue() + "; boundary=";
 
-	/**
-	 * 存储表单数据
-	 */
-	private final Map<String, Object> form;
-	/**
-	 * 编码
-	 */
-	private final Charset charset;
-	/**
-	 * 边界
-	 */
-	private final String boundary = HttpGlobalConfig.getBoundary();
+    /**
+     * 存储表单数据
+     */
+    private final Map<String, Object> form;
+    /**
+     * 编码
+     */
+    private final Charset charset;
+    /**
+     * 边界
+     */
+    private final String boundary = HttpGlobalConfig.getBoundary();
 
-	/**
-	 * 根据已有表单内容，构建MultipartBody
-	 *
-	 * @param form    表单
-	 * @param charset 编码
-	 * @return MultipartBody
-	 */
-	public static MultipartBody create(Map<String, Object> form, Charset charset) {
-		return new MultipartBody(form, charset);
-	}
+    /**
+     * 构造
+     *
+     * @param form    表单
+     * @param charset 编码
+     */
+    public MultipartBody(Map<String, Object> form, Charset charset) {
+        this.form = form;
+        this.charset = charset;
+    }
 
-	/**
-	 * 获取Multipart的Content-Type类型
-	 *
-	 * @return Multipart的Content-Type类型
-	 */
-	public String getContentType() {
-		return CONTENT_TYPE_MULTIPART_PREFIX + boundary;
-	}
+    /**
+     * 根据已有表单内容，构建MultipartBody
+     *
+     * @param form    表单
+     * @param charset 编码
+     * @return MultipartBody
+     */
+    public static MultipartBody create(Map<String, Object> form, Charset charset) {
+        return new MultipartBody(form, charset);
+    }
 
-	/**
-	 * 构造
-	 *
-	 * @param form    表单
-	 * @param charset 编码
-	 */
-	public MultipartBody(Map<String, Object> form, Charset charset) {
-		this.form = form;
-		this.charset = charset;
-	}
+    /**
+     * 获取Multipart的Content-Type类型
+     *
+     * @return Multipart的Content-Type类型
+     */
+    public String getContentType() {
+        return CONTENT_TYPE_MULTIPART_PREFIX + boundary;
+    }
 
-	/**
-	 * 写出Multiparty数据，不关闭流
-	 *
-	 * @param out out流
-	 */
-	@Override
-	public void write(OutputStream out) {
-		final MultipartOutputStream stream = new MultipartOutputStream(out, this.charset, this.boundary);
-		if (MapUtil.isNotEmpty(this.form)) {
-			this.form.forEach(stream::write);
-		}
-		stream.finish();
-	}
+    /**
+     * 写出Multiparty数据，不关闭流
+     *
+     * @param out out流
+     */
+    @Override
+    public void write(OutputStream out) {
+        final MultipartOutputStream stream = new MultipartOutputStream(out, this.charset, this.boundary);
+        if (MapUtil.isNotEmpty(this.form)) {
+            this.form.forEach(stream::write);
+        }
+        stream.finish();
+    }
 
-	@Override
-	public String toString() {
-		final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		write(out);
-		return IoUtil.toStr(out, this.charset);
-	}
+    @Override
+    public String toString() {
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        write(out);
+        return IoUtil.toStr(out, this.charset);
+    }
 }

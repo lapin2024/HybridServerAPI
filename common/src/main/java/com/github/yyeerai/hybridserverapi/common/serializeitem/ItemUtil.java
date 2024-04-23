@@ -88,7 +88,7 @@ public class ItemUtil {
      * 转换物品的颜色
      *
      * @param itemStack 物品
-     * @return 转换后的物品,返回原物品
+     * @return 转换后的物品, 返回原物品
      */
     private static ItemStack translateColor(ItemStack itemStack) {
         ItemMeta meta = itemStack.getItemMeta();
@@ -109,8 +109,9 @@ public class ItemUtil {
 
     /**
      * 转换物品的颜色
+     *
      * @param itemStack 物品
-     * @param copy 是否复制
+     * @param copy      是否复制
      * @return 转换后的物品, 如果copy为true则返回新物品 否则返回原物品
      */
     public static ItemStack translateColor(ItemStack itemStack, boolean copy) {

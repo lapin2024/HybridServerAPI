@@ -14,6 +14,7 @@ public class HasItem extends AbstractRequirementChecker {
 
 
     private final ItemStack itemStack;
+
     public HasItem(JavaPlugin plugin, String content) {
         super(plugin, content);
         String substring = content.substring(8);

@@ -35,7 +35,8 @@ public class RegisterConfig {
      * 注册配置文件
      * 从指定位置加载已经存在的yaml文件
      * 不存在则抛出异常
-     *不推荐使用
+     * 不推荐使用
+     *
      * @param plugin   插件
      * @param filePath 文件路径
      * @return 配置文件管理器
@@ -50,10 +51,10 @@ public class RegisterConfig {
      * 从指定位置加载已经存在的yaml文件或者创建新文件
      * 并指定是否使用自动更新
      *
-     * @param plugin        插件
-     * @param filePath     文件路径
+     * @param plugin          插件
+     * @param filePath        文件路径
      * @param createOrRelease 如果文件不存在是否创建（如果为否则从插件路径里面释放）
-     * @param autoUpdate   是否自动更新
+     * @param autoUpdate      是否自动更新
      * @return 配置文件管理器
      */
     public static ConfigManager registerConfig(JavaPlugin plugin, String filePath, boolean createOrRelease, boolean autoUpdate) {

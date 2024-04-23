@@ -21,7 +21,7 @@ public final class ReflectionUtils {
      * Does not work for remapped jars, see {@link #getFieldByPositionAndType}
      *
      * @param clazz The class
-     * @param name The name of the field
+     * @param name  The name of the field
      * @return the discovered field
      * @throws IllegalStateException if the field could not be found
      */
@@ -40,7 +40,7 @@ public final class ReflectionUtils {
      *
      * @param clazz The class
      * @param index The index of the field, relative to all other fields with the same type
-     * @param type The type of field
+     * @param type  The type of field
      * @return the discovered field
      * @throws IllegalStateException if the field could not be found
      */
@@ -60,8 +60,8 @@ public final class ReflectionUtils {
      * Gets a Class's method by name and parameter types and makes it accessible.
      * Does not work for remapped jars, see {@link #getMethodByPositionAndTypes}
      *
-     * @param clazz The class
-     * @param name The name of the method
+     * @param clazz          The class
+     * @param name           The name of the method
      * @param parameterTypes The parameter types of the method
      * @return the discovered method
      * @throws IllegalStateException if the method could not be found
@@ -79,8 +79,8 @@ public final class ReflectionUtils {
     /**
      * Gets a Class's method by position and parameter types and makes it accessible.
      *
-     * @param clazz The class
-     * @param index The index of the method, relative to all other methods with the same parameter types
+     * @param clazz          The class
+     * @param index          The index of the method, relative to all other methods with the same parameter types
      * @param parameterTypes The types of the parameters
      * @return the discovered method
      */
@@ -108,7 +108,7 @@ public final class ReflectionUtils {
     /**
      * Gets a Class's constructor by parameter types and makes it accessible.
      *
-     * @param clazz The class
+     * @param clazz          The class
      * @param parameterTypes The parameter types of the constructor
      * @return the discovered constructor
      * @throws IllegalStateException if the constructor could not be found

@@ -16,5 +16,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface Config {
     String value() default "";
+
     boolean isList() default false;
 }

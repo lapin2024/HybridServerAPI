@@ -1,6 +1,6 @@
 package com.github.yyeerai.hybridserverapi.common.http.server;
 
-import com.github.yyeerai.hybridserverapi.common.util.core.util.CharsetUtil;
+import com.github.yyeerai.hybridserverapi.common.core.util.CharsetUtil;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -15,43 +15,43 @@ import java.nio.charset.Charset;
  */
 public class HttpServerBase implements Closeable {
 
-	final static Charset DEFAULT_CHARSET = CharsetUtil.CHARSET_UTF_8;
+    final static Charset DEFAULT_CHARSET = CharsetUtil.CHARSET_UTF_8;
 
-	final HttpExchange httpExchange;
+    final HttpExchange httpExchange;
 
-	/**
-	 * 构造
-	 *
-	 * @param httpExchange {@link HttpExchange}
-	 */
-	public HttpServerBase(HttpExchange httpExchange) {
-		this.httpExchange = httpExchange;
-	}
+    /**
+     * 构造
+     *
+     * @param httpExchange {@link HttpExchange}
+     */
+    public HttpServerBase(HttpExchange httpExchange) {
+        this.httpExchange = httpExchange;
+    }
 
-	/**
-	 * 获取{@link HttpExchange}对象
-	 *
-	 * @return {@link HttpExchange}对象
-	 */
-	public HttpExchange getHttpExchange() {
-		return this.httpExchange;
-	}
+    /**
+     * 获取{@link HttpExchange}对象
+     *
+     * @return {@link HttpExchange}对象
+     */
+    public HttpExchange getHttpExchange() {
+        return this.httpExchange;
+    }
 
-	/**
-	 * 获取{@link HttpContext}
-	 *
-	 * @return {@link HttpContext}
-	 * @since 5.5.7
-	 */
-	public HttpContext getHttpContext() {
-		return getHttpExchange().getHttpContext();
-	}
+    /**
+     * 获取{@link HttpContext}
+     *
+     * @return {@link HttpContext}
+     * @since 5.5.7
+     */
+    public HttpContext getHttpContext() {
+        return getHttpExchange().getHttpContext();
+    }
 
-	/**
-	 * 调用{@link HttpExchange#close()}，关闭请求流和响应流
-	 */
-	@Override
-	public void close() {
-		this.httpExchange.close();
-	}
+    /**
+     * 调用{@link HttpExchange#close()}，关闭请求流和响应流
+     */
+    @Override
+    public void close() {
+        this.httpExchange.close();
+    }
 }

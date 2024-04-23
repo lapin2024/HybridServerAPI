@@ -1,7 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.http.body;
 
-import com.github.yyeerai.hybridserverapi.common.util.core.net.url.UrlQuery;
-import com.github.yyeerai.hybridserverapi.common.util.core.util.StrUtil;
+import com.github.yyeerai.hybridserverapi.common.core.net.url.UrlQuery;
+import com.github.yyeerai.hybridserverapi.common.core.util.StrUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.Charset;
@@ -15,31 +15,31 @@ import java.util.Map;
  */
 public class FormUrlEncodedBody extends BytesBody {
 
-	/**
-	 * 创建 Http request body
-	 *
-	 * @param form    表单
-	 * @param charset 编码
-	 * @return FormUrlEncodedBody
-	 */
-	public static FormUrlEncodedBody create(Map<String, Object> form, Charset charset) {
-		return new FormUrlEncodedBody(form, charset);
-	}
+    /**
+     * 构造
+     *
+     * @param form    表单
+     * @param charset 编码
+     */
+    public FormUrlEncodedBody(Map<String, Object> form, Charset charset) {
+        super(StrUtil.bytes(UrlQuery.of(form, true).build(charset), charset));
+    }
 
-	/**
-	 * 构造
-	 *
-	 * @param form    表单
-	 * @param charset 编码
-	 */
-	public FormUrlEncodedBody(Map<String, Object> form, Charset charset) {
-		super(StrUtil.bytes(UrlQuery.of(form, true).build(charset), charset));
-	}
+    /**
+     * 创建 Http request body
+     *
+     * @param form    表单
+     * @param charset 编码
+     * @return FormUrlEncodedBody
+     */
+    public static FormUrlEncodedBody create(Map<String, Object> form, Charset charset) {
+        return new FormUrlEncodedBody(form, charset);
+    }
 
-	@Override
-	public String toString() {
-		final ByteArrayOutputStream result = new ByteArrayOutputStream();
-		write(result);
-		return result.toString();
-	}
+    @Override
+    public String toString() {
+        final ByteArrayOutputStream result = new ByteArrayOutputStream();
+        write(result);
+        return result.toString();
+    }
 }

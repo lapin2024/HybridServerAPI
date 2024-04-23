@@ -4,7 +4,7 @@ import com.github.yyeerai.hybridserverapi.common.colour.HexUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class Chat extends AbstractBroadcast{
+public class Chat extends AbstractBroadcast {
     /**
      * 构造一个新的 AbstractBroadcast 实例。
      *
@@ -24,6 +24,7 @@ public class Chat extends AbstractBroadcast{
 
     /**
      * 发送消息给玩家。
+     *
      * @param player 要发送消息的玩家
      */
     @Override

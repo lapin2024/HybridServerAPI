@@ -1,7 +1,6 @@
 /**
  * SSL封装
- * 
- * @author looly
  *
+ * @author looly
  */
 package com.github.yyeerai.hybridserverapi.common.http.ssl;

@@ -16,6 +16,7 @@ public abstract class AbstractBroadcast implements IBroadcast, ISendMessage, IOl
 
     /**
      * 构造一个新的 AbstractBroadcast 实例。
+     *
      * @param message 广播的消息内容
      */
     public AbstractBroadcast(String message) {

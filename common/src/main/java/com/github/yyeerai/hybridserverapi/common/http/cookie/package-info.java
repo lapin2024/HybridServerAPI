@@ -1,7 +1,6 @@
 /**
  * 自定义Cookie
- * 
- * @author looly
  *
+ * @author looly
  */
 package com.github.yyeerai.hybridserverapi.common.http.cookie;

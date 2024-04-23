@@ -1,6 +1,6 @@
 package com.github.yyeerai.hybridserverapi.common.http.ssl;
 
-import com.github.yyeerai.hybridserverapi.common.util.core.util.JdkUtil;
+import com.github.yyeerai.hybridserverapi.common.core.util.JdkUtil;
 
 import javax.net.ssl.SSLSocketFactory;
 
@@ -11,22 +11,22 @@ import javax.net.ssl.SSLSocketFactory;
  * @since 5.1.2
  */
 public class DefaultSSLInfo {
-	/**
-	 * 默认信任全部的域名校验器
-	 */
-	public static final TrustAnyHostnameVerifier TRUST_ANY_HOSTNAME_VERIFIER;
-	/**
-	 * 默认的SSLSocketFactory，区分安卓
-	 */
-	public static final SSLSocketFactory DEFAULT_SSF;
+    /**
+     * 默认信任全部的域名校验器
+     */
+    public static final TrustAnyHostnameVerifier TRUST_ANY_HOSTNAME_VERIFIER;
+    /**
+     * 默认的SSLSocketFactory，区分安卓
+     */
+    public static final SSLSocketFactory DEFAULT_SSF;
 
-	static {
-		TRUST_ANY_HOSTNAME_VERIFIER = new TrustAnyHostnameVerifier();
-		if (JdkUtil.IS_ANDROID) {
-			// 兼容android低版本SSL连接
-			DEFAULT_SSF = new AndroidSupportSSLFactory();
-		} else {
-			DEFAULT_SSF = new DefaultSSLFactory();
-		}
-	}
+    static {
+        TRUST_ANY_HOSTNAME_VERIFIER = new TrustAnyHostnameVerifier();
+        if (JdkUtil.IS_ANDROID) {
+            // 兼容android低版本SSL连接
+            DEFAULT_SSF = new AndroidSupportSSLFactory();
+        } else {
+            DEFAULT_SSF = new DefaultSSLFactory();
+        }
+    }
 }

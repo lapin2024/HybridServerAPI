@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
-public class BroadcastJson extends AbstractActionExecutor{
+public class BroadcastJson extends AbstractActionExecutor {
 
     private final String json;
 

@@ -62,7 +62,8 @@ public interface YamlSerializer {
      * @param <T>      type of the object to serialize
      * @return the serialized object
      */
-    @Nullable <T> Map<Object, Object> serialize(@NotNull T object, @NotNull MapSupplier supplier);
+    @Nullable
+    <T> Map<Object, Object> serialize(@NotNull T object, @NotNull MapSupplier supplier);
 
     /**
      * Returns a set of all explicitly defined classes this serializer supports and can (de-)serialize.

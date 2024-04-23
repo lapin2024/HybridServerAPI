@@ -43,7 +43,7 @@ public class RegisterService {
         RequirementCheckerFactory.registerRequirementChecker("hasNyEconomy", HasNyEconomy.class);
         RequirementCheckerFactory.registerRequirementChecker("hasPoints", HasPoints.class);
         RequirementCheckerFactory.registerRequirementChecker("hasPermission", HasPermission.class);
-        RequirementCheckerFactory.registerRequirementChecker("stringEquals", StringEquals.class );
+        RequirementCheckerFactory.registerRequirementChecker("stringEquals", StringEquals.class);
         RequirementCheckerFactory.registerRequirementChecker("stringContains", StringContains.class);
         RequirementCheckerFactory.registerRequirementChecker("numberEquals", NumberEquals.class);
         RequirementCheckerFactory.registerRequirementChecker("hasEmptySlot", HasEmptySlot.class);
