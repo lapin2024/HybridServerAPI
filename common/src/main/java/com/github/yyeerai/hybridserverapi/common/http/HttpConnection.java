@@ -1,10 +1,10 @@
 package com.github.yyeerai.hybridserverapi.common.http;
 
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.URLUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.map.MapUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.ObjectUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.ReflectUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.StrUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.URLUtil;
 import com.github.yyeerai.hybridserverapi.common.http.ssl.DefaultSSLInfo;
 
 import javax.net.ssl.HostnameVerifier;

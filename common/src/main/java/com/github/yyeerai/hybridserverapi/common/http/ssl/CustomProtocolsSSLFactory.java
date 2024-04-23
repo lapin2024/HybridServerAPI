@@ -1,8 +1,8 @@
 package com.github.yyeerai.hybridserverapi.common.http.ssl;
 
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.net.SSLUtil;
-import cn.hutool.core.util.ArrayUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.IORuntimeException;
+import com.github.yyeerai.hybridserverapi.common.util.core.net.SSLUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.ArrayUtil;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;

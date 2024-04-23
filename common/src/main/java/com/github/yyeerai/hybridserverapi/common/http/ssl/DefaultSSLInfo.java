@@ -1,6 +1,6 @@
 package com.github.yyeerai.hybridserverapi.common.http.ssl;
 
-import cn.hutool.core.util.JdkUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.JdkUtil;
 
 import javax.net.ssl.SSLSocketFactory;
 

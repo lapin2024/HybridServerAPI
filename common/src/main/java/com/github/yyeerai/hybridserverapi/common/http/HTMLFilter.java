@@ -1,8 +1,8 @@
 package com.github.yyeerai.hybridserverapi.common.http;
 
-import cn.hutool.core.lang.Console;
-import cn.hutool.core.map.SafeConcurrentHashMap;
-import cn.hutool.core.util.CharUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.lang.Console;
+import com.github.yyeerai.hybridserverapi.common.util.core.map.SafeConcurrentHashMap;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.CharUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

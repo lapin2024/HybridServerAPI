@@ -1,7 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.javascriptparse.script;
 
-import cn.hutool.core.exceptions.ExceptionUtil;
-import cn.hutool.core.util.StrUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.exceptions.ExceptionUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.StrUtil;
 
 import javax.script.ScriptException;
 

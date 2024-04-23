@@ -1,7 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.http.ssl;
 
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.net.SSLProtocols;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.IORuntimeException;
+import com.github.yyeerai.hybridserverapi.common.util.core.net.SSLProtocols;
 
 /**
  * 兼容android低版本SSL连接<br>

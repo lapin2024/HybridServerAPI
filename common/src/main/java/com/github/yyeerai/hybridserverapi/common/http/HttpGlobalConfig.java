@@ -1,8 +1,8 @@
 package com.github.yyeerai.hybridserverapi.common.http;
 
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.RandomUtil;
-import cn.hutool.core.util.ReflectUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.ArrayUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.RandomUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.ReflectUtil;
 import com.github.yyeerai.hybridserverapi.common.http.cookie.GlobalCookieManager;
 
 import java.io.Serializable;

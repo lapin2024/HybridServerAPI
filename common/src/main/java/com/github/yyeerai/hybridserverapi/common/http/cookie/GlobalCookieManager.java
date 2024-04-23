@@ -1,7 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.http.cookie;
 
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.util.URLUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.IORuntimeException;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.URLUtil;
 import com.github.yyeerai.hybridserverapi.common.http.HttpConnection;
 
 import java.io.IOException;

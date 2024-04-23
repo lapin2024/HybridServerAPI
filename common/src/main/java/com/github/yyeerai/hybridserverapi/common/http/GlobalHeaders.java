@@ -1,8 +1,8 @@
 package com.github.yyeerai.hybridserverapi.common.http;
 
-import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.StrUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.collection.CollectionUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.map.MapUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.StrUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

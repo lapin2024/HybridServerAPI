@@ -1,6 +1,6 @@
 package com.github.yyeerai.hybridserverapi.common.http.useragent;
 
-import cn.hutool.core.collection.CollUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.collection.CollUtil;
 
 import java.util.ArrayList;
 import java.util.List;

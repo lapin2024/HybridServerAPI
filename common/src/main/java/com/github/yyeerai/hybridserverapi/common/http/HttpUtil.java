@@ -1,19 +1,19 @@
 package com.github.yyeerai.hybridserverapi.common.http;
 
-import cn.hutool.core.codec.Base64;
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.io.StreamProgress;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.net.RFC3986;
-import cn.hutool.core.net.url.UrlQuery;
-import cn.hutool.core.text.StrBuilder;
-import cn.hutool.core.util.CharsetUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.ReUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.URLUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.codec.Base64;
+import com.github.yyeerai.hybridserverapi.common.util.core.convert.Convert;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.FileUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.IoUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.StreamProgress;
+import com.github.yyeerai.hybridserverapi.common.util.core.map.MapUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.net.RFC3986;
+import com.github.yyeerai.hybridserverapi.common.util.core.net.url.UrlQuery;
+import com.github.yyeerai.hybridserverapi.common.util.core.text.StrBuilder;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.CharsetUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.ObjectUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.ReUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.StrUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.URLUtil;
 import com.github.yyeerai.hybridserverapi.common.http.cookie.GlobalCookieManager;
 import com.github.yyeerai.hybridserverapi.common.http.server.SimpleServer;
 

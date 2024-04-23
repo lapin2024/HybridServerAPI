@@ -12,7 +12,7 @@ import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import cn.hutool.core.util.StrUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.StrUtil;
 
 /**
  * 全功能引擎类，支持Compilable和Invocable

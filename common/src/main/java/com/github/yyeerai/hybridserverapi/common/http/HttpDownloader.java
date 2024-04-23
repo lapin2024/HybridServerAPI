@@ -1,8 +1,8 @@
 package com.github.yyeerai.hybridserverapi.common.http;
 
-import cn.hutool.core.io.FastByteArrayOutputStream;
-import cn.hutool.core.io.StreamProgress;
-import cn.hutool.core.lang.Assert;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.FastByteArrayOutputStream;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.StreamProgress;
+import com.github.yyeerai.hybridserverapi.common.util.core.lang.Assert;
 
 import java.io.File;
 import java.io.OutputStream;

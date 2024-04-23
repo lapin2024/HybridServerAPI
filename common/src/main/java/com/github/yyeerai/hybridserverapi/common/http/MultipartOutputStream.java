@@ -1,12 +1,12 @@
 package com.github.yyeerai.hybridserverapi.common.http;
 
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.io.resource.MultiResource;
-import cn.hutool.core.io.resource.Resource;
-import cn.hutool.core.io.resource.StringResource;
-import cn.hutool.core.util.StrUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.convert.Convert;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.IORuntimeException;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.IoUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.resource.MultiResource;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.resource.Resource;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.resource.StringResource;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.StrUtil;
 
 import java.io.IOException;
 import java.io.OutputStream;

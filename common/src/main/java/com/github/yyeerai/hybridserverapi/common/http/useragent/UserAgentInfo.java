@@ -1,6 +1,6 @@
 package com.github.yyeerai.hybridserverapi.common.http.useragent;
 
-import cn.hutool.core.util.ReUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.ReUtil;
 
 import java.io.Serializable;
 import java.util.regex.Pattern;

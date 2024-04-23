@@ -1,6 +1,6 @@
 package com.github.yyeerai.hybridserverapi.common.http.body;
 
-import cn.hutool.core.io.IoUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.IoUtil;
 
 import java.io.OutputStream;
 

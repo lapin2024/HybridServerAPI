@@ -1,8 +1,8 @@
 package com.github.yyeerai.hybridserverapi.common.http;
 
-import cn.hutool.core.util.EscapeUtil;
-import cn.hutool.core.util.ReUtil;
-import cn.hutool.core.util.StrUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.EscapeUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.ReUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.StrUtil;
 
 /**
  * HTML工具类

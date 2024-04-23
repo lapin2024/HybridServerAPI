@@ -1,17 +1,17 @@
 package com.github.yyeerai.hybridserverapi.common.http;
 
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.io.FastByteArrayOutputStream;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.io.StreamProgress;
-import cn.hutool.core.io.resource.BytesResource;
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.ObjUtil;
-import cn.hutool.core.util.ReUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.URLUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.convert.Convert;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.FastByteArrayOutputStream;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.FileUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.IORuntimeException;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.IoUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.StreamProgress;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.resource.BytesResource;
+import com.github.yyeerai.hybridserverapi.common.util.core.lang.Assert;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.ObjUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.ReUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.StrUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.URLUtil;
 import com.github.yyeerai.hybridserverapi.common.http.cookie.GlobalCookieManager;
 
 import java.io.Closeable;

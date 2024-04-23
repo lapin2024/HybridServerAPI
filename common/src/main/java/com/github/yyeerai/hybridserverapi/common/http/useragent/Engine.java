@@ -1,7 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.http.useragent;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ReUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.collection.CollUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.ReUtil;
 
 import java.util.List;
 import java.util.regex.Pattern;

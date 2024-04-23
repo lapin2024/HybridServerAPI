@@ -1,7 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.http.ssl;
 
-import cn.hutool.core.net.SSLContextBuilder;
-import cn.hutool.core.net.SSLProtocols;
+import com.github.yyeerai.hybridserverapi.common.util.core.net.SSLContextBuilder;
+import com.github.yyeerai.hybridserverapi.common.util.core.net.SSLProtocols;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLSocketFactory;

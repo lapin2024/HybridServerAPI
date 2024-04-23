@@ -1,7 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.http;
 
-import cn.hutool.core.io.resource.Resource;
-import cn.hutool.core.lang.Assert;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.resource.Resource;
+import com.github.yyeerai.hybridserverapi.common.util.core.lang.Assert;
 
 import java.io.InputStream;
 import java.io.Serializable;

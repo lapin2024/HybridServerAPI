@@ -1,7 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.http.body;
 
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.map.MapUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.IoUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.map.MapUtil;
 import com.github.yyeerai.hybridserverapi.common.http.ContentType;
 import com.github.yyeerai.hybridserverapi.common.http.HttpGlobalConfig;
 import com.github.yyeerai.hybridserverapi.common.http.MultipartOutputStream;

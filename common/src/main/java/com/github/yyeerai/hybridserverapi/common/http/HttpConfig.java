@@ -1,7 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.http;
 
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.net.SSLUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.lang.Assert;
+import com.github.yyeerai.hybridserverapi.common.util.core.net.SSLUtil;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSocketFactory;

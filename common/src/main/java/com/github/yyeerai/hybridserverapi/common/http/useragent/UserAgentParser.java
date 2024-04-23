@@ -1,6 +1,6 @@
 package com.github.yyeerai.hybridserverapi.common.http.useragent;
 
-import cn.hutool.core.util.StrUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.StrUtil;
 
 /**
  * User-Agent解析器

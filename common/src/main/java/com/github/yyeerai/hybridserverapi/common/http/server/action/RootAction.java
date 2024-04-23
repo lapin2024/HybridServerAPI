@@ -1,7 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.http.server.action;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.io.FileUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.collection.CollUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.io.FileUtil;
 import com.github.yyeerai.hybridserverapi.common.http.server.HttpServerRequest;
 import com.github.yyeerai.hybridserverapi.common.http.server.HttpServerResponse;
 

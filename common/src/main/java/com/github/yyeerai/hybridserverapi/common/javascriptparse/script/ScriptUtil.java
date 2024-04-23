@@ -1,7 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.javascriptparse.script;
 
-import cn.hutool.core.map.WeakConcurrentMap;
-import cn.hutool.core.util.StrUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.map.WeakConcurrentMap;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.StrUtil;
 
 import javax.script.Bindings;
 import javax.script.Compilable;

@@ -28,7 +28,7 @@ public interface HttpInterceptor<T extends HttpBase<T>> {
 	 * @author looly
 	 * @since 5.7.16
 	 */
-	class Chain<T extends HttpBase<T>> implements cn.hutool.core.lang.Chain<HttpInterceptor<T>, Chain<T>> {
+	class Chain<T extends HttpBase<T>> implements com.github.yyeerai.hybridserverapi.common.util.core.lang.Chain<HttpInterceptor<T>, Chain<T>> {
 		private final List<HttpInterceptor<T>> interceptors = new LinkedList<>();
 
 		@Override

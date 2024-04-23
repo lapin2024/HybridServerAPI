@@ -1,7 +1,7 @@
 package com.github.yyeerai.hybridserverapi.common.http.body;
 
-import cn.hutool.core.net.url.UrlQuery;
-import cn.hutool.core.util.StrUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.net.url.UrlQuery;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.StrUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.Charset;

@@ -1,6 +1,6 @@
 package com.github.yyeerai.hybridserverapi.common.http;
 
-import cn.hutool.core.util.StrUtil;
+import com.github.yyeerai.hybridserverapi.common.util.core.util.StrUtil;
 
 import java.nio.charset.Charset;
 
