@@ -13,7 +13,6 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("deprecation")
 public class PapiHook extends PlaceholderExpansion {
 
     private final Main main;
@@ -93,7 +92,7 @@ public class PapiHook extends PlaceholderExpansion {
     @Override
     public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
 
-        if (player == null) return params;
+        if (player == null) return "null";
 
         if (params.startsWith("wins") || params.startsWith("losses") || params.startsWith("totalbattle") || params.startsWith("totalexp") || params.startsWith("totalkills") || params.startsWith("currentexp") || params.startsWith("currentkills") || params.startsWith("totalbred") || params.startsWith("totalhatched") || params.startsWith("totalevolved") || params.startsWith("seen") || params.startsWith("caught") || params.startsWith("size") || params.startsWith("percent") || params.startsWith("percent_format") || params.startsWith("pokemoney")) {
             return getPartyRust(main.getPokemonApi().getPlayerPartyStorage(player), params);
@@ -104,15 +103,15 @@ public class PapiHook extends PlaceholderExpansion {
         if (params.startsWith("info")) {
             return getPokemonInfoRust(main.getPokemonApi().getPlayerPartyStorage(player), params);
         }
-        return params;
+        return "null";
     }
 
     private String getPokemonInfoRust(PlayerPartyStorage playerPartyStorage, String params) {
         String[] split = params.split("_");
         int slot = (Integer.parseInt(split[1]) - 1);
-        if (slot < 0 || slot > 6) return params;
+        if (slot < 0 || slot > 6) return "null";
         Pokemon pokemon = playerPartyStorage.get(slot);
-        if (pokemon == null) return params;
+        if (pokemon == null) return "null";
         switch (split[2]) {
             case "name":
                 return pokemon.getSpecies().getPokemonName();
@@ -209,7 +208,7 @@ public class PapiHook extends PlaceholderExpansion {
             case "palette":
                 return String.valueOf(pokemon.getCustomTexture());
             default:
-                return params;
+                return "null";
         }
     }
 
@@ -218,7 +217,7 @@ public class PapiHook extends PlaceholderExpansion {
         if (params.startsWith("haspokemon")) {
             String[] split = params.split("_");
             EnumSpecies species = EnumSpecies.getFromNameAnyCase(split[1]);
-            if (species == null) return params;
+            if (species == null) return "null";
             int slot = 999;
             for (int i = 0; i < playerPartyStorage.getAll().length; i++) {
                 if (playerPartyStorage.get(i) != null && playerPartyStorage.get(i).getSpecies() == species) {
@@ -231,7 +230,7 @@ public class PapiHook extends PlaceholderExpansion {
         if (params.startsWith("original_haspokemon")) {
             String[] split = params.split("_");
             EnumSpecies species = EnumSpecies.getFromNameAnyCase(split[2]);
-            if (species == null) return params;
+            if (species == null) return "null";
             int slot = 999;
             for (int i = 0; i < playerPartyStorage.getAll().length; i++) {
                 if (playerPartyStorage.get(i) != null && playerPartyStorage.get(i).getSpecies() == species && playerPartyStorage.get(i).getOriginalTrainerUUID().equals(playerPartyStorage.getPlayerUUID())) {
@@ -244,106 +243,106 @@ public class PapiHook extends PlaceholderExpansion {
         if (params.startsWith("name")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            if (slot < 0 || slot > 6) return params;
-            return playerPartyStorage.get(slot) == null ? params : playerPartyStorage.get(slot).getSpecies().getPokemonName();
+            if (slot < 0 || slot > 6) return "null";
+            return playerPartyStorage.get(slot) == null ? "null" : playerPartyStorage.get(slot).getSpecies().getPokemonName();
         }
         if (params.startsWith("localname")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            return playerPartyStorage.get(slot) == null ? params : playerPartyStorage.get(slot).getLocalizedName();
+            return playerPartyStorage.get(slot) == null ? "null" : playerPartyStorage.get(slot).getLocalizedName();
         }
         if (params.startsWith("nickname")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            if (slot < 0 || slot > 6) return params;
-            return playerPartyStorage.get(slot) == null ? params : playerPartyStorage.get(slot).getNickname().isEmpty() ? playerPartyStorage.get(slot).getLocalizedName() : playerPartyStorage.get(slot).getNickname();
+            if (slot < 0 || slot > 6) return "null";
+            return playerPartyStorage.get(slot) == null ? "null" : playerPartyStorage.get(slot).getNickname().isEmpty() ? playerPartyStorage.get(slot).getLocalizedName() : playerPartyStorage.get(slot).getNickname();
         }
         if (params.startsWith("form")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            if (slot < 0 || slot > 6) return params;
-            return playerPartyStorage.get(slot) == null ? params : playerPartyStorage.get(slot).getFormEnum().getLocalizedName();
+            if (slot < 0 || slot > 6) return "null";
+            return playerPartyStorage.get(slot) == null ? "null" : playerPartyStorage.get(slot).getFormEnum().getLocalizedName();
         }
         if (params.startsWith("original")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            if (slot < 0 || slot > 6) return params;
-            return playerPartyStorage.get(slot) == null ? params : playerPartyStorage.get(slot).getOriginalTrainer();
+            if (slot < 0 || slot > 6) return "null";
+            return playerPartyStorage.get(slot) == null ? "null" : playerPartyStorage.get(slot).getOriginalTrainer();
         }
         if (params.startsWith("egggroup")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            if (slot < 0 || slot > 6) return params;
-            return playerPartyStorage.get(slot) == null ? params : playerPartyStorage.get(slot).getSpecies().getBaseStats().getEggGroupsArray().toString();
+            if (slot < 0 || slot > 6) return "null";
+            return playerPartyStorage.get(slot) == null ? "null" : playerPartyStorage.get(slot).getSpecies().getBaseStats().getEggGroupsArray().toString();
         }
         if (params.startsWith("isegg")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            if (slot < 0 || slot > 6) return params;
-            return playerPartyStorage.get(slot) == null ? params : String.valueOf(playerPartyStorage.get(slot).isEgg());
+            if (slot < 0 || slot > 6) return "null";
+            return playerPartyStorage.get(slot) == null ? "null" : String.valueOf(playerPartyStorage.get(slot).isEgg());
         }
         if (params.startsWith("eggcycles")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            if (slot < 0 || slot > 6) return params;
-            return playerPartyStorage.get(slot) == null ? params : String.valueOf(playerPartyStorage.get(slot).getEggCycles());
+            if (slot < 0 || slot > 6) return "null";
+            return playerPartyStorage.get(slot) == null ? "null" : String.valueOf(playerPartyStorage.get(slot).getEggCycles());
         }
         if (params.startsWith("shiny")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            if (slot < 0 || slot > 6) return params;
-            return playerPartyStorage.get(slot) == null ? params : String.valueOf(playerPartyStorage.get(slot).isShiny());
+            if (slot < 0 || slot > 6) return "null";
+            return playerPartyStorage.get(slot) == null ? "null" : String.valueOf(playerPartyStorage.get(slot).isShiny());
         }
         if (params.startsWith("pokeball")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            if (slot < 0 || slot > 6) return params;
-            return playerPartyStorage.get(slot) == null ? params : playerPartyStorage.get(slot).getCaughtBall().getLocalizedName();
+            if (slot < 0 || slot > 6) return "null";
+            return playerPartyStorage.get(slot) == null ? "null" : playerPartyStorage.get(slot).getCaughtBall().getLocalizedName();
         }
         if (params.startsWith("cantrade")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            if (slot < 0 || slot > 6) return params;
-            return playerPartyStorage.get(slot) == null ? params : String.valueOf(playerPartyStorage.get(slot).hasSpecFlag("untradeable"));
+            if (slot < 0 || slot > 6) return "null";
+            return playerPartyStorage.get(slot) == null ? "null" : String.valueOf(playerPartyStorage.get(slot).hasSpecFlag("untradeable"));
         }
         if (params.startsWith("canbreed")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            if (slot < 0 || slot > 6) return params;
-            return playerPartyStorage.get(slot) == null ? params : String.valueOf(playerPartyStorage.get(slot).hasSpecFlag("unbreedable"));
+            if (slot < 0 || slot > 6) return "null";
+            return playerPartyStorage.get(slot) == null ? "null" : String.valueOf(playerPartyStorage.get(slot).hasSpecFlag("unbreedable"));
         }
         if (params.startsWith("customtexture")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            if (slot < 0 || slot > 6) return params;
-            return playerPartyStorage.get(slot) == null ? params : playerPartyStorage.get(slot).getCustomTexture();
+            if (slot < 0 || slot > 6) return "null";
+            return playerPartyStorage.get(slot) == null ? "null" : playerPartyStorage.get(slot).getCustomTexture();
         }
         if (params.startsWith("pokedex")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            if (slot < 0 || slot > 6) return params;
-            return playerPartyStorage.get(slot) == null ? params : String.valueOf(playerPartyStorage.get(slot).getSpecies().getNationalPokedexNumber());
+            if (slot < 0 || slot > 6) return "null";
+            return playerPartyStorage.get(slot) == null ? "null" : String.valueOf(playerPartyStorage.get(slot).getSpecies().getNationalPokedexNumber());
         }
         if (params.startsWith("islegendary")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            if (slot < 0 || slot > 6) return params;
-            return playerPartyStorage.get(slot) == null ? params : String.valueOf(playerPartyStorage.get(slot).getSpecies().isLegendary());
+            if (slot < 0 || slot > 6) return "null";
+            return playerPartyStorage.get(slot) == null ? "null" : String.valueOf(playerPartyStorage.get(slot).getSpecies().isLegendary());
         }
         if (params.startsWith("isultrabeast")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            if (slot < 0 || slot > 6) return params;
-            return playerPartyStorage.get(slot) == null ? params : String.valueOf(playerPartyStorage.get(slot).getSpecies().isUltraBeast());
+            if (slot < 0 || slot > 6) return "null";
+            return playerPartyStorage.get(slot) == null ? "null" : String.valueOf(playerPartyStorage.get(slot).getSpecies().isUltraBeast());
         }
         if (params.startsWith("move")) {
             String[] split = params.split("_");
             int slot = (Integer.parseInt(split[1]) - 1);
-            if (slot < 0 || slot > 6) return params;
+            if (slot < 0 || slot > 6) return "null";
             int index = (Integer.parseInt(split[2]) - 1);
-            if (playerPartyStorage.get(slot) == null) return params;
+            if (playerPartyStorage.get(slot) == null) return "null";
             Attack attack = playerPartyStorage.get(slot).getMoveset().get(index);
-            return attack == null ? "" : attack.getActualMove().getLocalizedName();
+            return attack == null ? "null" : attack.getActualMove().getLocalizedName();
         }
         if (params.startsWith("partysize")) {
             return String.valueOf(playerPartyStorage.getTeam().size());
@@ -357,7 +356,7 @@ public class PapiHook extends PlaceholderExpansion {
             }
             return String.valueOf(count);
         }
-        return params;
+        return "null";
     }
 
     private String getPartyRust(PlayerPartyStorage playerPartyStorage, String params) {
@@ -387,15 +386,15 @@ public class PapiHook extends PlaceholderExpansion {
             case "caught":
                 return String.valueOf(playerPartyStorage.pokedex.countCaught());
             case "size":
-                return String.valueOf(Pokedex.pokedexSize);
+                return String.valueOf(Pokedex.size());
             case "percent":
-                return String.format("%.4f", playerPartyStorage.pokedex.countCaught() / (double) Pokedex.pokedexSize);
+                return String.format("%.4f", playerPartyStorage.pokedex.countCaught() / (double) Pokedex.size());
             case "percent_format":
-                return (Math.round(playerPartyStorage.pokedex.countCaught() / (double) Pokedex.pokedexSize * 100)) + "%";
+                return (Math.round(playerPartyStorage.pokedex.countCaught() / (double) Pokedex.size() * 100)) + "%";
             case "pokemoney":
                 return String.valueOf(playerPartyStorage.getMoney());
             default:
-                return params;
+                return "null";
         }
     }
 
