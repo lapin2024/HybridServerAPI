@@ -53,7 +53,7 @@ public class ConfigManager {
             plugin.saveResource(filePath, false);
         }
         try {
-            config = YamlDocument.create(file, GeneralSettings.builder().setSerializer(SpigotSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.DEFAULT);
+            config = YamlDocument.create(file, GeneralSettings.builder().setSerializer(SpigotSerializer.getInstance()).setSerializer(ItemSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.DEFAULT);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -73,9 +73,9 @@ public class ConfigManager {
             }
         }
         if (autoUpdate) {
-            config = YamlDocument.create(file, GeneralSettings.builder().setSerializer(SpigotSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.builder().setVersioning(new BasicVersioning("config-version")).build());
+            config = YamlDocument.create(file, GeneralSettings.builder().setSerializer(SpigotSerializer.getInstance()).setSerializer(ItemSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.builder().setVersioning(new BasicVersioning("config-version")).build());
         } else {
-            config = YamlDocument.create(file, GeneralSettings.builder().setSerializer(SpigotSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.DEFAULT);
+            config = YamlDocument.create(file, GeneralSettings.builder().setSerializer(SpigotSerializer.getInstance()).setSerializer(ItemSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.DEFAULT);
         }
     }
 
@@ -91,7 +91,7 @@ public class ConfigManager {
         this.plugin = plugin;
         if (file.exists()) {
             try {
-                config = YamlDocument.create(file, GeneralSettings.builder().setSerializer(SpigotSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.DEFAULT);
+                config = YamlDocument.create(file, GeneralSettings.builder().setSerializer(SpigotSerializer.getInstance()).setSerializer(ItemSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.DEFAULT);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -106,25 +106,39 @@ public class ConfigManager {
      * @param obj 需要加载配置的对象
      */
     public void loadConfig(Object obj) {
+        // 获取对象的类，如果对象是Class类型，则直接使用，否则获取对象的类
         Class<?> clazz = (obj instanceof Class) ? (Class<?>) obj : obj.getClass();
+        // 获取类的所有字段
         Field[] fields = clazz.getDeclaredFields();
+        // 遍历所有字段
         for (Field field : fields) {
+            // 检查字段是否有Config注解
             if (field.isAnnotationPresent(Config.class)) {
+                // 获取字段的Config注解
                 Config annotation = field.getAnnotation(Config.class);
+                // 获取注解的值，如果值为空，则使用字段的名称作为路径
                 String path = annotation.value().isEmpty() ? field.getName() : annotation.value();
+                // 设置字段为可访问
                 field.setAccessible(true);
+                // 从配置文件中获取字段对应路径的值
                 Object value = config.get(path);
+                // 如果值为空
                 if (value == null) {
-                    value = annotation.isList() ? getList(field) : getValue(field);
+                    // 根据字段的类型获取默认值
+                    value = annotation.isList() ? getList(field) : annotation.isItem() ? getItem(field) : getValue(field);
+                    // 将默认值设置到配置文件中
                     config.set(path, value);
                 }
                 try {
+                    // 将值设置到对象的字段中
                     field.set(obj, value);
                 } catch (IllegalAccessException e) {
+                    // 如果设置字段值时发生错误，抛出运行时异常
                     throw new RuntimeException("Could not set field " + field.getName() + " in " + clazz.getName());
                 }
             }
         }
+        // 保存配置文件
         saveConfig();
     }
 
@@ -214,6 +228,10 @@ public class ConfigManager {
             return new ArrayList<>();
         }
         return null;
+    }
+
+    private Object getItem(Field field) {
+        return new BukkitItemStack("air", 1, (short) 0, "");
     }
 
 }
