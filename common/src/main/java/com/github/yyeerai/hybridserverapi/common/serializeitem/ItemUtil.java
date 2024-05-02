@@ -30,11 +30,15 @@ public class ItemUtil {
                     return Material.getMaterial(type);
                 })
                 .map(material -> {
-                    int damage = (int) args.getOrDefault("damage", 0);
+                    Object damageObj = args.getOrDefault("damage", 0);
+                    int damage = damageObj instanceof Short ? ((Short) damageObj).intValue() : (int) damageObj;
                     int amount = (int) args.getOrDefault("amount", 1);
                     ItemStack itemStack = new ItemStack(material, amount, (short) damage);
                     if (args.containsKey("nbt")) {
-                        itemStack = NbtUtil.setNbt(itemStack, (String) args.get("nbt"));
+                        String nbt = (String) args.get("nbt");
+                        if(nbt != null && !nbt.isEmpty()){
+                            itemStack = NbtUtil.setNbt(itemStack, nbt);
+                        }
                     }
                     return itemStack;
                 })

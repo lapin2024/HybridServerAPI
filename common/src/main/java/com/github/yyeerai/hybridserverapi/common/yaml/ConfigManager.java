@@ -126,8 +126,6 @@ public class ConfigManager {
                 if (value == null) {
                     // 根据字段的类型获取默认值
                     value = annotation.isList() ? getList(field) : annotation.isItem() ? getItem(field) : getValue(field);
-                    // 将默认值设置到配置文件中
-                    config.set(path, value);
                 }
                 try {
                     // 将值设置到对象的字段中
@@ -138,8 +136,6 @@ public class ConfigManager {
                 }
             }
         }
-        // 保存配置文件
-        saveConfig();
     }
 
     /**
@@ -231,7 +227,7 @@ public class ConfigManager {
     }
 
     private Object getItem(Field field) {
-        return new BukkitItemStack("air", 1, (short) 0, "");
+        return new BukkitItemStack("air", " ", new ArrayList<>(),  1, (short) 0, "");
     }
 
 }
