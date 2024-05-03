@@ -15,3 +15,6 @@ dependencies {
     compileOnly "com.github.yyeerai:Spigot:1.12.2-build1573k"
     implementation project(':common')
 }
+jar {
+    from sourceSets.main.allJava
+}
