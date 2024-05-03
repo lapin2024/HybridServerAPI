@@ -16,6 +16,3 @@ dependencies {
     compileOnly "com.github.yyeerai:Spigot:1.16.5-build3096a"
     implementation project(':common')
 }
-jar {
-    from sourceSets.main.allJava
-}

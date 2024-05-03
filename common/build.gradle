@@ -30,5 +30,4 @@ jar {
             }
         }
     }
-    from sourceSets.main.allJava
 }

@@ -98,7 +98,4 @@ jar {
     from {
         subprojects.findAll { it != null && it.name == 'v1_16_5' }.collect { zipTree(it.getPath().replace(':', '') + '/build/reobfJar/output.jar') }
     }
-
-    //打包所有源码
-    from sourceSets.main.allJava
 }

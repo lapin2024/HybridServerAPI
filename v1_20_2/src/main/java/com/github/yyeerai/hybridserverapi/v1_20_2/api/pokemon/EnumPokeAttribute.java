@@ -121,7 +121,7 @@ public enum EnumPokeAttribute {
             case DISPLAY_NAME -> pokemon.getFormattedDisplayName().getString();
             case NICKNAME -> pokemon.getFormattedNickname().getString();
             case LEVEL -> pokemon.getPokemonLevel();
-            case SHINY -> pokemon.isShiny();
+            case SHINY -> pokemon.isShiny() ? "是" : "否";
             case ABILITY -> pokemon.getAbility().getTranslatedName().getString();
             case GROWTH -> pokemon.getGrowth().getTranslatedName().getString();
             case NATURE -> pokemon.getNature().getTranslatedName().getString();
@@ -167,9 +167,9 @@ public enum EnumPokeAttribute {
                     (pokemon.getMoveset().get(2) != null ? pokemon.getMoveset().get(2).getMove().getTranslatedName().getString() : "无");
             case MOVE_4 ->
                     (pokemon.getMoveset().get(3) != null ? pokemon.getMoveset().get(3).getMove().getTranslatedName().getString() : "无");
-            case TRADEABLE -> pokemon.hasFlag("untradeable");
-            case BREEDABLE -> pokemon.hasFlag("unbreedable");
-            case CATCHABLE -> pokemon.hasFlag("uncatchable");
+            case TRADEABLE -> pokemon.hasFlag("untradeable")  ? "否" : "是";
+            case BREEDABLE -> pokemon.hasFlag("unbreedable") ? "否" : "是";
+            case CATCHABLE -> pokemon.hasFlag("uncatchable") ? "否" : "是";
             case FORM -> pokemon.getForm().getLocalizedName();
         };
     }

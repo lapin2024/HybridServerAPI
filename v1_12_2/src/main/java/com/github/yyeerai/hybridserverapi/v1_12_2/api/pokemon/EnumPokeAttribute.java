@@ -125,7 +125,7 @@ public enum EnumPokeAttribute {
             case LEVEL:
                 return pokemon.getLevel();
             case SHINY:
-                return pokemon.isShiny();
+                return pokemon.isShiny() ? "是" : "否";
             case ABILITY:
                 return pokemon.getAbility().getLocalizedName();
             case GROWTH:
@@ -211,11 +211,11 @@ public enum EnumPokeAttribute {
             case MOVE_4:
                 return (pokemon.getMoveset().get(3) != null ? pokemon.getMoveset().get(3).getMove().getLocalizedName() : "无");
             case TRADEABLE:
-                return pokemon.hasSpecFlag("untradeable");
+                return pokemon.hasSpecFlag("untradeable") ? "否" : "是";
             case BREEDABLE:
-                return pokemon.hasSpecFlag("unbreedable");
+                return pokemon.hasSpecFlag("unbreedable") ? "否" : "是";
             case CATCHABLE:
-                return pokemon.hasSpecFlag("uncatchable");
+                return pokemon.hasSpecFlag("uncatchable") ? "否" : "是";
             default:
                 return null;
         }
