@@ -25,11 +25,11 @@ public class Main implements Listener {
         plugin.getLogger().info("正在初始化...");
         File file = new File(String.valueOf(plugin.getDataFolder()));
         if (!file.exists()) {
-            if(file.mkdirs()){
+            if (file.mkdirs()) {
                 plugin.getLogger().info("文件夹创建成功");
             }
         }
-        pokemonApi = new PokemonApi(plugin);
+        pokemonApi = PokemonApi.getInstance();
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         PapiHook papiHook = new PapiHook(this);

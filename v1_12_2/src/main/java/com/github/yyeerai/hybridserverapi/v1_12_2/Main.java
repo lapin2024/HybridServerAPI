@@ -29,7 +29,7 @@ public class Main implements Listener {
                 plugin.getLogger().info("文件夹创建成功");
             }
         }
-        pokemonApi = new PokemonApi(plugin);
+        pokemonApi = PokemonApi.getInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         PapiHook papiHook = new PapiHook(this);
         papiHook.register();
@@ -41,7 +41,6 @@ public class Main implements Listener {
         pokemonApi = null;
         plugin.getLogger().info("卸载成功");
     }
-
 
 
 }

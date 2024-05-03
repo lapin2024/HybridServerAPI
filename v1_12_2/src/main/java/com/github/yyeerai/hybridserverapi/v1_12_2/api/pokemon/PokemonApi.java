@@ -25,6 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 宝可梦API类，提供了一系列的宝可梦相关的方法
+ */
 @Getter
 @SuppressWarnings("unused")
 public class PokemonApi {
@@ -32,9 +35,18 @@ public class PokemonApi {
     private final ConfigManager configManager;
     public static PokemonApi POKEMON_API;
 
-    public PokemonApi(JavaPlugin plugin) {
-        configManager = RegisterConfig.registerConfig(plugin, "api/config.yml", false);
-        POKEMON_API = this;
+    /**
+     * 构造函数，初始化配置管理器和宝可梦API实例
+     */
+    private PokemonApi() {
+        configManager = RegisterConfig.registerConfig((JavaPlugin) Bukkit.getPluginManager().getPlugin("HybridServerAPI"), "api/config.yml", false);
+    }
+
+    public static PokemonApi getInstance() {
+        if(POKEMON_API == null){
+            POKEMON_API = new PokemonApi();
+        }
+        return POKEMON_API;
     }
 
     /**
@@ -67,7 +79,18 @@ public class PokemonApi {
      * @param player 玩家
      * @return 宝可梦队伍
      */
+    @Deprecated
     public PlayerPartyStorage getPlayerPartyStorage(OfflinePlayer player) {
+        return Pixelmon.storageManager.getParty(player.getUniqueId());
+    }
+
+    /**
+     * 获得玩家宝可梦队伍
+     *
+     * @param player 玩家
+     * @return 宝可梦队伍
+     */
+    public PlayerPartyStorage getPartyStorage(OfflinePlayer player) {
         return Pixelmon.storageManager.getParty(player.getUniqueId());
     }
 
@@ -98,14 +121,13 @@ public class PokemonApi {
         return bukkitItemStack;
     }
 
-
     /**
      * 获得宝可梦的照片(发光)
      *
      * @param pokemon 宝可梦
      * @return 宝可梦照片
      */
-    public static ItemStack getPokemonGlowPhoto(Pokemon pokemon) {
+    public ItemStack getPokemonGlowPhoto(Pokemon pokemon) {
         net.minecraft.item.ItemStack photo = ItemPixelmonSprite.getPhoto(pokemon);
         ItemStack bukkitItemStack = BaseApi.getBukkitItemStack(photo);
         ItemMeta itemMeta = bukkitItemStack.hasItemMeta() ? bukkitItemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(bukkitItemStack.getType());
@@ -132,6 +154,12 @@ public class PokemonApi {
         return maxIv;
     }
 
+    /**
+     * 获取宝可梦的属性
+     *
+     * @param pokemon 宝可梦
+     * @return 宝可梦的属性映射
+     */
     private Map<String, Object> getAttributes(Pokemon pokemon) {
         Map<String, Object> map = new HashMap<>();
         for (EnumPokeAttribute value : EnumPokeAttribute.values()) {
@@ -157,15 +185,35 @@ public class PokemonApi {
         assert itemMeta != null;
         String name = configManager.getConfig().getString("sprite.name", "&f&l{DISPLAY_NAME} &7Lv.&e{LEVEL}");
         List<String> lore = configManager.getConfig().getStringList("sprite.lore");
-        String yes = configManager.getConfig().getString("sprite.y", "&a是");
-        String no = configManager.getConfig().getString("sprite.n", "&c否");
         Map<String, Object> attributes = getAttributes(pokemon);
-        attributes.put("TRADEABLE", pokemon.hasSpecFlag("untradeable") ? yes : no);
-        attributes.put("BREEDABLE", pokemon.hasSpecFlag("unbreedable") ? yes : no);
         for (String key : attributes.keySet()) {
             String value = attributes.get(key).toString();
-            name = name.replace("{" + key + "}", value);
-            lore.replaceAll(s -> s.replace("{" + key + "}", value).replace("&", "§"));
+            name = HexUtils.colorify(name.replace("{" + key + "}", value).replace("%" + key + "%", value));
+            lore.replaceAll(s -> HexUtils.colorify(s.replace("{" + key + "}", value).replace("%" + key + "%", value)));
+        }
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+        itemMeta.setLore(lore);
+        photo.setItemMeta(itemMeta);
+        return photo;
+    }
+
+    /**
+     * 获得带有宝可梦信息的照片，可以自定义名称和描述
+     *
+     * @param pokemon 宝可梦
+     * @param name    自定义名称
+     * @param lore    自定义描述
+     * @return 带有宝可梦信息的照片的物品堆
+     */
+    public ItemStack getPokemonPhotoInfo(Pokemon pokemon, String name, List<String> lore) {
+        ItemStack photo = getPokemonPhoto(pokemon);
+        ItemMeta itemMeta = photo.hasItemMeta() ? photo.getItemMeta() : Bukkit.getItemFactory().getItemMeta(photo.getType());
+        assert itemMeta != null;
+        Map<String, Object> attributes = getAttributes(pokemon);
+        for (String key : attributes.keySet()) {
+            String value = attributes.get(key).toString();
+            name = HexUtils.colorify(name.replace("{" + key + "}", value).replace("%" + key + "%", value));
+            lore.replaceAll(s -> HexUtils.colorify(s.replace("{" + key + "}", value).replace("%" + key + "%", value)));
         }
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         itemMeta.setLore(lore);

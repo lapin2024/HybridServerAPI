@@ -39,9 +39,15 @@ public class PokemonApi {
     private final ConfigManager configManager;
     public static PokemonApi POKEMON_API;
 
-    public PokemonApi(JavaPlugin plugin) {
-        configManager = RegisterConfig.registerConfig(plugin,  "api/config.yml", false);
-        POKEMON_API = this;
+    private PokemonApi() {
+        configManager = RegisterConfig.registerConfig((JavaPlugin) Bukkit.getPluginManager().getPlugin("HybridServerAPI"), "api/config.yml", false);
+    }
+
+    public static PokemonApi getInstance() {
+        if(POKEMON_API == null){
+            POKEMON_API = new PokemonApi();
+        }
+        return POKEMON_API;
     }
 
     /**
@@ -116,7 +122,7 @@ public class PokemonApi {
         ItemMeta itemMeta = bukkitItemStack.hasItemMeta() ? bukkitItemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(bukkitItemStack.getType());
         assert itemMeta != null;
         String name = configManager.getConfig().getString("sprite.name", "&f&l{DISPLAY_NAME} &7Lv.&e{LEVEL}");
-        String displayName = HexUtils.colorify(name.replace("{DISPLAY_NAME}", pokemon.getDisplayName()).replace("{LEVEL}", String.valueOf(pokemon.getPokemonLevel())));
+        String displayName = HexUtils.colorify(name.replace("{DISPLAY_NAME}", pokemon.getFormattedDisplayName().getString()).replace("{LEVEL}", String.valueOf(pokemon.getPokemonLevel())));
         itemMeta.setDisplayName(displayName);
         bukkitItemStack.setItemMeta(itemMeta);
         return bukkitItemStack;
@@ -178,15 +184,27 @@ public class PokemonApi {
         assert itemMeta != null;
         String name = configManager.getConfig().getString("sprite.name", "&f&l{DISPLAY_NAME} &7Lv.&e{LEVEL}");
         List<String> lore = configManager.getConfig().getStringList("sprite.lore");
-        String yes = configManager.getConfig().getString("sprite.y", "&a是");
-        String no = configManager.getConfig().getString("sprite.n", "&c否");
         Map<String, Object> attributes = getAttributes(pokemon);
-        attributes.put("TRADEABLE", pokemon.hasFlag("untradeable") ? yes : no);
-        attributes.put("BREEDABLE", pokemon.hasFlag("unbreedable") ? yes : no);
         for (String key : attributes.keySet()) {
             String value = attributes.get(key).toString();
-            name = name.replace("{" + key + "}", value);
-            lore.replaceAll(s -> s.replace("{" + key + "}", value).replace("&", "§"));
+            name = HexUtils.colorify(name.replace("{" + key + "}", value).replace("%" + key + "%", value));
+            lore.replaceAll(s -> HexUtils.colorify(s.replace("{" + key + "}", value).replace("%" + key + "%", value)));
+        }
+        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+        itemMeta.setLore(lore);
+        photo.setItemMeta(itemMeta);
+        return photo;
+    }
+
+    public ItemStack getPokemonPhotoInfo(Pokemon pokemon, String name, List<String> lore) {
+        ItemStack photo = getPokemonPhoto(pokemon);
+        ItemMeta itemMeta = photo.hasItemMeta() ? photo.getItemMeta() : Bukkit.getItemFactory().getItemMeta(photo.getType());
+        assert itemMeta != null;
+        Map<String, Object> attributes = getAttributes(pokemon);
+        for (String key : attributes.keySet()) {
+            String value = attributes.get(key).toString();
+            name = HexUtils.colorify(name.replace("{" + key + "}", value).replace("%" + key + "%", value));
+            lore.replaceAll(s -> HexUtils.colorify(s.replace("{" + key + "}", value).replace("%" + key + "%", value)));
         }
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         itemMeta.setLore(lore);
