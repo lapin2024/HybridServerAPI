@@ -386,11 +386,11 @@ public class PapiHook extends PlaceholderExpansion {
             case "caught":
                 return String.valueOf(playerPartyStorage.pokedex.countCaught());
             case "size":
-                return String.valueOf(Pokedex.size());
+                return String.valueOf(Pokedex.pokedexSize);
             case "percent":
-                return String.format("%.4f", playerPartyStorage.pokedex.countCaught() / (double) Pokedex.size());
+                return String.format("%.4f", playerPartyStorage.pokedex.countCaught() / (double) Pokedex.pokedexSize);
             case "percent_format":
-                return (Math.round(playerPartyStorage.pokedex.countCaught() / (double) Pokedex.size() * 100)) + "%";
+                return (Math.round(playerPartyStorage.pokedex.countCaught() / (double) Pokedex.pokedexSize * 100)) + "%";
             case "pokemoney":
                 return String.valueOf(playerPartyStorage.getMoney());
             default:

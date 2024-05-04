@@ -8,6 +8,7 @@ import com.pixelmonmod.api.parsing.ParseAttempt;
 import com.pixelmonmod.api.pokemon.PokemonSpecification;
 import com.pixelmonmod.api.pokemon.PokemonSpecificationProxy;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
+import com.pixelmonmod.pixelmon.api.pokemon.PokemonFactory;
 import com.pixelmonmod.pixelmon.api.storage.PCStorage;
 import com.pixelmonmod.pixelmon.api.storage.PlayerPartyStorage;
 import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
@@ -74,12 +75,7 @@ public class PokemonApi {
      */
     @Nullable
     public Pokemon getPokemon(CompoundTag compoundNBT) {
-        ParseAttempt<PokemonSpecification> pokemonSpecificationParseAttempt = PokemonSpecificationProxy.fromNbt(compoundNBT);
-        if(pokemonSpecificationParseAttempt.wasSuccess()) {
-            return pokemonSpecificationParseAttempt.get().create();
-        }else {
-            return null;
-        }
+        return PokemonFactory.create(compoundNBT);
     }
 
     /**

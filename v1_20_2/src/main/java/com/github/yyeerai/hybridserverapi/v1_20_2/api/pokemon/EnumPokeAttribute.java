@@ -119,7 +119,7 @@ public enum EnumPokeAttribute {
         return switch (this) {
             case UUID -> pokemon.getUUID();
             case DISPLAY_NAME -> pokemon.getFormattedDisplayName().getString();
-            case NICKNAME -> pokemon.getFormattedNickname().getString();
+            case NICKNAME -> pokemon.getFormattedNickname() != null ? pokemon.getFormattedNickname().getString() :  pokemon.getFormattedDisplayName().getString();
             case LEVEL -> pokemon.getPokemonLevel();
             case SHINY -> pokemon.isShiny() ? "是" : "否";
             case ABILITY -> pokemon.getAbility().getTranslatedName().getString();

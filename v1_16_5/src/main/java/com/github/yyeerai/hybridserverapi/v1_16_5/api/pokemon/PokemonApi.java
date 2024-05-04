@@ -7,6 +7,7 @@ import com.github.yyeerai.hybridserverapi.v1_16_5.api.BaseApi;
 import com.pixelmonmod.api.pokemon.PokemonSpecification;
 import com.pixelmonmod.api.pokemon.PokemonSpecificationProxy;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
+import com.pixelmonmod.pixelmon.api.pokemon.PokemonFactory;
 import com.pixelmonmod.pixelmon.api.storage.PCStorage;
 import com.pixelmonmod.pixelmon.api.storage.PlayerPartyStorage;
 import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
@@ -70,11 +71,7 @@ public class PokemonApi {
      * @return 宝可梦
      */
     public Pokemon getPokemon(CompoundNBT compoundNBT) {
-        PokemonSpecification pokemonSpecification = PokemonSpecificationProxy.fromNbt(compoundNBT);
-        if (pokemonSpecification == null) {
-            return null;
-        }
-        return pokemonSpecification.create();
+        return PokemonFactory.create(compoundNBT);
     }
 
     /**

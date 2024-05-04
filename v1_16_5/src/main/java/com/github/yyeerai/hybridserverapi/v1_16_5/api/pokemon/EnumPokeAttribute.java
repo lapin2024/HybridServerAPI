@@ -121,7 +121,7 @@ public enum EnumPokeAttribute {
             case DISPLAY_NAME:
                 return pokemon.getFormattedDisplayName().getString();
             case NICKNAME:
-                return pokemon.getFormattedNickname().getString();
+                return pokemon.getFormattedNickname() != null ? pokemon.getFormattedNickname().getString() : pokemon.getLocalizedName();
             case LEVEL:
                 return pokemon.getPokemonLevel();
             case SHINY:
