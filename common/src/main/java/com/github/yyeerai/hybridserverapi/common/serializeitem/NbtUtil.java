@@ -3,75 +3,36 @@ package com.github.yyeerai.hybridserverapi.common.serializeitem;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
-import java.lang.reflect.Method;
-
 public class NbtUtil {
 
     private static final String serverVersion;
-    private static Class<?> craftItemStackClass;
-    private static Class<?> nmsItemStackClass;
-    private static Class<?> nbtTagCompoundClass;
-    private static Class<?> MojangsonParserClass;
+    private static final INbt nbt;
 
     static {
         serverVersion = getServerVersion();
-        try {
-            switch (serverVersion) {
-                case "1.12.2":
-                    craftItemStackClass = Class.forName("org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack");
-                    nmsItemStackClass = Class.forName("net.minecraft.server.v1_12_R1.ItemStack");
-                    nbtTagCompoundClass = Class.forName("net.minecraft.server.v1_12_R1.NBTTagCompound");
-                    MojangsonParserClass = Class.forName("net.minecraft.server.v1_12_R1.MojangsonParser");
-                    break;
-                case "1.16.5":
-                    craftItemStackClass = Class.forName("org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack");
-                    nmsItemStackClass = Class.forName("net.minecraft.server.v1_16_R3.ItemStack");
-                    nbtTagCompoundClass = Class.forName("net.minecraft.server.v1_16_R3.NBTTagCompound");
-                    MojangsonParserClass = Class.forName("net.minecraft.server.v1_16_R3.MojangsonParser");
-                    break;
-                case "1.17.1":
-                    craftItemStackClass = Class.forName("org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack");
-                    nmsItemStackClass = Class.forName("net.minecraft.world.item.ItemStack");
-                    nbtTagCompoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
-                    MojangsonParserClass = Class.forName("net.minecraft.nbt.MojangsonParser");
-                    break;
-                case "1.18.2":
-                    craftItemStackClass = Class.forName("org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack");
-                    nmsItemStackClass = Class.forName("net.minecraft.world.item.ItemStack");
-                    nbtTagCompoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
-                    MojangsonParserClass = Class.forName("net.minecraft.nbt.MojangsonParser");
-                    break;
-                case "1.19.4":
-                    craftItemStackClass = Class.forName("org.bukkit.craftbukkit.v1_19_R3.inventory.CraftItemStack");
-                    nmsItemStackClass = Class.forName("net.minecraft.world.item.ItemStack");
-                    nbtTagCompoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
-                    MojangsonParserClass = Class.forName("net.minecraft.nbt.MojangsonParser");
-                    break;
-                case "1.20.1":
-                    craftItemStackClass = Class.forName("org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack");
-                    nmsItemStackClass = Class.forName("net.minecraft.world.item.ItemStack");
-                    nbtTagCompoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
-                    MojangsonParserClass = Class.forName("net.minecraft.nbt.MojangsonParser");
-                    break;
-                case "1.20.2":
-                    craftItemStackClass = Class.forName("org.bukkit.craftbukkit.v1_20_R2.inventory.CraftItemStack");
-                    nmsItemStackClass = Class.forName("net.minecraft.world.item.ItemStack");
-                    nbtTagCompoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
-                    MojangsonParserClass = Class.forName("net.minecraft.nbt.MojangsonParser");
-                    break;
-                case "1.20.4":
-                    craftItemStackClass = Class.forName("org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack");
-                    nmsItemStackClass = Class.forName("net.minecraft.world.item.ItemStack");
-                    nbtTagCompoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
-                    MojangsonParserClass = Class.forName("net.minecraft.nbt.MojangsonParser");
-                    break;
-                default:
-                    Bukkit.getLogger().warning("未知的服务器版本: " + serverVersion);
-            }
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("初始化NbtUtil错误" + e);
+        switch (serverVersion) {
+            case "1.12.2":
+            case "1.16.5":
+            case "1.17.1":
+                nbt = new Nbt_1_12_2_to_1_17_1();
+                break;
+            case "1.18.2":
+            case "1.19.4":
+                nbt = new Nbt_1_18_2_to_1_19_4();
+                break;
+            case "1.20.1":
+            case "1.20.2":
+            case "1.20.4":
+            case "1.20.5":
+            case "1.20.6":
+                nbt = new Nbt_1_20_1_to_1_20_6();
+                break;
+            default:
+                Bukkit.getLogger().warning("未知的服务器版本: " + serverVersion);
+                nbt = null;
         }
     }
+
 
     private NbtUtil() {
 
@@ -84,36 +45,10 @@ public class NbtUtil {
      * @return NBT
      */
     public static Object getNbt(ItemStack itemStack) {
-        try {
-            switch (serverVersion) {
-                case "1.12.2":
-                case "1.16.5":
-                case "1.17.1": {
-                    Method asNMSCopy = craftItemStackClass.getMethod("asNMSCopy", ItemStack.class); //获取asNMSCopy方法
-                    Object nmsCopy = asNMSCopy.invoke(null, itemStack); //调用asNMSCopy方法
-                    Object nbt = nbtTagCompoundClass.newInstance(); //创建一个NBTTagCompound对象
-                    Method save = nmsItemStackClass.getMethod("save", nbtTagCompoundClass); //获取save方法
-                    save.invoke(nmsCopy, nbt); //调用save方法
-                    return nbt; //返回NBTTagCompound对象
-                }
-                case "1.18.2":
-                case "1.19.4":
-                case "1.20.1":
-                case "1.20.2":
-                case "1.20.4": {
-                    Method asNMSCopy = craftItemStackClass.getMethod("asNMSCopy", ItemStack.class); //获取asNMSCopy方法
-                    Object nmsCopy = asNMSCopy.invoke(null, itemStack); //调用asNMSCopy方法
-                    Object nbt = nbtTagCompoundClass.newInstance();
-                    Method save = nmsItemStackClass.getMethod("b", nbtTagCompoundClass);
-                    save.invoke(nmsCopy, nbt);
-                    return nbt;
-                }
-                default:
-                    return null;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("获得nbt错误" + e);
+        if(nbt == null) {
+            return null;
         }
+        return nbt.getNbt(itemStack);
     }
 
     /**
@@ -124,44 +59,10 @@ public class NbtUtil {
      * @return 物品
      */
     public static ItemStack setNbt(ItemStack itemStack, String nbtSting) {
-        try {
-            switch (serverVersion) {
-                case "1.12.2":
-                case "1.16.5":
-                case "1.17.1": {
-                    Object nbt = MojangsonParserClass.getMethod("parse", String.class).invoke(null, nbtSting);
-                    Object asNMSCopy = craftItemStackClass.getMethod("asNMSCopy", ItemStack.class).invoke(null, itemStack);
-                    Object originalNbt = getNbt(itemStack);
-                    Method a = nbtTagCompoundClass.getMethod("a", nbtTagCompoundClass);
-                    a.invoke(originalNbt, nbt);
-                    Method load = nmsItemStackClass.getDeclaredMethod("load", nbtTagCompoundClass);
-                    load.setAccessible(true);
-                    load.invoke(asNMSCopy, originalNbt);
-                    Method asBukkitCopy = craftItemStackClass.getMethod("asBukkitCopy", nmsItemStackClass);
-                    return (ItemStack) asBukkitCopy.invoke(null, asNMSCopy);
-                }
-                case "1.18.2":
-                case "1.19.4":
-                case "1.20.1":
-                case "1.20.2":
-                case "1.20.4": {
-                    Object nbt = MojangsonParserClass.getMethod("a", String.class).invoke(null, nbtSting);
-                    Object asNMSCopy = craftItemStackClass.getMethod("asNMSCopy", ItemStack.class).invoke(null, itemStack);
-                    Object originalNbt = getNbt(itemStack);
-                    Method a = nbtTagCompoundClass.getMethod("a", nbtTagCompoundClass);
-                    a.invoke(originalNbt, nbt);
-                    Method load = nmsItemStackClass.getDeclaredMethod("load", nbtTagCompoundClass);
-                    load.setAccessible(true);
-                    load.invoke(asNMSCopy, originalNbt);
-                    Method asBukkitCopy = craftItemStackClass.getMethod("asBukkitCopy", nmsItemStackClass);
-                    return (ItemStack) asBukkitCopy.invoke(null, asNMSCopy);
-                }
-                default:
-                    return null;
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        if(nbt == null) {
+            return itemStack;
         }
+        return nbt.setNbt(itemStack, nbtSting);
     }
 
     public static String getServerVersion() {
@@ -189,6 +90,9 @@ public class NbtUtil {
         }
         if (version.contains("1.20.4")) {
             return "1.20.4";
+        }
+        if (version.contains("1.20.6") || version.contains("1.20.5")) {
+            return "1.20.6";
         }
         return "unknown";
     }
