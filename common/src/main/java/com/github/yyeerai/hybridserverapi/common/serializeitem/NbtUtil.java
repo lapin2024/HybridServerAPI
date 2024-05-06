@@ -88,7 +88,7 @@ public class NbtUtil {
         if (version.contains("1.20.2")) {
             return "1.20.2";
         }
-        if (version.contains("1.20.4")) {
+        if (version.contains("1.20.4") || version.contains("1.20.3")) {
             return "1.20.4";
         }
         if (version.contains("1.20.6") || version.contains("1.20.5")) {
