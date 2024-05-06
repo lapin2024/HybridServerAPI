@@ -35,14 +35,13 @@ public class Nbt_1_20_1_to_1_20_6 implements INbt {
     public ItemStack setNbt(ItemStack itemStack, String nbtSting) {
         if (isArclightServer()) {
             Object nbt = MojangsonParserClass.getMethod("m_129359_", String.class).invoke(null, nbtSting); //将json字符串转换为NBT对象
-            Object asNMSCopy = craftItemStackClass.getMethod("asNMSCopy", ItemStack.class).invoke(null, itemStack); //将ItemStack对象转换为NMS ItemStack对象
             Object originalNbt = getNbt(itemStack); //获取原NBT对象
             Method a = nbtTagCompoundClass.getMethod("m_128391_", nbtTagCompoundClass); //合并NBT方法
             a.invoke(originalNbt, nbt); //调用合并NBT方法
-            Method load = nmsItemStackClass.getDeclaredMethod("m_41751_", nbtTagCompoundClass); //设置NBT方法
-            load.invoke(asNMSCopy, originalNbt); //调用设置NBT方法
+            Method load = nmsItemStackClass.getDeclaredMethod("m_41712_", nbtTagCompoundClass); //设置NBT方法
+            Object invoke = load.invoke(null, originalNbt);//调用设置NBT方法
             Method asBukkitCopy = craftItemStackClass.getMethod("asBukkitCopy", nmsItemStackClass); //将NMS ItemStack对象转换为ItemStack对象
-            return (ItemStack) asBukkitCopy.invoke(null, asNMSCopy); //调用将NMS ItemStack对象转换为ItemStack对象的方法
+            return (ItemStack) asBukkitCopy.invoke(null, invoke); //调用将NMS ItemStack对象转换为ItemStack对象的方法
         } else {
             Object nbt = MojangsonParserClass.getMethod("a", String.class).invoke(null, nbtSting); //将json字符串转换为NBT对象
             Object asNMSCopy = craftItemStackClass.getMethod("asNMSCopy", ItemStack.class).invoke(null, itemStack); //将ItemStack对象转换为NMS ItemStack对象
