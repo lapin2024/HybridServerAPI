@@ -52,6 +52,14 @@ public class HybridServerAPI extends JavaPlugin {
         } catch (ClassNotFoundException ignored) {
         }
         if (!isPixelmon) {
+            try {
+                Class<?> aClass = Class.forName("com.cobblemon.mod.common.Cobblemon");
+                isPixelmon = true;
+            } catch (ClassNotFoundException ignored) {
+            }
+        }
+
+        if (!isPixelmon) {
             getLogger().warning("未检测到PixelmonMod，宝可梦API将不会启动！");
             return;
         }
@@ -67,7 +75,7 @@ public class HybridServerAPI extends JavaPlugin {
             main1_20_1 = new com.github.yyeerai.hybridserverapi.v1_20_1.Main(this);
             main1_20_1.init();
             this.getLogger().info("服务器版本为1.20.1，已启动宝可梦API！");
-        }else if (versionNumber.contains("1.20.2")) {
+        } else if (versionNumber.contains("1.20.2")) {
             main1_20_2 = new com.github.yyeerai.hybridserverapi.v1_20_2.Main(this);
             main1_20_2.init();
             this.getLogger().info("服务器版本为1.20.2，已启动宝可梦API！");
@@ -77,16 +85,16 @@ public class HybridServerAPI extends JavaPlugin {
     }
 
     private void unregisterPokemonAPI() {
-        if(versionNumber == null) {
+        if (versionNumber == null) {
             return;
         }
-        if(versionNumber.contains("1.12.2") && main1_12_2 != null) {
+        if (versionNumber.contains("1.12.2") && main1_12_2 != null) {
             main1_12_2.onStop();
-        } else if(versionNumber.contains("1.16.5") && main1_16_5 != null) {
+        } else if (versionNumber.contains("1.16.5") && main1_16_5 != null) {
             main1_16_5.onStop();
-        } else if(versionNumber.contains("1.20.1") && main1_20_1 != null) {
+        } else if (versionNumber.contains("1.20.1") && main1_20_1 != null) {
             main1_20_1.onStop();
-        } else if(versionNumber.contains("1.20.2") && main1_20_2 != null) {
+        } else if (versionNumber.contains("1.20.2") && main1_20_2 != null) {
             main1_20_2.onStop();
         }
     }
