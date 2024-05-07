@@ -114,14 +114,7 @@ public class PokemonApi {
      */
     public ItemStack getPokemonPhoto(Pokemon pokemon) {
         net.minecraft.world.item.ItemStack photo = SpriteItemHelper.getPhoto(pokemon);
-        ItemStack bukkitItemStack = BaseApi.getBukkitItemStack(photo);
-        ItemMeta itemMeta = bukkitItemStack.hasItemMeta() ? bukkitItemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(bukkitItemStack.getType());
-        assert itemMeta != null;
-        String name = configManager.getConfig().getString("sprite.name", "&f&l{DISPLAY_NAME} &7Lv.&e{LEVEL}");
-        String displayName = HexUtils.colorify(name.replace("{DISPLAY_NAME}", pokemon.getFormattedDisplayName().getString()).replace("{LEVEL}", String.valueOf(pokemon.getPokemonLevel())));
-        itemMeta.setDisplayName(displayName);
-        bukkitItemStack.setItemMeta(itemMeta);
-        return bukkitItemStack;
+        return BaseApi.getBukkitItemStack(photo);
     }
 
     /**

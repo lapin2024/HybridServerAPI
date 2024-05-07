@@ -112,13 +112,7 @@ public class PokemonApi {
      */
     public ItemStack getPokemonPhoto(Pokemon pokemon) {
         net.minecraft.item.ItemStack photo = ItemPixelmonSprite.getPhoto(pokemon);
-        ItemStack bukkitItemStack = BaseApi.getBukkitItemStack(photo);
-        ItemMeta itemMeta = bukkitItemStack.hasItemMeta() ? bukkitItemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(bukkitItemStack.getType());
-        String name = configManager.getConfig().getString("sprite.name", "&f&l{DISPLAY_NAME} &7Lv.&e{LEVEL}");
-        String displayName = HexUtils.colorify(name.replace("{DISPLAY_NAME}", pokemon.getDisplayName()).replace("{LEVEL}", String.valueOf(pokemon.getLevel())));
-        itemMeta.setDisplayName(displayName);
-        bukkitItemStack.setItemMeta(itemMeta);
-        return bukkitItemStack;
+        return BaseApi.getBukkitItemStack(photo);
     }
 
     /**
@@ -128,8 +122,7 @@ public class PokemonApi {
      * @return 宝可梦照片
      */
     public ItemStack getPokemonGlowPhoto(Pokemon pokemon) {
-        net.minecraft.item.ItemStack photo = ItemPixelmonSprite.getPhoto(pokemon);
-        ItemStack bukkitItemStack = BaseApi.getBukkitItemStack(photo);
+        ItemStack bukkitItemStack = getPokemonPhoto(pokemon);
         ItemMeta itemMeta = bukkitItemStack.hasItemMeta() ? bukkitItemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(bukkitItemStack.getType());
         itemMeta.setDisplayName(ChatColor.GREEN + pokemon.getDisplayName());
         itemMeta.addEnchant(Enchantment.ARROW_DAMAGE, 1, true);
