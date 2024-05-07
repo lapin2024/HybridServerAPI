@@ -23,6 +23,8 @@ public enum EnumPokeAttribute {
     FRIENDSHIP,
     OT_NAME,
     OT_UUID,
+    OWNER_NAME,
+    OWNER_UUID,
     CUSTOM_TEXTURE,
     NUM_CLONED,
     NUM_ENCHANTED,
@@ -81,6 +83,10 @@ public enum EnumPokeAttribute {
      * CUSTOM_TEXTURE: 宝可梦的自定义皮肤 (String)
      * NUM_CLONED: 宝可梦的克隆次数 (int)
      * NUM_ENCHANTED: 宝可梦的附魔次数 (int)
+     * OT_NAME: 宝可梦的原始训练师 (String)
+     * OT_UUID: 宝可梦的原始训练师UUID (String)
+     * OWNER_NAME: 宝可梦的拥有者 (String)
+     * OWNER_UUID: 宝可梦的拥有者UUID (String)
      * HP: 宝可梦的HP (int)
      * ATTACK: 宝可梦的攻击 (int)
      * DEFENCE: 宝可梦的防御 (int)
@@ -132,8 +138,9 @@ public enum EnumPokeAttribute {
             case HELD_ITEM -> BaseApi.getBukkitItemStack(pokemon.heldItem()).getType().toString();
             case POKEBALL -> pokemon.getCaughtBall().getName().toString();
             case FRIENDSHIP -> pokemon.getFriendship();
-            case OT_NAME -> pokemon.getOwnerPlayer() != null ? pokemon.getOwnerPlayer().getName().getString() : "无";
-            case OT_UUID -> pokemon.getOwnerUUID() != null ? pokemon.getOwnerUUID().toString() : "无";
+            case OT_NAME, OWNER_NAME ->
+                    pokemon.getOwnerPlayer() != null ? pokemon.getOwnerPlayer().getName().getString() : "无";
+            case OT_UUID, OWNER_UUID -> pokemon.getOwnerUUID() != null ? pokemon.getOwnerUUID().toString() : "无";
             case HP -> pokemon.getHp();
             case ATTACK -> pokemon.getAttack();
             case DEFENCE -> pokemon.getDefence();

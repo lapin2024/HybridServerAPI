@@ -23,6 +23,8 @@ public enum EnumPokeAttribute {
     FRIENDSHIP,
     OT_NAME,
     OT_UUID,
+    OWNER_NAME,
+    OWNER_UUID,
     CUSTOM_TEXTURE,
     NUM_CLONED,
     NUM_ENCHANTED,
@@ -81,6 +83,10 @@ public enum EnumPokeAttribute {
      * CUSTOM_TEXTURE: 宝可梦的自定义皮肤 (String)
      * NUM_CLONED: 宝可梦的克隆次数 (int)
      * NUM_ENCHANTED: 宝可梦的附魔次数 (int)
+     * OT_NAME: 宝可梦的原始训练师 (String)
+     * OT_UUID: 宝可梦的原始训练师UUID (String)
+     * OWNER_NAME: 宝可梦的拥有者 (String)
+     * OWNER_UUID: 宝可梦的拥有者UUID (String)
      * HP: 宝可梦的HP (int)
      * ATTACK: 宝可梦的攻击 (int)
      * DEFENCE: 宝可梦的防御 (int)
@@ -119,22 +125,30 @@ public enum EnumPokeAttribute {
         return switch (this) {
             case UUID -> pokemon.getUUID();
             case DISPLAY_NAME -> pokemon.getFormattedDisplayName().getString();
-            case NICKNAME -> pokemon.getFormattedNickname() != null ? pokemon.getFormattedNickname().getString() :  pokemon.getFormattedDisplayName().getString();
+            case NICKNAME ->
+                    pokemon.getFormattedNickname() != null ? pokemon.getFormattedNickname().getString() : pokemon.getFormattedDisplayName().getString();
             case LEVEL -> pokemon.getPokemonLevel();
             case SHINY -> pokemon.isShiny() ? "是" : "否";
             case ABILITY -> pokemon.getAbility().getTranslatedName().getString();
             case GROWTH -> pokemon.getGrowth().getTranslatedName().getString();
             case NATURE -> pokemon.getNature().getTranslatedName().getString();
-            case MINT_NATURE -> (pokemon.getMintNature() != null ? pokemon.getMintNature().getTranslatedName().getString() : "无");
+            case MINT_NATURE ->
+                    (pokemon.getMintNature() != null ? pokemon.getMintNature().getTranslatedName().getString() : "无");
             case GENDER -> pokemon.getGender().getTranslatedName().getString();
             case HELD_ITEM -> BaseApi.getBukkitItemStack(pokemon.getHeldItem()).getType().toString();
             case POKEBALL -> pokemon.getBall().getTranslatedLidName().getString();
             case FRIENDSHIP -> pokemon.getFriendship();
             case OT_NAME -> pokemon.getOriginalTrainer() != null ? pokemon.getOriginalTrainer() : "无";
-            case OT_UUID ->pokemon.getOriginalTrainerUUID() != null ? pokemon.getOriginalTrainerUUID().toString() : "无";
-            case CUSTOM_TEXTURE -> pokemon.getPalette() != null ? pokemon.getPalette().getTranslatedName().getString() : "无";
-            case NUM_CLONED -> pokemon.getExtraStats() instanceof MewStats ? ((MewStats) pokemon.getExtraStats()).numCloned : "不能克隆";
-            case NUM_ENCHANTED -> pokemon.getExtraStats() instanceof LakeTrioStats ? ((LakeTrioStats) pokemon.getExtraStats()).numEnchanted : "不能附魔";
+            case OT_UUID ->
+                    pokemon.getOriginalTrainerUUID() != null ? pokemon.getOriginalTrainerUUID().toString() : "无";
+            case OWNER_NAME -> pokemon.getOwnerName();
+            case OWNER_UUID -> pokemon.getOwnerPlayerUUID().toString();
+            case CUSTOM_TEXTURE ->
+                    pokemon.getPalette() != null ? pokemon.getPalette().getTranslatedName().getString() : "无";
+            case NUM_CLONED ->
+                    pokemon.getExtraStats() instanceof MewStats ? ((MewStats) pokemon.getExtraStats()).numCloned : "不能克隆";
+            case NUM_ENCHANTED ->
+                    pokemon.getExtraStats() instanceof LakeTrioStats ? ((LakeTrioStats) pokemon.getExtraStats()).numEnchanted : "不能附魔";
             case HP -> pokemon.getStats().getHP();
             case ATTACK -> pokemon.getStats().getAttack();
             case DEFENCE -> pokemon.getStats().getDefense();
@@ -167,7 +181,7 @@ public enum EnumPokeAttribute {
                     (pokemon.getMoveset().get(2) != null ? pokemon.getMoveset().get(2).getMove().getTranslatedName().getString() : "无");
             case MOVE_4 ->
                     (pokemon.getMoveset().get(3) != null ? pokemon.getMoveset().get(3).getMove().getTranslatedName().getString() : "无");
-            case TRADEABLE -> pokemon.hasFlag("untradeable")  ? "否" : "是";
+            case TRADEABLE -> pokemon.hasFlag("untradeable") ? "否" : "是";
             case BREEDABLE -> pokemon.hasFlag("unbreedable") ? "否" : "是";
             case CATCHABLE -> pokemon.hasFlag("uncatchable") ? "否" : "是";
             case FORM -> pokemon.getForm().getLocalizedName();
