@@ -63,6 +63,7 @@ dependencies {
     implementation project(path: ':common')
     implementation project(':v1_12_2').sourceSets.main.output
     implementation project(':v1_16_5').sourceSets.main.output
+    implementation project(':v1_20_1').sourceSets.main.output
     implementation project(':v1_20_2').sourceSets.main.output
 }
 
@@ -80,7 +81,7 @@ processResources {
     }
 }
 
-compileJava.dependsOn(':v1_12_2:build', ':v1_16_5:build', ':v1_20_2:build', ':common:build')
+compileJava.dependsOn(':v1_12_2:build', ':v1_16_5:build', ':v1_20_1:build', ':v1_20_2:build', ':common:build')
 
 // 配置 JAR 设置
 jar {
@@ -88,6 +89,9 @@ jar {
     // 包含子项目的 JAR 文件
     from {
         subprojects.findAll { it != null && it.name == 'common' }.collect { zipTree(it.getPath().replace(':', '') + '/build/libs/common-' + rootProject.version + '.jar') }
+    }
+    from {
+        subprojects.findAll { it != null && it.name == 'v1_20_1' }.collect { zipTree(it.getPath().replace(':', '') + '/build/reobfJar/output.jar') }
     }
     from {
         subprojects.findAll { it != null && it.name == 'v1_20_2' }.collect { zipTree(it.getPath().replace(':', '') + '/build/reobfJar/output.jar') }
