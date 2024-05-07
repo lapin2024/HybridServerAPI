@@ -4,7 +4,6 @@ package com.github.yyeerai.hybridserverapi;
 import com.github.yyeerai.hybridserverapi.common.broadcast.*;
 import com.github.yyeerai.hybridserverapi.common.javascriptparse.Util;
 import com.github.yyeerai.hybridserverapi.common.menu.api.RegisterService;
-import com.github.yyeerai.hybridserverapi.common.util.NMSUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
@@ -73,7 +72,7 @@ public class HybridServerAPI extends JavaPlugin {
             main1_20_2.init();
             this.getLogger().info("服务器版本为1.20.2，已启动宝可梦API！");
         } else {
-            getLogger().warning("Unsupported server version: " + NMSUtil.getVersion());
+            getLogger().warning("Unsupported server version: " + versionNumber + "!");
         }
     }
 
