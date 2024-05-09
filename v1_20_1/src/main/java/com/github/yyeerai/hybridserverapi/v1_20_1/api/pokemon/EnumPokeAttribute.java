@@ -40,12 +40,14 @@ public enum EnumPokeAttribute {
     IV_SPECIAL_ATTACK,
     IV_SPECIAL_DEFENCE,
     IV_SPEED,
+    IV_TOTAL,
     EV_HP,
     EV_ATTACK,
     EV_DEFENCE,
     EV_SPECIAL_ATTACK,
     EV_SPECIAL_DEFENCE,
     EV_SPEED,
+    EV_TOTAL,
     HT_HP,
     HT_ATTACK,
     HT_DEFENCE,
@@ -99,12 +101,14 @@ public enum EnumPokeAttribute {
      * IV_SPECIAL_ATTACK: 宝可梦的个体值特攻 (int)
      * IV_SPECIAL_DEFENCE: 宝可梦的个体值特防 (int)
      * IV_SPEED: 宝可梦的个体值速度 (int)
+     * IV_TOTAL: 宝可梦的个体值总和 (int)
      * EV_HP: 宝可梦的努力值HP (int)
      * EV_ATTACK: 宝可梦的努力值攻击 (int)
      * EV_DEFENCE: 宝可梦的努力值防御 (int)
      * EV_SPECIAL_ATTACK: 宝可梦的努力值特攻 (int)
      * EV_SPECIAL_DEFENCE: 宝可梦的努力值特防 (int)
      * EV_SPEED: 宝可梦的努力值速度 (int)
+     * EV_TOTAL: 宝可梦的努力值总和 (int)
      * HT_HP: 宝可梦的Hyper HP (int)
      * HT_ATTACK: 宝可梦的Hyper 攻击 (int)
      * HT_DEFENCE: 宝可梦的Hyper 防御 (int)
@@ -153,12 +157,14 @@ public enum EnumPokeAttribute {
             case IV_SPECIAL_ATTACK -> pokemon.getIvs().get(Stats.SPECIAL_ATTACK);
             case IV_SPECIAL_DEFENCE -> pokemon.getIvs().get(Stats.SPECIAL_DEFENCE);
             case IV_SPEED -> pokemon.getIvs().get(Stats.SPEED);
+            case IV_TOTAL -> (pokemon.getIvs().get(Stats.HP) + pokemon.getIvs().get(Stats.ATTACK) + pokemon.getIvs().get(Stats.DEFENCE) + pokemon.getIvs().get(Stats.SPECIAL_ATTACK) + pokemon.getIvs().get(Stats.SPECIAL_DEFENCE) + pokemon.getIvs().get(Stats.SPEED));
             case EV_HP -> pokemon.getEvs().get(Stats.HP);
             case EV_ATTACK -> pokemon.getEvs().get(Stats.ATTACK);
             case EV_DEFENCE -> pokemon.getEvs().get(Stats.DEFENCE);
             case EV_SPECIAL_ATTACK -> pokemon.getEvs().get(Stats.SPECIAL_ATTACK);
             case EV_SPECIAL_DEFENCE -> pokemon.getEvs().get(Stats.SPECIAL_DEFENCE);
             case EV_SPEED -> pokemon.getEvs().get(Stats.SPEED);
+            case EV_TOTAL -> (pokemon.getEvs().get(Stats.HP) + pokemon.getEvs().get(Stats.ATTACK) + pokemon.getEvs().get(Stats.DEFENCE) + pokemon.getEvs().get(Stats.SPECIAL_ATTACK) + pokemon.getEvs().get(Stats.SPECIAL_DEFENCE) + pokemon.getEvs().get(Stats.SPEED));
             case MOVE_1 -> {
                 Move move = pokemon.getMoveSet().get(0);
                 yield move != null ? move.getDisplayName().getString() : "无";
