@@ -41,6 +41,7 @@ public enum EnumPokeAttribute {
     IV_SPECIAL_DEFENCE,
     IV_SPEED,
     IV_TOTAL,
+    IV_PERCENTAGE,
     EV_HP,
     EV_ATTACK,
     EV_DEFENCE,
@@ -48,6 +49,7 @@ public enum EnumPokeAttribute {
     EV_SPECIAL_DEFENCE,
     EV_SPEED,
     EV_TOTAL,
+    EV_PERCENTAGE,
     HT_HP,
     HT_ATTACK,
     HT_DEFENCE,
@@ -102,6 +104,7 @@ public enum EnumPokeAttribute {
      * IV_SPECIAL_DEFENCE: 宝可梦的个体值特防 (int)
      * IV_SPEED: 宝可梦的个体值速度 (int)
      * IV_TOTAL: 宝可梦的个体值总和 (int)
+     * IV_PERCENTAGE: 宝可梦的个体值百分比 (String)
      * EV_HP: 宝可梦的努力值HP (int)
      * EV_ATTACK: 宝可梦的努力值攻击 (int)
      * EV_DEFENCE: 宝可梦的努力值防御 (int)
@@ -109,6 +112,7 @@ public enum EnumPokeAttribute {
      * EV_SPECIAL_DEFENCE: 宝可梦的努力值特防 (int)
      * EV_SPEED: 宝可梦的努力值速度 (int)
      * EV_TOTAL: 宝可梦的努力值总和 (int)
+     * EV_PERCENTAGE: 宝可梦的努力值百分比 (String)
      * HT_HP: 宝可梦的Hyper HP (int)
      * HT_ATTACK: 宝可梦的Hyper 攻击 (int)
      * HT_DEFENCE: 宝可梦的Hyper 防御 (int)
@@ -158,6 +162,10 @@ public enum EnumPokeAttribute {
             case IV_SPECIAL_DEFENCE -> pokemon.getIvs().get(Stats.SPECIAL_DEFENCE);
             case IV_SPEED -> pokemon.getIvs().get(Stats.SPEED);
             case IV_TOTAL -> (pokemon.getIvs().get(Stats.HP) + pokemon.getIvs().get(Stats.ATTACK) + pokemon.getIvs().get(Stats.DEFENCE) + pokemon.getIvs().get(Stats.SPECIAL_ATTACK) + pokemon.getIvs().get(Stats.SPECIAL_DEFENCE) + pokemon.getIvs().get(Stats.SPEED));
+            case IV_PERCENTAGE -> {
+                int total = (pokemon.getIvs().get(Stats.HP) + pokemon.getIvs().get(Stats.ATTACK) + pokemon.getIvs().get(Stats.DEFENCE) + pokemon.getIvs().get(Stats.SPECIAL_ATTACK) + pokemon.getIvs().get(Stats.SPECIAL_DEFENCE) + pokemon.getIvs().get(Stats.SPEED));
+                yield String.format("%.2f", (total / 186.0) * 100).replace(".00", "");
+            }
             case EV_HP -> pokemon.getEvs().get(Stats.HP);
             case EV_ATTACK -> pokemon.getEvs().get(Stats.ATTACK);
             case EV_DEFENCE -> pokemon.getEvs().get(Stats.DEFENCE);
@@ -165,6 +173,10 @@ public enum EnumPokeAttribute {
             case EV_SPECIAL_DEFENCE -> pokemon.getEvs().get(Stats.SPECIAL_DEFENCE);
             case EV_SPEED -> pokemon.getEvs().get(Stats.SPEED);
             case EV_TOTAL -> (pokemon.getEvs().get(Stats.HP) + pokemon.getEvs().get(Stats.ATTACK) + pokemon.getEvs().get(Stats.DEFENCE) + pokemon.getEvs().get(Stats.SPECIAL_ATTACK) + pokemon.getEvs().get(Stats.SPECIAL_DEFENCE) + pokemon.getEvs().get(Stats.SPEED));
+            case EV_PERCENTAGE -> {
+                int total = (pokemon.getEvs().get(Stats.HP) + pokemon.getEvs().get(Stats.ATTACK) + pokemon.getEvs().get(Stats.DEFENCE) + pokemon.getEvs().get(Stats.SPECIAL_ATTACK) + pokemon.getEvs().get(Stats.SPECIAL_DEFENCE) + pokemon.getEvs().get(Stats.SPEED));
+                yield String.format("%.2f", (total / 510.0) * 100).replace(".00", "");
+            }
             case MOVE_1 -> {
                 Move move = pokemon.getMoveSet().get(0);
                 yield move != null ? move.getDisplayName().getString() : "无";

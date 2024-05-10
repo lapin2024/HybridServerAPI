@@ -40,6 +40,7 @@ public enum EnumPokeAttribute {
     IV_SPECIAL_DEFENCE,
     IV_SPEED,
     IV_TOTAL,
+    IV_PERCENTAGE,
     EV_HP,
     EV_ATTACK,
     EV_DEFENCE,
@@ -47,6 +48,7 @@ public enum EnumPokeAttribute {
     EV_SPECIAL_DEFENCE,
     EV_SPEED,
     EV_TOTAL,
+    EV_PERCENTAGE,
     HT_HP,
     HT_ATTACK,
     HT_DEFENCE,
@@ -101,6 +103,7 @@ public enum EnumPokeAttribute {
      * IV_SPECIAL_DEFENCE: 宝可梦的个体值特防 (int)
      * IV_SPEED: 宝可梦的个体值速度 (int)
      * IV_TOTAL: 宝可梦的个体值总和 (int)
+     * IV_PERCENTAGE: 宝可梦的个体值百分比 (String)
      * EV_HP: 宝可梦的努力值HP (int)
      * EV_ATTACK: 宝可梦的努力值攻击 (int)
      * EV_DEFENCE: 宝可梦的努力值防御 (int)
@@ -108,6 +111,7 @@ public enum EnumPokeAttribute {
      * EV_SPECIAL_DEFENCE: 宝可梦的努力值特防 (int)
      * EV_SPEED: 宝可梦的努力值速度 (int)
      * EV_TOTAL: 宝可梦的努力值总和 (int)
+     * EV_PERCENTAGE: 宝可梦的努力值百分比 (String)
      * HT_HP: 宝可梦的Hyper HP (int)
      * HT_ATTACK: 宝可梦的Hyper 攻击 (int)
      * HT_DEFENCE: 宝可梦的Hyper 防御 (int)
@@ -194,6 +198,8 @@ public enum EnumPokeAttribute {
                 return pokemon.getIVs().getStat(BattleStatsType.SPEED);
             case IV_TOTAL:
                 return pokemon.getIVs().getTotal();
+            case IV_PERCENTAGE:
+                return String.format("%.2f%%", pokemon.getIVs().getTotal() / 186.0 * 100.0).replace(".00", "");
             case EV_HP:
                 return pokemon.getEVs().getStat(BattleStatsType.HP);
             case EV_ATTACK:
@@ -208,6 +214,8 @@ public enum EnumPokeAttribute {
                 return pokemon.getEVs().getStat(BattleStatsType.SPEED);
             case EV_TOTAL:
                 return pokemon.getEVs().getTotal();
+            case EV_PERCENTAGE:
+                return String.format("%.2f%%", pokemon.getEVs().getTotal() / 510.0 * 100.0).replace(".00", "");
             case HT_HP:
                 return pokemon.getIVs().isHyperTrained(BattleStatsType.HP) ? 31 : 0;
             case HT_ATTACK:

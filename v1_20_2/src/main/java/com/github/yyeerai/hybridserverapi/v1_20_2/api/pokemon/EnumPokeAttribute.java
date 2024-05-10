@@ -41,6 +41,7 @@ public enum EnumPokeAttribute {
     IV_SPECIAL_DEFENCE,
     IV_SPEED,
     IV_TOTAL,
+    IV_PERCENTAGE,
     EV_HP,
     EV_ATTACK,
     EV_DEFENCE,
@@ -48,6 +49,7 @@ public enum EnumPokeAttribute {
     EV_SPECIAL_DEFENCE,
     EV_SPEED,
     EV_TOTAL,
+    EV_PERCENTAGE,
     HT_HP,
     HT_ATTACK,
     HT_DEFENCE,
@@ -102,6 +104,7 @@ public enum EnumPokeAttribute {
      * IV_SPECIAL_DEFENCE: 宝可梦的个体值特防 (int)
      * IV_SPEED: 宝可梦的个体值速度 (int)
      * IV_TOTAL: 宝可梦的个体值总和 (int)
+     * IV_PERCENTAGE: 宝可梦的个体值百分比 (String)
      * EV_HP: 宝可梦的努力值HP (int)
      * EV_ATTACK: 宝可梦的努力值攻击 (int)
      * EV_DEFENCE: 宝可梦的努力值防御 (int)
@@ -109,6 +112,7 @@ public enum EnumPokeAttribute {
      * EV_SPECIAL_DEFENCE: 宝可梦的努力值特防 (int)
      * EV_SPEED: 宝可梦的努力值速度 (int)
      * EV_TOTAL: 宝可梦的努力值总和 (int)
+     * EV_PERCENTAGE: 宝可梦的努力值百分比 (String)
      * HT_HP: 宝可梦的Hyper HP (int)
      * HT_ATTACK: 宝可梦的Hyper 攻击 (int)
      * HT_DEFENCE: 宝可梦的Hyper 防御 (int)
@@ -166,6 +170,7 @@ public enum EnumPokeAttribute {
             case IV_SPECIAL_DEFENCE -> pokemon.getIVs().getStat(BattleStatsType.SPECIAL_DEFENSE);
             case IV_SPEED -> pokemon.getIVs().getStat(BattleStatsType.SPEED);
             case IV_TOTAL -> pokemon.getIVs().getTotal();
+            case IV_PERCENTAGE -> String.format("%.2f%%", pokemon.getIVs().getTotal() / 186.0 * 100.0).replace(".00", "");
             case EV_HP -> pokemon.getEVs().getStat(BattleStatsType.HP);
             case EV_ATTACK -> pokemon.getEVs().getStat(BattleStatsType.ATTACK);
             case EV_DEFENCE -> pokemon.getEVs().getStat(BattleStatsType.DEFENSE);
@@ -173,6 +178,7 @@ public enum EnumPokeAttribute {
             case EV_SPECIAL_DEFENCE -> pokemon.getEVs().getStat(BattleStatsType.SPECIAL_DEFENSE);
             case EV_SPEED -> pokemon.getEVs().getStat(BattleStatsType.SPEED);
             case EV_TOTAL -> pokemon.getEVs().getTotal();
+            case EV_PERCENTAGE -> String.format("%.2f%%", pokemon.getEVs().getTotal() / 510.0 * 100.0).replace(".00", "");
             case HT_HP -> pokemon.getIVs().isHyperTrained(BattleStatsType.HP) ? 31 : 0;
             case HT_ATTACK -> pokemon.getIVs().isHyperTrained(BattleStatsType.ATTACK) ? 31 : 0;
             case HT_DEFENCE -> pokemon.getIVs().isHyperTrained(BattleStatsType.DEFENSE) ? 31 : 0;
