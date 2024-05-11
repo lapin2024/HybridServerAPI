@@ -1,0 +1,30 @@
+{
+  "loader": {
+    "name": "java_plain",
+    "version": "1.0"
+  },
+  "license": "MIT",
+  "global": {
+    "version": "1.0.0",
+    "contributors": [
+      {
+        "name": "yyeerai",
+        "description": "支持sponge开发的api包括一部分宝可梦模组的api"
+      }
+    ],
+    "dependencies": [
+      {
+        "id": "spongeapi",
+        "version": "8.2.0"
+      }
+    ]
+  },
+  "plugins": [
+    {
+      "id": "hybridserverapi",
+      "name": "HybridServerAPI",
+      "entrypoint": "com.github.yyeerai.sponge.hybridserverapi.HybridServerAPI",
+      "description": "支持sponge开发的api包括一部分宝可梦模组的api"
+    }
+  ]
+}

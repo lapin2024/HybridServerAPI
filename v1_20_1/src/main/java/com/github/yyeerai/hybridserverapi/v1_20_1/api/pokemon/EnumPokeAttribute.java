@@ -1,7 +1,6 @@
 package com.github.yyeerai.hybridserverapi.v1_20_1.api.pokemon;
 
 import com.cobblemon.mod.common.api.moves.Move;
-import com.cobblemon.mod.common.api.pokemon.stats.Stat;
 import com.cobblemon.mod.common.api.pokemon.stats.Stats;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.github.yyeerai.hybridserverapi.v1_20_1.api.BaseApi;

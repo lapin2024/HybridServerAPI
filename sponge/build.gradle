@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+    id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+}
+
+group = rootProject.group
+version = rootProject.version
+
+
+minecraft {
+    mappings channel: 'parchment', version: '2022.03.06-1.16.5'
+}
+
+repositories {
+    maven {
+        name = 'sponge-repo'
+        url = 'https://repo.spongepowered.org/repository/maven-public/'
+    }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.39'
+    compileOnly fg.deobf("com.github.yyeerai:Pixelmon:1.16.5-9.1.11-server")
+    compileOnly 'org.spongepowered:spongeapi:8.2.0'
+}
