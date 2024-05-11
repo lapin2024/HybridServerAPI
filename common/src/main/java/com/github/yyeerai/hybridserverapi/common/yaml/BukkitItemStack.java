@@ -41,12 +41,22 @@ public class BukkitItemStack {
 
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();
+        if(nbt != null && !nbt.isEmpty()){
+            map.put("nbt", nbt);
+        }
+        if(lore != null && !lore.isEmpty()){
+            map.put("lore", lore);
+        }
+        if(name != null && !name.isEmpty()){
+            map.put("name", name);
+        }
+        if(amount != 1){
+            map.put("amount", amount);
+        }
+        if(damage != 0){
+            map.put("damage", damage);
+        }
         map.put("type", type);
-        map.put("name", name);
-        map.put("lore", lore);
-        map.put("amount", amount);
-        map.put("damage", damage);
-        map.put("nbt", nbt);
         return map;
     }
 

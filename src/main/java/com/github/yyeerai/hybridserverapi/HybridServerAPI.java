@@ -29,6 +29,7 @@ public class HybridServerAPI extends JavaPlugin {
         RegisterService.registerEventSubscriber(this);
         registerPokemonAPI();
         registerBroadcast();
+        new Metrics(this, 21871);
     }
 
     @Override

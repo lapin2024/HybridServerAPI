@@ -23,6 +23,7 @@ import com.github.yyeerai.hybridserverapi.common.yaml.boostedyaml.serialization.
 import com.github.yyeerai.hybridserverapi.common.yaml.boostedyaml.utils.supplier.ListSupplier;
 import com.github.yyeerai.hybridserverapi.common.yaml.boostedyaml.utils.supplier.MapSupplier;
 import com.github.yyeerai.hybridserverapi.common.yaml.boostedyaml.utils.supplier.SetSupplier;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -94,25 +95,88 @@ public class GeneralSettings {
      * Default general settings.
      */
     public static final GeneralSettings DEFAULT = builder().build();
+    /**
+     * -- GETTER --
+     *  Returns the key format to use.
+     *
+     *
+     */
     //Key format
+    @Getter
     private final KeyFormat keyFormat;
     //Route separator
     private final char separator;
+    /**
+     * -- GETTER --
+     *  Returns the escaped route separator.
+     *
+     *
+     */
     //Escaped route separator
+    @Getter
     private final String escapedSeparator;
+    /**
+     * -- GETTER --
+     *  Returns serializer to use for custom object serialization/deserialization.
+     *
+     */
     //Serializer
+    @Getter
     private final YamlSerializer serializer;
+    /**
+     * -- GETTER --
+     *  Returns if to enable use of the defaults by
+     *  methods (if any are present).
+     *
+     */
     //Use defaults
+    @Getter
     private final boolean useDefaults;
+    /**
+     * -- GETTER --
+     *  Returns default object to use by
+     *  getters if the return type is object.
+     *
+     */
     //Default object
+    @Getter
     private final Object defaultObject;
+    /**
+     * -- GETTER --
+     *  Returns default number to use by
+     *  getters if the return type is a number - integer, float, byte,
+     *  biginteger... (per the getter documentation).
+     *
+     */
     //Default number
+    @Getter
     private final Number defaultNumber;
+    /**
+     * -- GETTER --
+     *  Returns default string to use by
+     *  getters if the return type is string.
+     *
+     */
     //Default string
+    @Getter
     private final String defaultString;
+    /**
+     * -- GETTER --
+     *  Returns default char to use by
+     *  getters if the return type is char.
+     *
+     */
     //Default char
+    @Getter
     private final Character defaultChar;
+    /**
+     * -- GETTER --
+     *  Returns default boolean to use by
+     *  getters if the return type is boolean.
+     *
+     */
     //Default boolean
+    @Getter
     private final Boolean defaultBoolean;
     //Default list supplier
     private final ListSupplier defaultList;
@@ -174,96 +238,12 @@ public class GeneralSettings {
     }
 
     /**
-     * Returns the key format to use.
-     *
-     * @return the key format to use
-     * @see Builder#setKeyFormat(KeyFormat)
-     */
-    public KeyFormat getKeyFormat() {
-        return keyFormat;
-    }
-
-    /**
      * Sets route separator used to separate individual keys inside a string route and vice-versa.
      *
      * @return separator the separator to use
      */
     public char getRouteSeparator() {
         return separator;
-    }
-
-    /**
-     * Returns the escaped route separator.
-     *
-     * @return the escaped route separator
-     * @see #getRouteSeparator()
-     */
-    public String getEscapedSeparator() {
-        return escapedSeparator;
-    }
-
-    /**
-     * Returns serializer to use for custom object serialization/deserialization.
-     *
-     * @return the serializer to use
-     */
-    public YamlSerializer getSerializer() {
-        return serializer;
-    }
-
-    /**
-     * Returns if to enable use of the defaults by {@link Section} methods (if any are present).
-     *
-     * @return if to use defaults
-     */
-    public boolean isUseDefaults() {
-        return useDefaults;
-    }
-
-    /**
-     * Returns default object to use by {@link Section} getters if the return type is object.
-     *
-     * @return the default object
-     */
-    public Object getDefaultObject() {
-        return defaultObject;
-    }
-
-    /**
-     * Returns default string to use by {@link Section} getters if the return type is string.
-     *
-     * @return the default string
-     */
-    public String getDefaultString() {
-        return defaultString;
-    }
-
-    /**
-     * Returns default char to use by {@link Section} getters if the return type is char.
-     *
-     * @return the default char
-     */
-    public Character getDefaultChar() {
-        return defaultChar;
-    }
-
-    /**
-     * Returns default number to use by {@link Section} getters if the return type is a number - integer, float, byte,
-     * biginteger... (per the getter documentation).
-     *
-     * @return the default number
-     */
-    public Number getDefaultNumber() {
-        return defaultNumber;
-    }
-
-    /**
-     * Returns default boolean to use by {@link Section} getters if the return type is boolean.
-     *
-     * @return the default boolean
-     */
-    public Boolean getDefaultBoolean() {
-        return defaultBoolean;
     }
 
     /**

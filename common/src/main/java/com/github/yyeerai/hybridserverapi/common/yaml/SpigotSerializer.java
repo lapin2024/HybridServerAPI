@@ -1,6 +1,5 @@
 package com.github.yyeerai.hybridserverapi.common.yaml;
 
-import com.github.yyeerai.hybridserverapi.common.yaml.boostedyaml.serialization.YamlSerializer;
 import com.github.yyeerai.hybridserverapi.common.yaml.boostedyaml.utils.supplier.MapSupplier;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -10,77 +9,114 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 /**
- * 支持 {@link ConfigurationSerialization} 的自定义序列化为spigot。
+ * 支持 {@link ConfigurationSerialization} 的自定义序列化为spigot对象。
  */
-public class SpigotSerializer implements YamlSerializer {
+public class SpigotSerializer extends AbstractCustomSerializer {
 
     /**
-     * Serializer instance.
+     * Serializer实例。
      */
     private static final SpigotSerializer INSTANCE = new SpigotSerializer();
 
     /**
-     * All supported abstract classes.
+     * 所有支持的抽象类。
      */
     private static final Set<Class<?>> SUPPORTED_ABSTRACT_CLASSES = new HashSet<Class<?>>() {{
         add(ConfigurationSerializable.class);
     }};
 
     /**
-     * Returns the instance.
+     * 所有支持的类。
+     */
+    private static final Set<Class<?>> SUPPORTED_CLASSES = new HashSet<Class<?>>() {
+        {
+            add(BukkitItemStack.class);
+        }
+    };
+
+    /**
+     * 返回实例。
      *
-     * @return the instance
+     * @return 实例
      */
     public static SpigotSerializer getInstance() {
         return INSTANCE;
     }
 
+    /**
+     * 反序列化方法，将Map转换为对象。
+     *
+     * @param map 包含对象数据的Map
+     * @return 反序列化后的对象，如果无法反序列化则返回null
+     */
     @Override
     @Nullable
     public Object deserialize(@NotNull Map<Object, Object> map) {
-        //If does not contain the key
-        if (!map.containsKey(ConfigurationSerialization.SERIALIZED_TYPE_KEY))
-            return null;
-
-        //If is not a valid class
-        if (ConfigurationSerialization.getClassByAlias(map.get(ConfigurationSerialization.SERIALIZED_TYPE_KEY).toString()) == null)
-            return null;
-
-        //Create a map
-        Map<String, Object> converted = new HashMap<>();
-        //Iterate through all entries
-        for (Map.Entry<Object, Object> entry : map.entrySet())
-            //Add
-            converted.put(entry.getKey().toString(), entry.getValue());
-
-        try {
-            //Deserialize
-            return ConfigurationSerialization.deserializeObject(converted);
-        } catch (Exception ex) {
+        //如果Map中不包含序列化类型的键
+        if (!map.containsKey(ConfigurationSerialization.SERIALIZED_TYPE_KEY) && !map.containsKey("hybridItem")) {
             return null;
         }
+
+        //如果不是有效的类
+        if (map.containsKey("hybridItem")) {
+            Map<String, Object> itemMap = new HashMap<>();
+            map.forEach((key, value) -> itemMap.put(key.toString(), value));
+            return new BukkitItemStack(itemMap);
+        } else {
+            if (ConfigurationSerialization.getClassByAlias(map.get(ConfigurationSerialization.SERIALIZED_TYPE_KEY).toString()) == null) {
+                return null;
+            }
+            //创建一个Map
+            Map<String, Object> converted = new HashMap<>();
+            //遍历所有条目
+            for (Map.Entry<Object, Object> entry : map.entrySet()) {
+                converted.put(entry.getKey().toString(), entry.getValue());
+            }
+            return ConfigurationSerialization.deserializeObject(converted);
+        }
+
     }
 
+    /**
+     * 序列化方法，将对象转换为Map。
+     *
+     * @param object   要序列化的对象
+     * @param supplier 提供Map的供应商
+     * @return 包含序列化对象数据的Map
+     */
     @Nullable
     @Override
     public <T> Map<Object, Object> serialize(@NotNull T object, @NotNull MapSupplier supplier) {
-        //Create a map
         Map<Object, Object> serialized = supplier.supply(1);
-        //Cast
-        ConfigurationSerializable cast = (ConfigurationSerializable) object;
-        //Add
-        serialized.putAll((cast).serialize());
-        serialized.computeIfAbsent(ConfigurationSerialization.SERIALIZED_TYPE_KEY, k -> ConfigurationSerialization.getAlias(cast.getClass()));
-        //Return
+        if (object instanceof BukkitItemStack) {
+            BukkitItemStack bukkitItemStack = (BukkitItemStack) object;
+            serialized.put("hybridItem", true);
+            Map<String, Object> stringObjectMap = bukkitItemStack.serialize();
+            serialized.putAll(stringObjectMap);
+        } else {
+            ConfigurationSerializable cast = (ConfigurationSerializable) object;
+            serialized.putAll((cast).serialize());
+            serialized.computeIfAbsent(ConfigurationSerialization.SERIALIZED_TYPE_KEY, k -> ConfigurationSerialization.getAlias(cast.getClass()));
+        }
         return serialized;
     }
 
+    /**
+     * 获取支持的类的集合。
+     *
+     * @return 支持的类的集合
+     */
     @NotNull
     @Override
     public Set<Class<?>> getSupportedClasses() {
-        return Collections.emptySet();
+        return SUPPORTED_CLASSES;
     }
 
+    /**
+     * 获取支持的父类的集合。
+     *
+     * @return 支持的父类的集合
+     */
     @NotNull
     @Override
     public Set<Class<?>> getSupportedParentClasses() {

@@ -12,7 +12,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -23,13 +25,11 @@ import java.util.Map;
 /**
  * 配置管理器类，用于处理配置文件的加载、保存和更新。
  */
+@Getter
 @SuppressWarnings("unused")
 public class ConfigManager {
 
-    private final JavaPlugin plugin;
-    @Getter
     private final YamlDocument config;
-    private final File file;
 
     /**
      * 构造函数，用于初始化配置管理器。
@@ -39,8 +39,65 @@ public class ConfigManager {
      * @param createOrRelease 如果配置文件不存在，是否创建新文件
      */
     public ConfigManager(JavaPlugin plugin, String filePath, boolean createOrRelease) {
-        file = new File(plugin.getDataFolder(), filePath);
-        this.plugin = plugin;
+        try {
+            //YamlDocument config = YamlDocument.create(new File(plugin.getDataFolder(),filePath), getResource(plugin, filePath,createOrRelease), GeneralSettings.builder().setSerializer(ItemSerializer.getInstance()).build(), LoaderSettings.builder().setAutoUpdate(true).build(), DumperSettings.DEFAULT, UpdaterSettings.builder().setVersioning(new BasicVersioning("config-version")).build());
+            config = YamlDocument.create(new File(plugin.getDataFolder(), filePath), getResource(plugin, filePath, createOrRelease), GeneralSettings.builder().setSerializer(ItemSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.DEFAULT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 构造函数，用于初始化配置管理器。
+     *
+     * @param plugin          插件实例
+     * @param filePath        配置文件路径
+     * @param createOrRelease 如果配置文件不存在，是否创建新文件
+     * @param autoUpdate      是否自动更新配置文件
+     */
+    @SneakyThrows
+    public ConfigManager(JavaPlugin plugin, String filePath, boolean createOrRelease, boolean autoUpdate) {
+        if (autoUpdate) {
+            config = YamlDocument.create(new File(plugin.getDataFolder(), filePath), getResource(plugin, filePath, createOrRelease), GeneralSettings.builder().setSerializer(ItemSerializer.getInstance()).build(), LoaderSettings.builder().setAutoUpdate(true).build(), DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.builder().setVersioning(new BasicVersioning("config-version")).build());
+        } else {
+            config = YamlDocument.create(new File(plugin.getDataFolder(), filePath), getResource(plugin, filePath, createOrRelease), GeneralSettings.builder().setSerializer(ItemSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.DEFAULT);
+        }
+    }
+
+    /**
+     * 构造函数，用于初始化配置管理器。
+     * 此方法已过时，请使用 {@link #ConfigManager(JavaPlugin, String, boolean)} 方法。
+     *
+     * @param plugin   插件实例
+     * @param filePath 配置文件路径
+     */
+    @Deprecated
+    public ConfigManager(JavaPlugin plugin, String filePath) {
+        File file = new File(plugin.getDataFolder(), filePath);
+        if (file.exists()) {
+            try {
+                config = YamlDocument.create(file, GeneralSettings.builder().setSerializer(ItemSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.DEFAULT);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            throw new RuntimeException("文件 " + filePath + " 不在列表中,将返回空的config!");
+        }
+    }
+
+    /**
+     * 获取资源文件。
+     *
+     * @param plugin          插件实例
+     * @param filePath        文件路径
+     * @param createOrRelease 如果文件不存在，是否创建新文件或释放资源文件
+     * @return 文件输入流
+     */
+    private InputStream getResource(JavaPlugin plugin, String filePath, boolean createOrRelease) {
+        if (plugin.getResource(filePath) != null) {
+            return plugin.getResource(filePath);
+        }
+        File file = new File(plugin.getDataFolder(), filePath);
         if (!file.exists() && createOrRelease) {
             try {
                 if (file.createNewFile()) {
@@ -52,59 +109,19 @@ public class ConfigManager {
         } else if (!file.exists() && !createOrRelease) {
             plugin.saveResource(filePath, false);
         }
-        try {
-            config = YamlDocument.create(file, GeneralSettings.builder().setSerializer(SpigotSerializer.getInstance()).setSerializer(ItemSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.DEFAULT);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @SneakyThrows
-    public ConfigManager(JavaPlugin plugin, String filePath, boolean createOrRelease, boolean autoUpdate) {
-        file = new File(plugin.getDataFolder(), filePath);
-        this.plugin = plugin;
-        if (!file.exists()) {
-            if (createOrRelease) {
-                if (file.createNewFile()) {
-                    plugin.getLogger().info("File " + filePath + " has been created");
-                }
-            } else {
-                plugin.saveResource(filePath, false);
-            }
-        }
-        if (autoUpdate) {
-            config = YamlDocument.create(file, GeneralSettings.builder().setSerializer(SpigotSerializer.getInstance()).setSerializer(ItemSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.builder().setVersioning(new BasicVersioning("config-version")).build());
-        } else {
-            config = YamlDocument.create(file, GeneralSettings.builder().setSerializer(SpigotSerializer.getInstance()).setSerializer(ItemSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.DEFAULT);
-        }
-    }
-
-    /**
-     * 构造函数，用于初始化配置管理器。
-     *
-     * @param plugin   插件实例
-     * @param filePath 配置文件路径
-     */
-    @Deprecated
-    public ConfigManager(JavaPlugin plugin, String filePath) {
-        file = new File(plugin.getDataFolder(), filePath);
-        this.plugin = plugin;
-        if (file.exists()) {
-            try {
-                config = YamlDocument.create(file, GeneralSettings.builder().setSerializer(SpigotSerializer.getInstance()).setSerializer(ItemSerializer.getInstance()).build(), LoaderSettings.DEFAULT, DumperSettings.builder().setFlowStyle(FlowStyle.BLOCK).build(), UpdaterSettings.DEFAULT);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            throw new RuntimeException("文件 " + filePath + " 不在列表中,将返回空的config!");
-        }
+        return plugin.getResource(filePath);
     }
 
     /**
      * 加载配置文件，并将配置值设置到给定的对象的字段中。
+     * 所有字段必须使用 {@link Config} 注解。
+     * 如果字段的值为空，则使用默认值。
+     * 如果字段的值在配置文件中不存在，则使用默认值。
+     * 字段必须是静态的。
      *
      * @param obj 需要加载配置的对象
      */
+    @SneakyThrows
     public void loadConfig(Object obj) {
         // 获取对象的类，如果对象是Class类型，则直接使用，否则获取对象的类
         Class<?> clazz = (obj instanceof Class) ? (Class<?>) obj : obj.getClass();
@@ -112,6 +129,9 @@ public class ConfigManager {
         Field[] fields = clazz.getDeclaredFields();
         // 遍历所有字段
         for (Field field : fields) {
+            if (!Modifier.isStatic(field.getModifiers())) {
+                continue;
+            }
             // 检查字段是否有Config注解
             if (field.isAnnotationPresent(Config.class)) {
                 // 获取字段的Config注解
@@ -125,17 +145,15 @@ public class ConfigManager {
                 // 如果值为空
                 if (value == null) {
                     // 根据字段的类型获取默认值
-                    value = annotation.isList() ? getList(field) : annotation.isItem() ? getItem(field) : getValue(field);
+                    value = field.get(null);
+                    if (value == null) {
+                        value = annotation.isList() ? getList(field) : annotation.isItem() ? getItem(field) : getValue(field);
+                    }
                 }
-                try {
-                    // 将值设置到对象的字段中
-                    field.set(obj, value);
-                } catch (IllegalAccessException e) {
-                    // 如果设置字段值时发生错误，抛出运行时异常
-                    throw new RuntimeException("Could not set field " + field.getName() + " in " + clazz.getName());
-                }
+                field.set(obj, value);
             }
         }
+        //saveConfig();
     }
 
     /**
@@ -148,7 +166,6 @@ public class ConfigManager {
             if (config.reload()) {
                 if (o != null) {
                     loadConfig(o);
-                    plugin.getLogger().info("File " + file.getName() + " has been reloaded");
                 }
             }
         } catch (IOException e) {
@@ -227,7 +244,7 @@ public class ConfigManager {
     }
 
     private Object getItem(Field field) {
-        return new BukkitItemStack("air", " ", new ArrayList<>(),  1, (short) 0, "");
+        return new BukkitItemStack("AIR", " ", new ArrayList<>(), 1, (short) 0, "");
     }
 
 }
