@@ -199,7 +199,7 @@ public enum EnumPokeAttribute {
             case IV_TOTAL:
                 return pokemon.getIVs().getTotal();
             case IV_PERCENTAGE:
-                return String.format("%.2f%%", pokemon.getIVs().getTotal() / 186.0 * 100.0).replace(".00", "");
+                return String.format("%.2f", pokemon.getIVs().getTotal() / 186.0 * 100.0).replace(".00", "");
             case EV_HP:
                 return pokemon.getEVs().getStat(StatsType.HP);
             case EV_ATTACK:
@@ -215,7 +215,7 @@ public enum EnumPokeAttribute {
             case EV_TOTAL:
                 return pokemon.getEVs().getTotal();
             case EV_PERCENTAGE:
-                return String.format("%.2f%%", pokemon.getEVs().getTotal() / 510.0 * 100.0).replace(".00", "");
+                return String.format("%.2f", pokemon.getEVs().getTotal() / 510.0 * 100.0).replace(".00", "");
             case HT_HP:
                 return pokemon.getIVs().isHyperTrained(StatsType.HP) ? 31 : 0;
             case HT_ATTACK:

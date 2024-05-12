@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ItemUtil {
     private static final String DEBUG_ITEM_NAME = "&7物品出错,请检查设置";
@@ -15,50 +16,46 @@ public class ItemUtil {
 
 
     public static ItemStack deserializeItemStack(Map<String, Object> args) {
-        return Optional.ofNullable((String) args.get("type"))
-                .filter(type -> !type.isEmpty())
-                .map(type -> {
-                    type = type.toUpperCase();
-                    String[] split = type.split(":");
-                    if (split.length == 2 && !split[0].equals(MINECRAFT)) {
-                        type = split[0] + "_" + split[1];
-                    } else if (split.length == 2) {
-                        type = split[1];
-                    } else {
-                        type = split[0];
-                    }
-                    return Material.getMaterial(type);
-                })
-                .map(material -> {
-                    Object damageObj = args.getOrDefault("damage", 0);
-                    int damage = damageObj instanceof Short ? ((Short) damageObj).intValue() : (int) damageObj;
-                    int amount = (int) args.getOrDefault("amount", 1);
-                    ItemStack itemStack = new ItemStack(material, amount, (short) damage);
-                    if (args.containsKey("nbt")) {
-                        String nbt = (String) args.get("nbt");
-                        if(nbt != null && !nbt.isEmpty()){
-                            itemStack = NbtUtil.setNbt(itemStack, nbt);
-                        }
-                    }
-                    return itemStack;
-                })
-                .map(itemStack -> {
-                    ItemMeta meta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemStack.getType());
-                    assert meta != null;
-                    if (args.containsKey("name")) {
-                        meta.setDisplayName((String) args.get("name"));
-                    }
-                    if (args.containsKey("lore")) {
-                        List<String> newLore = new ArrayList<>();
-                        ((List<?>) args.get("lore")).stream()
-                                .filter(o -> o instanceof String)
-                                .forEach(o -> newLore.add((String) o));
-                        meta.setLore(newLore);
-                    }
-                    itemStack.setItemMeta(meta);
-                    return itemStack;
-                })
-                .orElseGet(ItemUtil::getDebugItem);
+        String type = (String) args.getOrDefault("type", "AIR");
+        String[] split = type.toUpperCase().split(":");
+        if (split.length == 2 && !split[0].equals(MINECRAFT)) {
+            type = split[0] + "_" + split[1];
+        } else if (split.length == 2) {
+            type = split[1];
+        } else {
+            type = split[0];
+        }
+        if (type.equals("AIR")) {
+            return new ItemStack(Material.AIR);
+        }
+        Material material = Material.getMaterial(type);
+        if (material == null) {
+            return getDebugItem();
+        }
+        Object damageObj = args.getOrDefault("damage", 0);
+        int damage = damageObj instanceof Short ? ((Short) damageObj).intValue() : (int) damageObj;
+        int amount = (int) args.getOrDefault("amount", 1);
+        ItemStack itemStack = new ItemStack(material, amount, (short) damage);
+        if (args.containsKey("nbt")) {
+            String nbt = (String) args.get("nbt");
+            if (nbt != null && !nbt.isEmpty()) {
+                itemStack = NbtUtil.setNbt(itemStack, nbt);
+            }
+        }
+        ItemMeta meta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+        assert meta != null;
+        if (args.containsKey("name")) {
+            meta.setDisplayName((String) args.get("name"));
+        }
+        if (args.containsKey("lore")) {
+            List<String> newLore = new ArrayList<>();
+            ((List<?>) args.get("lore")).stream()
+                    .filter(o -> o instanceof String)
+                    .forEach(o -> newLore.add((String) o));
+            meta.setLore(newLore);
+        }
+        itemStack.setItemMeta(meta);
+        return itemStack;
     }
 
     public static Map<String, Object> serializeItemStack(ItemStack itemStack) {
@@ -66,21 +63,17 @@ public class ItemUtil {
         map.put("type", itemStack.getType().name());
         map.put("damage", itemStack.getDurability());
         map.put("amount", itemStack.getAmount());
-        ItemMeta meta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemStack.getType());
-        assert meta != null;
-        if (meta.hasDisplayName()) {
-            map.put("name", meta.getDisplayName());
-        }
-        if (meta.hasLore()) {
-            map.put("lore", meta.getLore());
-        }
+        ItemMeta meta = Optional.ofNullable(itemStack.getItemMeta())
+                .orElse(Bukkit.getItemFactory().getItemMeta(itemStack.getType()));
+        Optional.ofNullable(meta.getDisplayName()).ifPresent(name -> map.put("name", name));
+        Optional.ofNullable(meta.getLore()).ifPresent(lore -> map.put("lore", lore));
         Optional.ofNullable(NbtUtil.getNbt(itemStack))
                 .ifPresent(nbt -> map.put("nbt", nbt.toString()));
         return map;
     }
 
     private static ItemStack getDebugItem() {
-        ItemStack itemStack = new ItemStack(Material.STONE);
+        ItemStack itemStack = new ItemStack(Material.BARRIER);
         ItemMeta meta = itemStack.getItemMeta();
         assert meta != null;
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', DEBUG_ITEM_NAME));
@@ -95,17 +88,16 @@ public class ItemUtil {
      * @return 转换后的物品, 返回原物品
      */
     private static ItemStack translateColor(ItemStack itemStack) {
+        if (itemStack == null || itemStack.getType().equals(Material.AIR)) {
+            return itemStack;
+        }
         ItemMeta meta = itemStack.getItemMeta();
-        assert meta != null;
         if (meta.hasDisplayName()) {
             meta.setDisplayName(HexUtils.colorify(meta.getDisplayName()));
         }
         if (meta.hasLore()) {
             List<String> lore = meta.getLore();
-            assert lore != null;
-            List<String> newLore = new ArrayList<>();
-            lore.forEach(s -> newLore.add(HexUtils.colorify(s)));
-            meta.setLore(newLore);
+            meta.setLore(lore.stream().map(HexUtils::colorify).collect(Collectors.toList()));
         }
         itemStack.setItemMeta(meta);
         return itemStack;

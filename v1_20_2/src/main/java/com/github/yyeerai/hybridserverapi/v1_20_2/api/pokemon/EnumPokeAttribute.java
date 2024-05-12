@@ -171,7 +171,7 @@ public enum EnumPokeAttribute {
             case IV_SPEED -> pokemon.getIVs().getStat(BattleStatsType.SPEED);
             case IV_TOTAL -> pokemon.getIVs().getTotal();
             case IV_PERCENTAGE ->
-                    String.format("%.2f%%", pokemon.getIVs().getTotal() / 186.0 * 100.0).replace(".00", "");
+                    String.format("%.2f", pokemon.getIVs().getTotal() / 186.0 * 100.0).replace(".00", "");
             case EV_HP -> pokemon.getEVs().getStat(BattleStatsType.HP);
             case EV_ATTACK -> pokemon.getEVs().getStat(BattleStatsType.ATTACK);
             case EV_DEFENCE -> pokemon.getEVs().getStat(BattleStatsType.DEFENSE);
@@ -180,7 +180,7 @@ public enum EnumPokeAttribute {
             case EV_SPEED -> pokemon.getEVs().getStat(BattleStatsType.SPEED);
             case EV_TOTAL -> pokemon.getEVs().getTotal();
             case EV_PERCENTAGE ->
-                    String.format("%.2f%%", pokemon.getEVs().getTotal() / 510.0 * 100.0).replace(".00", "");
+                    String.format("%.2f", pokemon.getEVs().getTotal() / 510.0 * 100.0).replace(".00", "");
             case HT_HP -> pokemon.getIVs().isHyperTrained(BattleStatsType.HP) ? 31 : 0;
             case HT_ATTACK -> pokemon.getIVs().isHyperTrained(BattleStatsType.ATTACK) ? 31 : 0;
             case HT_DEFENCE -> pokemon.getIVs().isHyperTrained(BattleStatsType.DEFENSE) ? 31 : 0;
