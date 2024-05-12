@@ -25,6 +25,7 @@ public enum EnumPokeAttribute {
     OWNER_NAME,
     OWNER_UUID,
     CUSTOM_TEXTURE,
+    EGG,
     NUM_CLONED,
     NUM_ENCHANTED,
     HP,
@@ -84,6 +85,7 @@ public enum EnumPokeAttribute {
      * POKEBALL: 宝可梦的精灵球 (String)
      * FRIENDSHIP: 宝可梦的亲密度 (int)
      * CUSTOM_TEXTURE: 宝可梦的自定义皮肤 (String)
+     * EGG: 宝可梦是否为蛋 (boolean)
      * NUM_CLONED: 宝可梦的克隆次数 (int)
      * NUM_ENCHANTED: 宝可梦的附魔次数 (int)
      * OT_NAME: 宝可梦的原始训练师 (String)
@@ -138,7 +140,7 @@ public enum EnumPokeAttribute {
             case SHINY -> pokemon.getShiny() ? "是" : "否";
             case ABILITY -> pokemon.getAbility().getDisplayName();
             case GROWTH, CUSTOM_TEXTURE, NUM_ENCHANTED, NUM_CLONED, HT_SPEED, HT_SPECIAL_DEFENCE, HT_SPECIAL_ATTACK,
-                 HT_DEFENCE, HT_ATTACK, HT_HP -> "暂时不支持";
+                 HT_DEFENCE, HT_ATTACK, HT_HP, EGG -> "暂时不支持";
             case NATURE -> pokemon.getNature().getDisplayName();
             case MINT_NATURE -> (pokemon.getMintedNature() != null ? pokemon.getMintedNature().getDisplayName() : "无");
             case GENDER -> pokemon.getGender().getShowdownName();

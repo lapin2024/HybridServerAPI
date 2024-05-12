@@ -102,7 +102,11 @@ public class PokemonApi {
      */
     public ItemStack getPokemonPhoto(Pokemon pokemon) {
         net.minecraft.item.ItemStack photo = SpriteItemHelper.getPhoto(pokemon);
-        return BaseApi.getBukkitItemStack(photo);
+        ItemStack itemStack = BaseApi.getBukkitItemStack(photo);
+        ItemMeta itemMeta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+        itemMeta.setDisplayName(ChatColor.GREEN + pokemon.getFormattedDisplayName().getString());
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 
     /**
@@ -115,7 +119,6 @@ public class PokemonApi {
         ItemStack bukkitItemStack = getPokemonPhoto(pokemon);
         ItemMeta itemMeta = bukkitItemStack.hasItemMeta() ? bukkitItemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(bukkitItemStack.getType());
         assert itemMeta != null;
-        itemMeta.setDisplayName(ChatColor.GREEN + pokemon.getFormattedDisplayName().getString());
         itemMeta.addEnchant(Enchantment.ARROW_DAMAGE, 1, true);
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         bukkitItemStack.setItemMeta(itemMeta);

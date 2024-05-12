@@ -114,7 +114,11 @@ public class PokemonApi {
      */
     public ItemStack getPokemonPhoto(Pokemon pokemon) {
         net.minecraft.world.item.ItemStack photo = SpriteItemHelper.getPhoto(pokemon);
-        return BaseApi.getBukkitItemStack(photo);
+        ItemStack itemStack = BaseApi.getBukkitItemStack(photo);
+        ItemMeta itemMeta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+        itemMeta.setDisplayName(ChatColor.GREEN + pokemon.getFormattedDisplayName().getString());
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 
     /**

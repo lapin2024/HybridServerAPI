@@ -25,6 +25,7 @@ public enum EnumPokeAttribute {
     OWNER_NAME,
     OWNER_UUID,
     CUSTOM_TEXTURE,
+    EGG,
     NUM_CLONED,
     NUM_ENCHANTED,
     HP,
@@ -84,6 +85,7 @@ public enum EnumPokeAttribute {
      * POKEBALL: 宝可梦的精灵球 (String)
      * FRIENDSHIP: 宝可梦的亲密度 (int)
      * CUSTOM_TEXTURE: 宝可梦的自定义皮肤 (String)
+     * EGG: 宝可梦是否为蛋 (boolean)
      * NUM_CLONED: 宝可梦的克隆次数 (int)
      * NUM_ENCHANTED: 宝可梦的附魔次数 (int)
      * OT_NAME: 宝可梦的原始训练师 (String)
@@ -158,6 +160,8 @@ public enum EnumPokeAttribute {
                 return pokemon.getFriendship();
             case CUSTOM_TEXTURE:
                 return pokemon.getPalette() != null ? pokemon.getPalette().getLocalizedName() : "无";
+            case EGG:
+                return pokemon.isEgg() ? "是" : "否";
             case NUM_CLONED:
                 return pokemon.getExtraStats() instanceof MewStats ? ((MewStats) pokemon.getExtraStats()).numCloned : "不能克隆";
             case NUM_ENCHANTED:
