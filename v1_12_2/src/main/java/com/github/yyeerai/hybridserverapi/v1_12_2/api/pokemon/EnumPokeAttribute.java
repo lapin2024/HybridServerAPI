@@ -171,7 +171,7 @@ public enum EnumPokeAttribute {
             case OWNER_NAME:
                 return pokemon.getOwnerName();
             case OWNER_UUID:
-                return pokemon.getOwnerPlayerUUID().toString();
+                return pokemon.getOwnerPlayerUUID() != null ? pokemon.getOwnerPlayerUUID().toString() : "无";
             case HP:
                 return pokemon.getStats().get(StatsType.HP);
             case ATTACK:
