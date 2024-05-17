@@ -173,6 +173,10 @@ public class ConfigManager {
         }
     }
 
+    public void reloadConfig() {
+        reloadConfig(null);
+    }
+
     /**
      * 保存配置文件。
      */

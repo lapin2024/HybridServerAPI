@@ -1,4 +1,4 @@
-package com.github.yyeerai.hybridserverapi.v1_16_5.api.pokemon;
+package com.github.yyeerai.sponge.hybridserverapi;
 
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.api.pokemon.stats.BattleStatsType;

@@ -5,11 +5,16 @@ import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.extraStats.LakeTrioStats;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.extraStats.MewStats;
 
+import java.util.stream.Collectors;
+
 @SuppressWarnings("unused")
 public enum EnumPokeAttribute {
     UUID,
+    SPECIES,
     DISPLAY_NAME,
     NICKNAME,
+    LOCALIZED_NAME,
+    DEX_NUMBER,
     LEVEL,
     SHINY,
     ABILITY,
@@ -26,6 +31,7 @@ public enum EnumPokeAttribute {
     OWNER_UUID,
     CUSTOM_TEXTURE,
     EGG,
+    EGG_GROUP,
     NUM_CLONED,
     NUM_ENCHANTED,
     HP,
@@ -56,15 +62,22 @@ public enum EnumPokeAttribute {
     HT_SPECIAL_ATTACK,
     HT_SPECIAL_DEFENCE,
     HT_SPEED,
+    SPEC_HP,
+    SPEC_ATTACK,
+    SPEC_DEFENCE,
+    SPEC_SPECIAL_ATTACK,
+    SPEC_SPECIAL_DEFENCE,
+    SPEC_SPEED,
     MOVE_1,
     MOVE_2,
     MOVE_3,
     MOVE_4,
+    LEGENDARY,
+    ULTRA_BEAST,
     TRADEABLE,
     BREEDABLE,
     CATCHABLE,
     FORM;
-
 
     /**
      * 获取属性
@@ -72,8 +85,11 @@ public enum EnumPokeAttribute {
      * @param pokemon 宝可梦
      * @return 属性值
      * UUID: 宝可梦的UUID (String)
+     * SPECIES: 宝可梦的物种 (String)
      * DISPLAY_NAME: 宝可梦的显示名称 (String)
      * NICKNAME: 宝可梦的昵称 (String)
+     * LOCALIZED_NAME: 宝可梦的本地化名称 (String)
+     * DEX_NUMBER: 宝可梦的图鉴编号 (int)
      * LEVEL: 宝可梦的等级 (int)
      * SHINY: 宝可梦是否闪光 (boolean)
      * ABILITY: 宝可梦的特性 (String)
@@ -86,6 +102,7 @@ public enum EnumPokeAttribute {
      * FRIENDSHIP: 宝可梦的亲密度 (int)
      * CUSTOM_TEXTURE: 宝可梦的自定义皮肤 (String)
      * EGG: 宝可梦是否为蛋 (boolean)
+     * EGG_GROUP: 宝可梦的蛋组 (String)
      * NUM_CLONED: 宝可梦的克隆次数 (int)
      * NUM_ENCHANTED: 宝可梦的附魔次数 (int)
      * OT_NAME: 宝可梦的原始训练师 (String)
@@ -120,10 +137,18 @@ public enum EnumPokeAttribute {
      * HT_SPECIAL_ATTACK: 宝可梦的Hyper 特攻 (int)
      * HT_SPECIAL_DEFENCE: 宝可梦的Hyper 特防 (int)
      * HT_SPEED: 宝可梦的Hyper 速度 (int)
+     * SPEC_HP: 宝可梦的种族值HP (int)
+     * SPEC_ATTACK: 宝可梦的种族值攻击 (int)
+     * SPEC_DEFENCE: 宝可梦的种族值防御 (int)
+     * SPEC_SPECIAL_ATTACK: 宝可梦的种族值特攻 (int)
+     * SPEC_SPECIAL_DEFENCE: 宝可梦的种族值特防 (int)
+     * SPEC_SPEED: 宝可梦的种族值速度 (int)
      * MOVE_1: 宝可梦的技能1 (String)
      * MOVE_2: 宝可梦的技能2 (String)
      * MOVE_3: 宝可梦的技能3 (String)
      * MOVE_4: 宝可梦的技能4 (String)
+     * LEGENDARY: 宝可梦是否传说 (boolean)
+     * ULTRA_BEAST: 宝可梦是否究极异兽 (boolean)
      * TRADEABLE: 宝可梦是否可交易 (boolean)
      * BREEDABLE: 宝可梦是否可繁殖 (boolean)
      * CATCHABLE: 宝可梦是否可捕捉 (boolean)
@@ -134,10 +159,16 @@ public enum EnumPokeAttribute {
         switch (this) {
             case UUID:
                 return pokemon.getUUID().toString();
+            case SPECIES:
+                return pokemon.getSpecies().getPokemonName();
             case DISPLAY_NAME:
                 return pokemon.getDisplayName();
             case NICKNAME:
                 return pokemon.getNickname() != null ? pokemon.getNickname() : pokemon.getDisplayName();
+            case LOCALIZED_NAME:
+                return pokemon.getLocalizedName();
+            case DEX_NUMBER:
+                return pokemon.getSpecies().getNationalPokedexNumber();
             case LEVEL:
                 return pokemon.getLevel();
             case SHINY:
@@ -162,6 +193,8 @@ public enum EnumPokeAttribute {
                 return pokemon.getCustomTexture() != null ? pokemon.getCustomTexture() : "无";
             case EGG:
                 return pokemon.isEgg() ? "是" : "否";
+            case EGG_GROUP:
+                return pokemon.getBaseStats().getEggGroups().stream().map(Enum::name).collect(Collectors.toList());
             case NUM_CLONED:
                 return pokemon.getExtraStats() instanceof MewStats ? ((MewStats) pokemon.getExtraStats()).numCloned : "不能克隆";
             case NUM_ENCHANTED:
@@ -232,6 +265,18 @@ public enum EnumPokeAttribute {
                 return pokemon.getIVs().isHyperTrained(StatsType.SpecialDefence) ? 31 : 0;
             case HT_SPEED:
                 return pokemon.getIVs().isHyperTrained(StatsType.Speed) ? 31 : 0;
+            case SPEC_HP:
+                return pokemon.getBaseStats().getStat(StatsType.HP);
+            case SPEC_ATTACK:
+                return pokemon.getBaseStats().getStat(StatsType.Attack);
+            case SPEC_DEFENCE:
+                return pokemon.getBaseStats().getStat(StatsType.Defence);
+            case SPEC_SPECIAL_ATTACK:
+                return pokemon.getBaseStats().getStat(StatsType.SpecialAttack);
+            case SPEC_SPECIAL_DEFENCE:
+                return pokemon.getBaseStats().getStat(StatsType.SpecialDefence);
+            case SPEC_SPEED:
+                return pokemon.getBaseStats().getStat(StatsType.Speed);
             case MOVE_1:
                 return (pokemon.getMoveset().get(0) != null ? pokemon.getMoveset().get(0).getMove().getLocalizedName() : "无");
             case MOVE_2:
@@ -240,6 +285,10 @@ public enum EnumPokeAttribute {
                 return (pokemon.getMoveset().get(2) != null ? pokemon.getMoveset().get(2).getMove().getLocalizedName() : "无");
             case MOVE_4:
                 return (pokemon.getMoveset().get(3) != null ? pokemon.getMoveset().get(3).getMove().getLocalizedName() : "无");
+            case LEGENDARY:
+                return pokemon.isLegendary() ? "是" : "否";
+            case ULTRA_BEAST:
+                return pokemon.getSpecies().isUltraBeast() ? "是" : "否";
             case TRADEABLE:
                 return pokemon.hasSpecFlag("untradeable") ? "否" : "是";
             case BREEDABLE:
