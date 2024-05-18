@@ -95,7 +95,7 @@ public void onEnable() {
 }
 ```
 
-### 随机选择器
+## 随机选择器
 
 随机选择器它可以帮助你快速实现一些随机功能,并且支持权重功能
 
@@ -142,7 +142,7 @@ public void test() {
 }
 ```
 
-### 菜单构建器
+## 菜单构建器
 
 菜单构建器它可以帮助你快速实现构建一个菜单
 
@@ -168,7 +168,7 @@ public void createMenu(Player player) {
 
 菜单还有更多特性,比如: 需求条件,点击执行器等,请查看源码
 
-### 配置文件注册器
+## 配置文件注册器
 
 本api封装了开源的Boostedyaml,并对Bukkit的物品,坐标等实现了序列化和反序列化,使用方法如下:
 
@@ -317,7 +317,7 @@ public ItemStack getPokemonPhotoInfo(Pokemon pokemon, String name, List<String> 
 private Object getAttribute(EnumPokeAttribute attribute, Pokemon pokemon);
 ```
 
-### 基础API
+## 基础API
 
 本api提供很多Bukkit对象和forge对象互相转换或互相操作的方法,一些使用方法如下:
 
@@ -337,7 +337,7 @@ public void test(Player player) {
 }
 ```
 
-### 宝可梦模组Placeholders变量
+## 宝可梦模组Placeholders变量
 
 本API提供了Pokemon mod的一些,这些变量可以被PlaceholderAPI解析:
 
@@ -400,8 +400,8 @@ public void test(Player player) {
 
 ```
 
-### 数据库连接池
+## 数据库连接池
 
-### json解析器
+## json解析器
 
-### 网络请求工具
+## 网络请求工具
