@@ -364,6 +364,8 @@ public class PokemonApi {
                 return pokemon.isLegendary() ? "是" : "否";
             case ULTRA_BEAST:
                 return pokemon.getSpecies().isUltraBeast() ? "是" : "否";
+            case HIDE_ABILITY:
+                return pokemon.getAbilitySlot() == 2 ? "是" : "否";
             case TRADEABLE:
                 return pokemon.hasSpecFlag("untradeable") ? "否" : "是";
             case BREEDABLE:

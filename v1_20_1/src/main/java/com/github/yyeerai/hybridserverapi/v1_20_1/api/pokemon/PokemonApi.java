@@ -3,6 +3,7 @@ package com.github.yyeerai.hybridserverapi.v1_20_1.api.pokemon;
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.moves.Move;
 import com.cobblemon.mod.common.api.pokemon.PokemonProperties;
+import com.cobblemon.mod.common.api.pokemon.egg.EggGroup;
 import com.cobblemon.mod.common.api.pokemon.stats.Stat;
 import com.cobblemon.mod.common.api.pokemon.stats.Stats;
 import com.cobblemon.mod.common.api.storage.NoPokemonStoreException;
@@ -29,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 宝可梦API
@@ -218,8 +220,10 @@ public class PokemonApi {
             case LEVEL -> pokemon.getLevel();
             case SHINY -> pokemon.getShiny() ? "是" : "否";
             case ABILITY -> pokemon.getAbility().getDisplayName();
-            case EGG_GROUP, GROWTH, CUSTOM_TEXTURE, NUM_ENCHANTED, NUM_CLONED, HT_SPEED, HT_SPECIAL_DEFENCE,
-                 HT_SPECIAL_ATTACK, HT_DEFENCE, HT_ATTACK, HT_HP, EGG -> "暂时不支持";
+            case EGG_GROUP ->
+                    pokemon.getSpecies().getEggGroups().stream().map(EggGroup::getShowdownID$common).collect(Collectors.toList());
+            case GROWTH, CUSTOM_TEXTURE, NUM_ENCHANTED, NUM_CLONED, HT_SPEED, HT_SPECIAL_DEFENCE,
+                 HT_SPECIAL_ATTACK, HT_DEFENCE, HT_ATTACK, HT_HP, EGG, HIDE_ABILITY -> "暂时不支持";
             case NATURE -> pokemon.getNature().getDisplayName();
             case MINT_NATURE -> (pokemon.getMintedNature() != null ? pokemon.getMintedNature().getDisplayName() : "无");
             case GENDER -> pokemon.getGender().getShowdownName();

@@ -66,6 +66,7 @@ package com.github.yyeerai.hybridserverapi.common.enums;
  * MOVE_4: 宝可梦的技能4 (String)
  * LEGENDARY: 宝可梦是否传说 (boolean)
  * ULTRA_BEAST: 宝可梦是否究极异兽 (boolean)
+ * HIDE_ABILITY: 宝可梦是否隐藏特性 (boolean)
  * TRADEABLE: 宝可梦是否可交易 (boolean)
  * BREEDABLE: 宝可梦是否可繁殖 (boolean)
  * CATCHABLE: 宝可梦是否可捕捉 (boolean)
@@ -137,6 +138,7 @@ public enum EnumPokeAttribute {
     MOVE_4,
     LEGENDARY,
     ULTRA_BEAST,
+    HIDE_ABILITY,
     TRADEABLE,
     BREEDABLE,
     CATCHABLE,
