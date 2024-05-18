@@ -1,6 +1,7 @@
 package com.github.yyeerai.hybridserverapi.v1_20_1.api.pokemon;
 
 import com.cobblemon.mod.common.Cobblemon;
+import com.cobblemon.mod.common.api.moves.Move;
 import com.cobblemon.mod.common.api.pokemon.PokemonProperties;
 import com.cobblemon.mod.common.api.pokemon.stats.Stat;
 import com.cobblemon.mod.common.api.pokemon.stats.Stats;
@@ -10,6 +11,7 @@ import com.cobblemon.mod.common.api.storage.pc.PCStore;
 import com.cobblemon.mod.common.item.PokemonItem;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.github.yyeerai.hybridserverapi.common.colour.HexUtils;
+import com.github.yyeerai.hybridserverapi.common.enums.EnumPokeAttribute;
 import com.github.yyeerai.hybridserverapi.common.yaml.ConfigManager;
 import com.github.yyeerai.hybridserverapi.common.yaml.RegisterConfig;
 import com.github.yyeerai.hybridserverapi.v1_20_1.api.BaseApi;
@@ -23,12 +25,10 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 宝可梦API
@@ -45,7 +45,7 @@ public class PokemonApi {
     }
 
     public static PokemonApi getInstance() {
-        if(POKEMON_API == null){
+        if (POKEMON_API == null) {
             POKEMON_API = new PokemonApi();
         }
         return POKEMON_API;
@@ -145,7 +145,7 @@ public class PokemonApi {
         Iterator<Map.Entry<Stat, Integer>> iterator = pokemon.getEvs().iterator();
         while (iterator.hasNext()) {
             Map.Entry<Stat, Integer> entry = iterator.next();
-            if(entry.getKey().equals(Stats.ACCURACY) || entry.getKey().equals(Stats.EVASION) ){
+            if (entry.getKey().equals(Stats.ACCURACY) || entry.getKey().equals(Stats.EVASION)) {
                 continue;
             }
             if (entry.getValue() >= 31) {
@@ -158,7 +158,7 @@ public class PokemonApi {
     private Map<String, Object> getAttributes(Pokemon pokemon) {
         Map<String, Object> map = new HashMap<>();
         for (EnumPokeAttribute value : EnumPokeAttribute.values()) {
-            Object attribute = value.getAttribute(pokemon);
+            Object attribute = getAttribute(value, pokemon);
             if (attribute != null) {
                 map.put(value.name(), attribute);
             }
@@ -169,6 +169,7 @@ public class PokemonApi {
     /**
      * 获得带有宝可梦信息的照片
      * 配置文件: api/config.yml
+     *
      * @param pokemon 宝可梦
      * @return 带有宝可梦信息的照片的物品堆
      */
@@ -204,6 +205,89 @@ public class PokemonApi {
         itemMeta.setLore(lore);
         photo.setItemMeta(itemMeta);
         return photo;
+    }
+
+    public Object getAttribute(EnumPokeAttribute attribute, Pokemon pokemon) {
+        return switch (attribute) {
+            case UUID -> pokemon.getUuid();
+            case SPECIES -> pokemon.getSpecies().getName();
+            case DISPLAY_NAME, LOCALIZED_NAME -> pokemon.getDisplayName().getString();
+            case NICKNAME ->
+                    pokemon.getNickname() != null ? pokemon.getNickname().getString() : pokemon.getDisplayName().getString();
+            case DEX_NUMBER -> pokemon.getSpecies().getNationalPokedexNumber();
+            case LEVEL -> pokemon.getLevel();
+            case SHINY -> pokemon.getShiny() ? "是" : "否";
+            case ABILITY -> pokemon.getAbility().getDisplayName();
+            case EGG_GROUP, GROWTH, CUSTOM_TEXTURE, NUM_ENCHANTED, NUM_CLONED, HT_SPEED, HT_SPECIAL_DEFENCE,
+                 HT_SPECIAL_ATTACK, HT_DEFENCE, HT_ATTACK, HT_HP, EGG -> "暂时不支持";
+            case NATURE -> pokemon.getNature().getDisplayName();
+            case MINT_NATURE -> (pokemon.getMintedNature() != null ? pokemon.getMintedNature().getDisplayName() : "无");
+            case GENDER -> pokemon.getGender().getShowdownName();
+            case HELD_ITEM -> BaseApi.getBukkitItemStack(pokemon.heldItem()).getType().toString();
+            case POKEBALL -> pokemon.getCaughtBall().getName().toString();
+            case FRIENDSHIP -> pokemon.getFriendship();
+            case OT_NAME, OWNER_NAME ->
+                    pokemon.getOwnerPlayer() != null ? pokemon.getOwnerPlayer().getName().getString() : "无";
+            case OT_UUID, OWNER_UUID -> pokemon.getOwnerUUID() != null ? pokemon.getOwnerUUID().toString() : "无";
+            case HP -> pokemon.getHp();
+            case ATTACK -> pokemon.getAttack();
+            case DEFENCE -> pokemon.getDefence();
+            case SPECIAL_ATTACK -> pokemon.getSpecialAttack();
+            case SPECIAL_DEFENCE -> pokemon.getSpecialDefence();
+            case SPEED -> pokemon.getSpeed();
+            case IV_HP -> pokemon.getIvs().get(Stats.HP);
+            case IV_ATTACK -> pokemon.getIvs().get(Stats.ATTACK);
+            case IV_DEFENCE -> pokemon.getIvs().get(Stats.DEFENCE);
+            case IV_SPECIAL_ATTACK -> pokemon.getIvs().get(Stats.SPECIAL_ATTACK);
+            case IV_SPECIAL_DEFENCE -> pokemon.getIvs().get(Stats.SPECIAL_DEFENCE);
+            case IV_SPEED -> pokemon.getIvs().get(Stats.SPEED);
+            case IV_TOTAL -> getIvTotal(pokemon);
+            case IV_PERCENTAGE -> String.format("%.2f", (getIvTotal(pokemon) / 186.0) * 100).replace(".00", "");
+            case EV_HP -> pokemon.getEvs().get(Stats.HP);
+            case EV_ATTACK -> pokemon.getEvs().get(Stats.ATTACK);
+            case EV_DEFENCE -> pokemon.getEvs().get(Stats.DEFENCE);
+            case EV_SPECIAL_ATTACK -> pokemon.getEvs().get(Stats.SPECIAL_ATTACK);
+            case EV_SPECIAL_DEFENCE -> pokemon.getEvs().get(Stats.SPECIAL_DEFENCE);
+            case EV_SPEED -> pokemon.getEvs().get(Stats.SPEED);
+            case EV_TOTAL -> getEvTotal(pokemon);
+            case EV_PERCENTAGE -> String.format("%.2f", (getEvTotal(pokemon) / 510.0) * 100).replace(".00", "");
+            case SPEC_HP -> pokemon.getForm().getBaseStats().get(Stats.HP);
+            case SPEC_ATTACK -> pokemon.getForm().getBaseStats().get(Stats.ATTACK);
+            case SPEC_DEFENCE -> pokemon.getForm().getBaseStats().get(Stats.DEFENCE);
+            case SPEC_SPECIAL_ATTACK -> pokemon.getForm().getBaseStats().get(Stats.SPECIAL_ATTACK);
+            case SPEC_SPECIAL_DEFENCE -> pokemon.getForm().getBaseStats().get(Stats.SPECIAL_DEFENCE);
+            case SPEC_SPEED -> pokemon.getForm().getBaseStats().get(Stats.SPEED);
+            case MOVE_1 -> {
+                Move move = pokemon.getMoveSet().get(0);
+                yield move != null ? move.getDisplayName().getString() : "无";
+            }
+            case MOVE_2 -> {
+                Move move = pokemon.getMoveSet().get(1);
+                yield move != null ? move.getDisplayName().getString() : "无";
+            }
+            case MOVE_3 -> {
+                Move move = pokemon.getMoveSet().get(2);
+                yield move != null ? move.getDisplayName().getString() : "无";
+            }
+            case MOVE_4 -> {
+                Move move = pokemon.getMoveSet().get(3);
+                yield move != null ? move.getDisplayName().getString() : "无";
+            }
+            case LEGENDARY -> (pokemon.isLegendary() || pokemon.isMythical()) ? "是" : "否";
+            case ULTRA_BEAST -> pokemon.isUltraBeast() ? "是" : "否";
+            case TRADEABLE -> pokemon.hasLabels("untradeable") ? "否" : "是"; //此方法需要验证
+            case BREEDABLE -> pokemon.hasLabels("unbreedable") ? "否" : "是";
+            case CATCHABLE -> pokemon.hasLabels("uncatchable") ? "否" : "是";
+            case FORM -> pokemon.getForm().getName();
+        };
+    }
+
+    private int getIvTotal(@NotNull Pokemon pokemon) {
+        return Objects.requireNonNull(pokemon.getIvs().get(Stats.HP)) + Objects.requireNonNull(pokemon.getIvs().get(Stats.ATTACK)) + Objects.requireNonNull(pokemon.getIvs().get(Stats.DEFENCE)) + Objects.requireNonNull(pokemon.getIvs().get(Stats.SPECIAL_ATTACK)) + Objects.requireNonNull(pokemon.getIvs().get(Stats.SPECIAL_DEFENCE)) + Objects.requireNonNull(pokemon.getIvs().get(Stats.SPEED));
+    }
+
+    private int getEvTotal(@NotNull Pokemon pokemon) {
+        return Objects.requireNonNull(pokemon.getEvs().get(Stats.HP)) + Objects.requireNonNull(pokemon.getEvs().get(Stats.ATTACK)) + Objects.requireNonNull(pokemon.getEvs().get(Stats.DEFENCE)) + Objects.requireNonNull(pokemon.getEvs().get(Stats.SPECIAL_ATTACK)) + Objects.requireNonNull(pokemon.getEvs().get(Stats.SPECIAL_DEFENCE)) + Objects.requireNonNull(pokemon.getEvs().get(Stats.SPEED));
     }
 
 

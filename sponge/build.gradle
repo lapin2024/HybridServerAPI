@@ -12,6 +12,10 @@ minecraft {
     mappings channel: 'parchment', version: '2022.03.06-1.16.5'
 }
 
+java {
+    archivesBaseName = 'SpongeServerAPI'
+}
+
 repositories {
     maven {
         name = 'sponge-repo'
@@ -23,6 +27,7 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.39'
     compileOnly fg.deobf("com.github.yyeerai:Pixelmon:1.16.5-9.1.11-server")
     compileOnly 'org.spongepowered:spongeapi:8.2.0'
-    compileOnly("io.github.miniplaceholders:miniplaceholders-api:2.2.3")
-    //compileOnly 'org.spongepowered:spongeapi:8.2.0:source'
+    compileOnly 'org.spongepowered:spongeapi:8.2.0:javadoc'
+    compileOnly 'org.spongepowered:spongeapi:8.2.0:sources'
+    compileOnly 'io.github.miniplaceholders:miniplaceholders-api:2.2.3'
 }

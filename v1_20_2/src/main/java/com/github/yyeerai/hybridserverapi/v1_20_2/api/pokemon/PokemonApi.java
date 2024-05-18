@@ -1,6 +1,7 @@
 package com.github.yyeerai.hybridserverapi.v1_20_2.api.pokemon;
 
 import com.github.yyeerai.hybridserverapi.common.colour.HexUtils;
+import com.github.yyeerai.hybridserverapi.common.enums.EnumPokeAttribute;
 import com.github.yyeerai.hybridserverapi.common.yaml.ConfigManager;
 import com.github.yyeerai.hybridserverapi.common.yaml.RegisterConfig;
 import com.github.yyeerai.hybridserverapi.v1_20_2.api.BaseApi;
@@ -9,6 +10,9 @@ import com.pixelmonmod.api.pokemon.PokemonSpecification;
 import com.pixelmonmod.api.pokemon.PokemonSpecificationProxy;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.api.pokemon.PokemonFactory;
+import com.pixelmonmod.pixelmon.api.pokemon.stats.BattleStatsType;
+import com.pixelmonmod.pixelmon.api.pokemon.stats.extraStats.LakeTrioStats;
+import com.pixelmonmod.pixelmon.api.pokemon.stats.extraStats.MewStats;
 import com.pixelmonmod.pixelmon.api.storage.PCStorage;
 import com.pixelmonmod.pixelmon.api.storage.PlayerPartyStorage;
 import com.pixelmonmod.pixelmon.api.storage.StorageProxy;
@@ -29,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 /**
  * 宝可梦API
@@ -45,7 +50,7 @@ public class PokemonApi {
     }
 
     public static PokemonApi getInstance() {
-        if(POKEMON_API == null){
+        if (POKEMON_API == null) {
             POKEMON_API = new PokemonApi();
         }
         return POKEMON_API;
@@ -60,9 +65,9 @@ public class PokemonApi {
     @Nullable
     public Pokemon getPokemon(String pokemonSpec) {
         ParseAttempt<PokemonSpecification> pokemonSpecificationParseAttempt = PokemonSpecificationProxy.create(pokemonSpec);
-        if(pokemonSpecificationParseAttempt.wasSuccess()) {
+        if (pokemonSpecificationParseAttempt.wasSuccess()) {
             return pokemonSpecificationParseAttempt.get().create();
-        }else {
+        } else {
             return null;
         }
     }
@@ -157,7 +162,7 @@ public class PokemonApi {
     private Map<String, Object> getAttributes(Pokemon pokemon) {
         Map<String, Object> map = new HashMap<>();
         for (EnumPokeAttribute value : EnumPokeAttribute.values()) {
-            Object attribute = value.getAttribute(pokemon);
+            Object attribute = getAttribute(value, pokemon);
             if (attribute != null) {
                 map.put(value.name(), attribute);
             }
@@ -168,6 +173,7 @@ public class PokemonApi {
     /**
      * 获得带有宝可梦信息的照片
      * 配置文件: api/config.yml
+     *
      * @param pokemon 宝可梦
      * @return 带有宝可梦信息的照片的物品堆
      */
@@ -203,6 +209,91 @@ public class PokemonApi {
         itemMeta.setLore(lore);
         photo.setItemMeta(itemMeta);
         return photo;
+    }
+
+    public Object getAttribute(EnumPokeAttribute attribute, Pokemon pokemon) {
+        return switch (attribute) {
+            case UUID -> pokemon.getUUID();
+            case SPECIES -> pokemon.getSpecies().getName();
+            case DISPLAY_NAME -> pokemon.getFormattedDisplayName().getString();
+            case NICKNAME ->
+                    pokemon.getFormattedNickname() != null ? pokemon.getFormattedNickname().getString() : pokemon.getFormattedDisplayName().getString();
+            case LOCALIZED_NAME -> pokemon.getLocalizedName();
+            case DEX_NUMBER -> pokemon.getSpecies().getDex();
+            case LEVEL -> pokemon.getPokemonLevel();
+            case SHINY -> pokemon.isShiny() ? "是" : "否";
+            case ABILITY -> pokemon.getAbility().getTranslatedName().getString();
+            case GROWTH -> pokemon.getGrowth().getTranslatedName().getString();
+            case NATURE -> pokemon.getNature().getTranslatedName().getString();
+            case MINT_NATURE ->
+                    (pokemon.getMintNature() != null ? pokemon.getMintNature().getTranslatedName().getString() : "无");
+            case GENDER -> pokemon.getGender().getTranslatedName().getString();
+            case HELD_ITEM -> BaseApi.getBukkitItemStack(pokemon.getHeldItem()).getType().toString();
+            case POKEBALL -> pokemon.getBall().getTranslatedLidName().getString();
+            case FRIENDSHIP -> pokemon.getFriendship();
+            case OT_NAME -> pokemon.getOriginalTrainer() != null ? pokemon.getOriginalTrainer() : "无";
+            case OT_UUID ->
+                    pokemon.getOriginalTrainerUUID() != null ? pokemon.getOriginalTrainerUUID().toString() : "无";
+            case OWNER_NAME -> pokemon.getOwnerName();
+            case OWNER_UUID -> pokemon.getOwnerPlayerUUID() != null ? pokemon.getOwnerPlayerUUID().toString() : "无";
+            case CUSTOM_TEXTURE ->
+                    pokemon.getPalette() != null ? pokemon.getPalette().getTranslatedName().getString() : "无";
+            case EGG -> pokemon.isEgg() ? "是" : "否";
+            case EGG_GROUP ->
+                    pokemon.getForm().getEggGroups().stream().map(s -> s.getTranslatedName().getString()).collect(Collectors.toList());
+            case NUM_CLONED ->
+                    pokemon.getExtraStats() instanceof MewStats ? ((MewStats) pokemon.getExtraStats()).numCloned : "不能克隆";
+            case NUM_ENCHANTED ->
+                    pokemon.getExtraStats() instanceof LakeTrioStats ? ((LakeTrioStats) pokemon.getExtraStats()).numEnchanted : "不能附魔";
+            case HP -> pokemon.getStats().getHP();
+            case ATTACK -> pokemon.getStats().getAttack();
+            case DEFENCE -> pokemon.getStats().getDefense();
+            case SPECIAL_ATTACK -> pokemon.getStats().getSpecialAttack();
+            case SPECIAL_DEFENCE -> pokemon.getStats().getSpecialDefense();
+            case SPEED -> pokemon.getStats().getSpeed();
+            case IV_HP -> pokemon.getIVs().getStat(BattleStatsType.HP);
+            case IV_ATTACK -> pokemon.getIVs().getStat(BattleStatsType.ATTACK);
+            case IV_DEFENCE -> pokemon.getIVs().getStat(BattleStatsType.DEFENSE);
+            case IV_SPECIAL_ATTACK -> pokemon.getIVs().getStat(BattleStatsType.SPECIAL_ATTACK);
+            case IV_SPECIAL_DEFENCE -> pokemon.getIVs().getStat(BattleStatsType.SPECIAL_DEFENSE);
+            case IV_SPEED -> pokemon.getIVs().getStat(BattleStatsType.SPEED);
+            case IV_TOTAL -> pokemon.getIVs().getTotal();
+            case IV_PERCENTAGE -> String.format("%.2f", pokemon.getIVs().getTotal() / 186.0 * 100.0).replace(".00", "");
+            case EV_HP -> pokemon.getEVs().getStat(BattleStatsType.HP);
+            case EV_ATTACK -> pokemon.getEVs().getStat(BattleStatsType.ATTACK);
+            case EV_DEFENCE -> pokemon.getEVs().getStat(BattleStatsType.DEFENSE);
+            case EV_SPECIAL_ATTACK -> pokemon.getEVs().getStat(BattleStatsType.SPECIAL_ATTACK);
+            case EV_SPECIAL_DEFENCE -> pokemon.getEVs().getStat(BattleStatsType.SPECIAL_DEFENSE);
+            case EV_SPEED -> pokemon.getEVs().getStat(BattleStatsType.SPEED);
+            case EV_TOTAL -> pokemon.getEVs().getTotal();
+            case EV_PERCENTAGE -> String.format("%.2f", pokemon.getEVs().getTotal() / 510.0 * 100.0).replace(".00", "");
+            case HT_HP -> pokemon.getIVs().isHyperTrained(BattleStatsType.HP) ? 31 : 0;
+            case HT_ATTACK -> pokemon.getIVs().isHyperTrained(BattleStatsType.ATTACK) ? 31 : 0;
+            case HT_DEFENCE -> pokemon.getIVs().isHyperTrained(BattleStatsType.DEFENSE) ? 31 : 0;
+            case HT_SPECIAL_ATTACK -> pokemon.getIVs().isHyperTrained(BattleStatsType.SPECIAL_ATTACK) ? 31 : 0;
+            case HT_SPECIAL_DEFENCE -> pokemon.getIVs().isHyperTrained(BattleStatsType.SPECIAL_DEFENSE) ? 31 : 0;
+            case HT_SPEED -> pokemon.getIVs().isHyperTrained(BattleStatsType.SPEED) ? 31 : 0;
+            case SPEC_HP -> pokemon.getForm().getBattleStats().getStat(BattleStatsType.HP);
+            case SPEC_ATTACK -> pokemon.getForm().getBattleStats().getStat(BattleStatsType.ATTACK);
+            case SPEC_DEFENCE -> pokemon.getForm().getBattleStats().getStat(BattleStatsType.DEFENSE);
+            case SPEC_SPECIAL_ATTACK -> pokemon.getForm().getBattleStats().getStat(BattleStatsType.SPECIAL_ATTACK);
+            case SPEC_SPECIAL_DEFENCE -> pokemon.getForm().getBattleStats().getStat(BattleStatsType.SPECIAL_DEFENSE);
+            case SPEC_SPEED -> pokemon.getForm().getBattleStats().getStat(BattleStatsType.SPEED);
+            case MOVE_1 ->
+                    (pokemon.getMoveset().get(0) != null ? pokemon.getMoveset().get(0).getMove().getTranslatedName().getString() : "无");
+            case MOVE_2 ->
+                    (pokemon.getMoveset().get(1) != null ? pokemon.getMoveset().get(1).getMove().getTranslatedName().getString() : "无");
+            case MOVE_3 ->
+                    (pokemon.getMoveset().get(2) != null ? pokemon.getMoveset().get(2).getMove().getTranslatedName().getString() : "无");
+            case MOVE_4 ->
+                    (pokemon.getMoveset().get(3) != null ? pokemon.getMoveset().get(3).getMove().getTranslatedName().getString() : "无");
+            case LEGENDARY -> (pokemon.isLegendary() || pokemon.isMythical()) ? "是" : "否";
+            case ULTRA_BEAST -> pokemon.isUltraBeast() ? "是" : "否";
+            case TRADEABLE -> pokemon.hasFlag("untradeable") ? "否" : "是";
+            case BREEDABLE -> pokemon.hasFlag("unbreedable") ? "否" : "是";
+            case CATCHABLE -> pokemon.hasFlag("uncatchable") ? "否" : "是";
+            case FORM -> pokemon.getForm().getLocalizedName();
+        };
     }
 
 

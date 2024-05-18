@@ -16,14 +16,18 @@
       {
         "id": "spongeapi",
         "version": "8.2.0"
+      },
+      {
+        "id": "miniplaceholders",
+        "version": "2.2.4"
       }
     ]
   },
   "plugins": [
     {
-      "id": "hybridserverapi",
-      "name": "HybridServerAPI",
-      "entrypoint": "com.github.yyeerai.sponge.hybridserverapi.HybridServerAPI",
+      "id": "spongeserverapi",
+      "name": "SpongeServerAPI",
+      "entrypoint": "com.github.yyeerai.spongeserverapi.SpongeServerAPI",
       "description": "支持sponge开发的api包括一部分宝可梦模组的api"
     }
   ]

@@ -1,4 +1,4 @@
-package com.github.yyeerai.sponge.hybridserverapi;
+package com.github.yyeerai.spongeserverapi;
 
 import com.pixelmonmod.pixelmon.api.storage.PCStorage;
 import com.pixelmonmod.pixelmon.api.storage.PlayerPartyStorage;
@@ -44,8 +44,9 @@ public class PokemonAPI {
 
     public static void registerPokemonPlaceHolder() {
         Expansion.Builder builder = Expansion.builder("lps");
-        builder.filter(ServerPlayer.class)
-                .audiencePlaceholder("partySize",(audience, queue, ctx) -> {
+        builder
+                .filter(ServerPlayer.class)
+                .audiencePlaceholder("partySize", (audience, queue, ctx) -> {
                     ServerPlayer player = (ServerPlayer) audience;
                     return Tag.inserting(Component.text(getInstance().getPartyStorage(player).uuid.toString()));
                 });
