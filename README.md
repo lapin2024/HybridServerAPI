@@ -185,7 +185,7 @@ public void test() {
 }
 ```
 
-### Pixelmon mod API
+## Pixelmon mod API
 
 本api封装了Pixelmon mod的一些常用方法,使用方法如下:
 
