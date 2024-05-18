@@ -189,13 +189,11 @@ public void test() {
 
 本api封装了Pixelmon mod的一些常用方法,使用方法如下:
 
-#### 类介绍
-
 `PokemonApi` 是一个宝可梦API类，提供了一系列的宝可梦相关的方法。
 
-#### 方法介绍
+### 方法介绍
 
-##### getInstance()
+#### getInstance()
 
 获取 `PokemonApi` 的实例。这个方法实现了单例模式，保证了全局只有一个 `PokemonApi` 的实例。
 
@@ -203,7 +201,7 @@ public void test() {
 public static PokemonApi getInstance();
 ```
 
-##### getPokemon(String pokemonSpec)
+#### getPokemon(String pokemonSpec)
 
 从宝可梦字符串构建宝可梦。这个方法接受一个宝可梦的规格字符串，然后创建一个对应的宝可梦对象。
 
@@ -211,7 +209,7 @@ public static PokemonApi getInstance();
 public Pokemon getPokemon(String pokemonSpec);
 ```
 
-##### getPokemon(NBTTagCompound nbtTagCompound)
+#### getPokemon(NBTTagCompound nbtTagCompound)
 
 从宝可梦NBT构建宝可梦。这个方法接受一个宝可梦的NBT标签，然后创建一个对应的宝可梦对象。
 
@@ -219,7 +217,7 @@ public Pokemon getPokemon(String pokemonSpec);
 public Pokemon getPokemon(NBTTagCompound nbtTagCompound);
 ```
 
-##### getPlayerPartyStorage(OfflinePlayer player)
+#### getPlayerPartyStorage(OfflinePlayer player)
 
 获得玩家宝可梦队伍。这个方法接受一个玩家对象，然后返回这个玩家的宝可梦队伍。 已经过时，建议使用getPartyStorage方法。
 
@@ -229,7 +227,7 @@ public Pokemon getPokemon(NBTTagCompound nbtTagCompound);
 public PlayerPartyStorage getPlayerPartyStorage(OfflinePlayer player);
 ```
 
-##### getPartyStorage(OfflinePlayer player)
+#### getPartyStorage(OfflinePlayer player)
 
 获得玩家宝可梦队伍。这个方法接受一个玩家对象，然后返回这个玩家的宝可梦队伍。
 
@@ -237,7 +235,7 @@ public PlayerPartyStorage getPlayerPartyStorage(OfflinePlayer player);
 public PlayerPartyStorage getPartyStorage(OfflinePlayer player);
 ```
 
-##### getPCStorage(OfflinePlayer player)
+#### getPCStorage(OfflinePlayer player)
 
 获得玩家宝可梦仓库。这个方法接受一个玩家对象，然后返回这个玩家的宝可梦仓库。
 
@@ -245,7 +243,7 @@ public PlayerPartyStorage getPartyStorage(OfflinePlayer player);
 public PCStorage getPCStorage(OfflinePlayer player);
 ```
 
-##### getPokemonPhoto(Pokemon pokemon)
+#### getPokemonPhoto(Pokemon pokemon)
 
 获得宝可梦的照片。这个方法接受一个宝可梦对象，然后返回这个宝可梦的照片。
 
@@ -253,7 +251,7 @@ public PCStorage getPCStorage(OfflinePlayer player);
 public ItemStack getPokemonPhoto(Pokemon pokemon);
 ```
 
-##### getPokemonGlowPhoto(Pokemon pokemon)
+#### getPokemonGlowPhoto(Pokemon pokemon)
 
 获得宝可梦的照片(发光)。这个方法接受一个宝可梦对象，然后返回这个宝可梦的照片，这个照片会发光。
 
@@ -261,7 +259,7 @@ public ItemStack getPokemonPhoto(Pokemon pokemon);
 public ItemStack getPokemonGlowPhoto(Pokemon pokemon);
 ```
 
-##### removePokemonFromParty(OfflinePlayer player, Pokemon pokemon);
+#### removePokemonFromParty(OfflinePlayer player, Pokemon pokemon)
 
 删除玩家宝可梦队伍中的宝可梦。这个方法接受一个玩家对象和一个宝可梦对象，然后从玩家的宝可梦队伍中删除这个宝可梦。
 
@@ -269,7 +267,7 @@ public ItemStack getPokemonGlowPhoto(Pokemon pokemon);
 public boolean removePokemonFromParty(OfflinePlayer player, Pokemon pokemon);
 ```
 
-##### removePokemonFromPc(OfflinePlayer player, Pokemon pokemon)
+#### removePokemonFromPc(OfflinePlayer player, Pokemon pokemon)
 
 删除玩家宝可梦仓库中的宝可梦。这个方法接受一个玩家对象和一个宝可梦对象，然后从玩家的宝可梦仓库中删除这个宝可梦。
 
@@ -277,7 +275,7 @@ public boolean removePokemonFromParty(OfflinePlayer player, Pokemon pokemon);
 public boolean removePokemonFromPc(OfflinePlayer player, Pokemon pokemon);
 ```
 
-##### getMaxIv(Pokemon pokemon)
+#### getMaxIv(Pokemon pokemon)
 
 获得宝可梦是几v的。这个方法接受一个宝可梦对象，然后返回这个宝可梦的IV值的数量。
 
@@ -285,7 +283,7 @@ public boolean removePokemonFromPc(OfflinePlayer player, Pokemon pokemon);
 public int getMaxIv(Pokemon pokemon);
 ```
 
-##### getAttributes(Pokemon pokemon)
+#### getAttributes(Pokemon pokemon)
 
 获得宝可梦的属性。这个方法接受一个宝可梦对象，然后返回这个宝可梦的属性map。
 
@@ -293,7 +291,7 @@ public int getMaxIv(Pokemon pokemon);
 public Map<EnumPokeAttribute, Object> getAttributes(Pokemon pokemon);
 ```
 
-##### getPokemonPhotoInfo(Pokemon pokemon)
+#### getPokemonPhotoInfo(Pokemon pokemon)
 
 获得带有宝可梦信息的照片。这个方法接受一个宝可梦对象，然后返回这个宝可梦的照片，这个照片上会有宝可梦的信息。格式可以再api/config.yml中设置
 
@@ -301,7 +299,7 @@ public Map<EnumPokeAttribute, Object> getAttributes(Pokemon pokemon);
 public ItemStack getPokemonPhotoInfo(Pokemon pokemon);
 ```
 
-##### getPokemonPhotoInfo(Pokemon pokemon, String name, List<String> lore)
+#### getPokemonPhotoInfo(Pokemon pokemon, String name, List lore)
 
 获得带有宝可梦信息的照片，可以自定义名称和描述。这个方法接受一个宝可梦对象，一个自定义的名称和一个自定义的描述，然后返回这个宝可梦的照片，这个照片上会有宝可梦的信息，名称和描述是自定义的。
 
@@ -309,7 +307,7 @@ public ItemStack getPokemonPhotoInfo(Pokemon pokemon);
 public ItemStack getPokemonPhotoInfo(Pokemon pokemon, String name, List<String> lore);
 ```
 
-##### getAttribute(EnumPokeAttribute attribute, Pokemon pokemon)
+#### getAttribute(EnumPokeAttribute attribute, Pokemon pokemon)
 
 通过属性获取宝可梦的属性值。这个方法接受一个属性和一个宝可梦对象，然后返回这个宝可梦的这个属性的值。
 
@@ -341,9 +339,7 @@ public void test(Player player) {
 
 本API提供了Pokemon mod的一些,这些变量可以被PlaceholderAPI解析:
 
-#### 变量
-
-##### 属性列表
+### 变量
 
 | 属性                                   | 说明                                               |
 |--------------------------------------|--------------------------------------------------|
@@ -386,9 +382,9 @@ public void test(Player player) {
 | %hsa_partyegg%                       | 队伍中宝可梦的蛋数量                                       |
 | %hsa_info_[slot]_[信息名称]%             | 指定队伍位置的宝可梦的指定信息                                  |
 
-## 信息名称列表
+### 信息名称列表
 
-```
+```text
   name: 宝可梦名称
   level,type, form, growth,nature, mintnature, ability,gender(等级,类型,形态, 体型,性格, 薄荷性格,特性,性别)
   evhp,evattack,evdefence,evsattack,evsdefence,evspeed,evtotal,(努力值)
@@ -399,9 +395,3 @@ public void test(Player player) {
   friendship(亲密度),helditem(携带道具),palette(精灵皮肤)
 
 ```
-
-## 数据库连接池
-
-## json解析器
-
-## 网络请求工具
