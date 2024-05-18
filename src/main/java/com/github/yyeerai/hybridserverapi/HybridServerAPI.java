@@ -4,6 +4,7 @@ package com.github.yyeerai.hybridserverapi;
 import com.github.yyeerai.hybridserverapi.common.broadcast.*;
 import com.github.yyeerai.hybridserverapi.common.javascriptparse.Util;
 import com.github.yyeerai.hybridserverapi.common.menu.api.RegisterService;
+import com.github.yyeerai.hybridserverapi.common.uiapi.InventoryClick;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
@@ -30,6 +31,7 @@ public class HybridServerAPI extends JavaPlugin {
         registerPokemonAPI();
         registerBroadcast();
         new Metrics(this, 21871);
+        new InventoryClick(this);
     }
 
     @Override
