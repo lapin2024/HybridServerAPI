@@ -14,7 +14,6 @@ import com.pixelmonmod.pixelmon.entities.pixelmon.stats.extraStats.LakeTrioStats
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.extraStats.MewStats;
 import com.pixelmonmod.pixelmon.items.ItemPixelmonSprite;
 import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
-import lombok.Getter;
 import net.minecraft.nbt.NBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -25,6 +24,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 /**
  * 宝可梦API类，提供了一系列的宝可梦相关的方法
  */
-@Getter
 @SuppressWarnings("unused")
 public class PokemonApi {
 
@@ -42,11 +41,18 @@ public class PokemonApi {
 
     /**
      * 构造函数，初始化配置管理器和宝可梦API实例
+     * 这个构造函数是私有的，因为这个类使用了单例模式。要获取这个类的实例，应该使用getInstance()方法。
      */
     private PokemonApi() {
         configManager = RegisterConfig.registerConfig((JavaPlugin) Bukkit.getPluginManager().getPlugin("HybridServerAPI"), "api/config.yml", false);
     }
 
+    /**
+     * 获取PokemonApi的实例
+     * 这个方法实现了单例模式，保证了全局只有一个PokemonApi的实例。
+     *
+     * @return PokemonApi的实例
+     */
     public static PokemonApi getInstance() {
         if (POKEMON_API == null) {
             POKEMON_API = new PokemonApi();
@@ -56,9 +62,10 @@ public class PokemonApi {
 
     /**
      * 从宝可梦字符串构建宝可梦
+     * 这个方法接受一个宝可梦的规格字符串，然后创建一个对应的宝可梦对象。
      *
      * @param pokemonSpec 宝可梦字符串
-     * @return 宝可梦
+     * @return 宝可梦对象，如果规格字符串无效，则返回null
      */
     public Pokemon getPokemon(String pokemonSpec) {
         PokemonSpec pokemonSpecification = PokemonSpec.from(pokemonSpec);
@@ -70,9 +77,10 @@ public class PokemonApi {
 
     /**
      * 从宝可梦NBT构建宝可梦
+     * 这个方法接受一个宝可梦的NBT标签，然后创建一个对应的宝可梦对象。
      *
      * @param nbtTagCompound 宝可梦NBT
-     * @return 宝可梦
+     * @return 宝可梦对象
      */
     public Pokemon getPokemon(NBTTagCompound nbtTagCompound) {
         return Pixelmon.pokemonFactory.create(nbtTagCompound);
@@ -80,6 +88,7 @@ public class PokemonApi {
 
     /**
      * 获得玩家宝可梦队伍
+     * 这个方法接受一个玩家对象，然后返回这个玩家的宝可梦队伍。
      *
      * @param player 玩家
      * @return 宝可梦队伍
@@ -91,6 +100,7 @@ public class PokemonApi {
 
     /**
      * 获得玩家宝可梦队伍
+     * 这个方法接受一个玩家对象，然后返回这个玩家的宝可梦队伍。
      *
      * @param player 玩家
      * @return 宝可梦队伍
@@ -101,6 +111,7 @@ public class PokemonApi {
 
     /**
      * 获得玩家宝可梦仓库
+     * 这个方法接受一个玩家对象，然后返回这个玩家的宝可梦仓库。
      *
      * @param player 玩家
      * @return 宝可梦仓库
@@ -111,6 +122,7 @@ public class PokemonApi {
 
     /**
      * 获得宝可梦的照片
+     * 这个方法接受一个宝可梦对象，然后返回这个宝可梦的照片。
      *
      * @param pokemon 宝可梦
      * @return 宝可梦照片
@@ -126,6 +138,7 @@ public class PokemonApi {
 
     /**
      * 获得宝可梦的照片(发光)
+     * 这个方法接受一个宝可梦对象，然后返回这个宝可梦的照片，这个照片会发光。
      *
      * @param pokemon 宝可梦
      * @return 宝可梦照片
@@ -141,10 +154,53 @@ public class PokemonApi {
     }
 
     /**
+     * 删除玩家宝可梦队伍中的宝可梦
+     * 这个方法接受一个玩家对象和一个宝可梦对象，然后从玩家的宝可梦队伍中删除这个宝可梦。
+     *
+     * @param player  玩家
+     * @param pokemon 宝可梦
+     * @return 如果成功删除，返回true，否则返回false
+     */
+    public boolean removePokemonFromParty(OfflinePlayer player, Pokemon pokemon) {
+        PlayerPartyStorage partyStorage = getPartyStorage(player);
+        for (int i = 0; i < partyStorage.getAll().length; i++) {
+            Pokemon pokemon1 = partyStorage.get(i);
+            if (pokemon1 != null && pokemon1.getUUID().equals(pokemon.getUUID())) {
+                partyStorage.set(i, null);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 删除玩家宝可梦仓库中的宝可梦
+     * 这个方法接受一个玩家对象和一个宝可梦对象，然后从玩家的宝可梦仓库中删除这个宝可梦。
+     *
+     * @param player  玩家
+     * @param pokemon 宝可梦
+     * @return 如果成功删除，返回true，否则返回false
+     */
+    public boolean removePokemonFromPc(OfflinePlayer player, Pokemon pokemon) {
+        PCStorage pcStorage = getPCStorage(player);
+        for (int i = 0; i < pcStorage.getBoxCount(); i++) {
+            for (int j = 0; j < 30; j++) {
+                Pokemon pokemon1 = pcStorage.getBox(i).get(j);
+                if (pokemon1 != null && pokemon1.getUUID().equals(pokemon.getUUID())) {
+                    pcStorage.getBox(i).set(j, null);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * 获得宝可梦是几v的
+     * 这个方法接受一个宝可梦对象，然后返回这个宝可梦的IV值的数量。
      *
      * @param pokemon 宝可梦
-     * @return 宝可梦是几v的
+     * @return 宝可梦的IV值的数量
      */
     public int getMaxIv(Pokemon pokemon) {
         int maxIv = 0;
@@ -158,11 +214,12 @@ public class PokemonApi {
 
     /**
      * 获取宝可梦的属性
+     * 这个方法接受一个宝可梦对象，然后返回这个宝可梦的所有属性的映射。
      *
      * @param pokemon 宝可梦
      * @return 宝可梦的属性映射
      */
-    private Map<String, Object> getAttributes(Pokemon pokemon) {
+    public Map<String, Object> getAttributes(Pokemon pokemon) {
         Map<String, Object> map = new HashMap<>();
         for (EnumPokeAttribute value : EnumPokeAttribute.values()) {
             Object attribute = getAttribute(value, pokemon);
@@ -176,6 +233,7 @@ public class PokemonApi {
 
     /**
      * 获得带有宝可梦信息的照片
+     * 这个方法接受一个宝可梦对象，然后返回这个宝可梦的照片，这个照片上会有宝可梦的信息。
      * 配置文件: api/config.yml
      *
      * @param pokemon 宝可梦
@@ -186,7 +244,7 @@ public class PokemonApi {
         ItemMeta itemMeta = photo.hasItemMeta() ? photo.getItemMeta() : Bukkit.getItemFactory().getItemMeta(photo.getType());
         assert itemMeta != null;
         String name = configManager.getConfig().getString("sprite.name", "&f&l{DISPLAY_NAME} &7Lv.&e{LEVEL}");
-        List<String> lore = configManager.getConfig().getStringList("sprite.lore");
+        List<String> lore = configManager.getConfig().getStringList("sprite.lore", new ArrayList<>());
         Map<String, Object> attributes = getAttributes(pokemon);
         for (String key : attributes.keySet()) {
             String value = attributes.get(key).toString();
@@ -201,6 +259,7 @@ public class PokemonApi {
 
     /**
      * 获得带有宝可梦信息的照片，可以自定义名称和描述
+     * 这个方法接受一个宝可梦对象，一个自定义的名称和一个自定义的描述，然后返回这个宝可梦的照片，这个照片上会有宝可梦的信息，名称和描述是自定义的。
      *
      * @param pokemon 宝可梦
      * @param name    自定义名称
@@ -224,7 +283,8 @@ public class PokemonApi {
     }
 
     /**
-     * 通过属性获取宝可梦的属性
+     * 通过属性获取宝可梦的属性值
+     * 这个方法接受一个属性和一个宝可梦对象，然后返回这个宝可梦的这个属性的值。
      *
      * @param attribute 属性
      * @param pokemon   宝可梦

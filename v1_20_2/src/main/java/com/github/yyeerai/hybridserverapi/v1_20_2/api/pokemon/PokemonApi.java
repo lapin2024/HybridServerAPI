@@ -121,6 +121,7 @@ public class PokemonApi {
         net.minecraft.world.item.ItemStack photo = SpriteItemHelper.getPhoto(pokemon);
         ItemStack itemStack = BaseApi.getBukkitItemStack(photo);
         ItemMeta itemMeta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemStack.getType());
+        assert itemMeta != null;
         itemMeta.setDisplayName(ChatColor.GREEN + pokemon.getFormattedDisplayName().getString());
         itemStack.setItemMeta(itemMeta);
         return itemStack;
@@ -144,6 +145,48 @@ public class PokemonApi {
     }
 
     /**
+     * 删除玩家宝可梦队伍中的宝可梦
+     * 这个方法接受一个玩家对象和一个宝可梦对象，然后从玩家的宝可梦队伍中删除这个宝可梦。
+     *
+     * @param player  玩家
+     * @param pokemon 宝可梦
+     * @return 如果成功删除，返回true，否则返回false
+     */
+    public boolean removePokemonFromParty(OfflinePlayer player, Pokemon pokemon) {
+        PlayerPartyStorage partyStorage = getPartyStorage(player);
+        for (int i = 0; i < partyStorage.getAll().length; i++) {
+            Pokemon pokemon1 = partyStorage.get(i);
+            if (pokemon1 != null && pokemon1.getUUID().equals(pokemon.getUUID())) {
+                partyStorage.set(i, null);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 删除玩家宝可梦仓库中的宝可梦
+     * 这个方法接受一个玩家对象和一个宝可梦对象，然后从玩家的宝可梦仓库中删除这个宝可梦。
+     *
+     * @param player  玩家
+     * @param pokemon 宝可梦
+     * @return 如果成功删除，返回true，否则返回false
+     */
+    public boolean removePokemonFromPc(OfflinePlayer player, Pokemon pokemon) {
+        PCStorage pcStorage = getPCStorage(player);
+        for (int i = 0; i < pcStorage.getBoxCount(); i++) {
+            for (int j = 0; j < 30; j++) {
+                Pokemon pokemon1 = pcStorage.getBox(i).get(j);
+                if (pokemon1 != null && pokemon1.getUUID().equals(pokemon.getUUID())) {
+                    pcStorage.getBox(i).set(j, null);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * 获得宝可梦是几v的
      *
      * @param pokemon 宝可梦
@@ -159,7 +202,7 @@ public class PokemonApi {
         return maxIv;
     }
 
-    private Map<String, Object> getAttributes(Pokemon pokemon) {
+    public Map<String, Object> getAttributes(Pokemon pokemon) {
         Map<String, Object> map = new HashMap<>();
         for (EnumPokeAttribute value : EnumPokeAttribute.values()) {
             Object attribute = getAttribute(value, pokemon);
@@ -289,6 +332,7 @@ public class PokemonApi {
                     (pokemon.getMoveset().get(3) != null ? pokemon.getMoveset().get(3).getMove().getTranslatedName().getString() : "无");
             case LEGENDARY -> (pokemon.isLegendary() || pokemon.isMythical()) ? "是" : "否";
             case ULTRA_BEAST -> pokemon.isUltraBeast() ? "是" : "否";
+            case HIDE_ABILITY -> pokemon.getAbilitySlot() == 2 ? "是" : "否";
             case TRADEABLE -> pokemon.hasFlag("untradeable") ? "否" : "是";
             case BREEDABLE -> pokemon.hasFlag("unbreedable") ? "否" : "是";
             case CATCHABLE -> pokemon.hasFlag("uncatchable") ? "否" : "是";

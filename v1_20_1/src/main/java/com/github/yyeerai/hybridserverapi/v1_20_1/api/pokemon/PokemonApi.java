@@ -137,6 +137,34 @@ public class PokemonApi {
     }
 
     /**
+     * 删除玩家宝可梦队伍中的宝可梦
+     * 这个方法接受一个玩家对象和一个宝可梦对象，然后从玩家的宝可梦队伍中删除这个宝可梦。
+     *
+     * @param player  玩家
+     * @param pokemon 宝可梦
+     * @return 如果成功删除，返回true，否则返回false
+     */
+    public boolean removePokemonFromParty(OfflinePlayer player, Pokemon pokemon) {
+        PlayerPartyStore partyStorage = getPartyStorage(player);
+        partyStorage.remove(pokemon);
+        return true;
+    }
+
+    /**
+     * 删除玩家宝可梦仓库中的宝可梦
+     * 这个方法接受一个玩家对象和一个宝可梦对象，然后从玩家的宝可梦仓库中删除这个宝可梦。
+     *
+     * @param player  玩家
+     * @param pokemon 宝可梦
+     * @return 如果成功删除，返回true，否则返回false
+     */
+    public boolean removePokemonFromPc(OfflinePlayer player, Pokemon pokemon) {
+        PCStore pcStorage = getPCStorage(player);
+        pcStorage.remove(pokemon);
+        return true;
+    }
+
+    /**
      * 获得宝可梦是几v的
      *
      * @param pokemon 宝可梦
@@ -157,7 +185,7 @@ public class PokemonApi {
         return maxIv;
     }
 
-    private Map<String, Object> getAttributes(Pokemon pokemon) {
+    public Map<String, Object> getAttributes(Pokemon pokemon) {
         Map<String, Object> map = new HashMap<>();
         for (EnumPokeAttribute value : EnumPokeAttribute.values()) {
             Object attribute = getAttribute(value, pokemon);

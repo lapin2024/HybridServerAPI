@@ -95,13 +95,13 @@ public class PapiHook extends PlaceholderExpansion {
         if (player == null) return "null";
 
         if (params.startsWith("wins") || params.startsWith("losses") || params.startsWith("totalbattle") || params.startsWith("totalexp") || params.startsWith("totalkills") || params.startsWith("currentexp") || params.startsWith("currentkills") || params.startsWith("totalbred") || params.startsWith("totalhatched") || params.startsWith("totalevolved") || params.startsWith("seen") || params.startsWith("caught") || params.startsWith("size") || params.startsWith("percent") || params.startsWith("percent_format") || params.startsWith("pokemoney")) {
-            return getPartyRust(main.getPokemonApi().getPlayerPartyStorage(player), params);
+            return getPartyRust(main.getPokemonApi().getPartyStorage(player), params);
         }
         if (params.startsWith("haspokemon") || params.startsWith("original_haspokemon") || params.startsWith("name") || params.startsWith("localname") || params.startsWith("nickname") || params.startsWith("form") || params.startsWith("original") || params.startsWith("egggroup") || params.startsWith("isegg") || params.startsWith("eggcycles") || params.startsWith("shiny") || params.startsWith("pokeball") || params.startsWith("cantrade") || params.startsWith("canbreed") || params.startsWith("customtexture") || params.startsWith("pokedex") || params.startsWith("move") || params.startsWith("islegendary") || params.startsWith("isultrabeast") || params.startsWith("partysize") || params.startsWith("partyegg") || params.startsWith("pcsize") || params.startsWith("pcegg")) {
-            return getPlayerPokemonRust(main.getPokemonApi().getPlayerPartyStorage(player), params);
+            return getPlayerPokemonRust(main.getPokemonApi().getPartyStorage(player), params);
         }
         if (params.startsWith("info")) {
-            return getPokemonInfoRust(main.getPokemonApi().getPlayerPartyStorage(player), params);
+            return getPokemonInfoRust(main.getPokemonApi().getPartyStorage(player), params);
         }
         return "null";
     }

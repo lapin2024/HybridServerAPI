@@ -17,7 +17,6 @@ public void test() {
 ```java
 public void test() {
     HexUtils.colorify("<r>我是彩虹"); //<r>标签可以填入过度速度比如<r:0.5>
-    HexUtils.legacyColorify("<g:#000000:#FFFFFF>渐变文字");
 }
 ```
 
@@ -76,7 +75,8 @@ public void test() {
 forge事件还可以使用注解方式监听
 
 ```java
-@ForgeEventListener(value = LegendarySpawnEvent.DoSpawn.class,priority = EventPriority.HIGHEST)
+
+@ForgeEventListener(value = LegendarySpawnEvent.DoSpawn.class, priority = EventPriority.HIGHEST)
 public void test(LegendarySpawnEvent.DoSpawn event) {
     plugin.getLogger().info("刷新的神兽是: " + event.getLegendary().getLocalizedName());
 }
@@ -91,7 +91,7 @@ public void test(LegendarySpawnEvent.DoSpawn event) {
   第二个参数为事件总线(宝可梦就使用Pixelmon.EVENT_BUS,forge自带的事件就使用MinecraftForge.EVENT_BUS)
  */
 public void onEnable() {
-    ForgeEventListenerProcessor.register(this,Pixelmon.EVENT_BUS);
+    ForgeEventListenerProcessor.register(this, Pixelmon.EVENT_BUS);
 }
 ```
 
@@ -102,7 +102,7 @@ public void onEnable() {
 一个简单的随机选择器使用方法
 
 ```java
-public void test(){
+public void test() {
     RandomSelector<String> randomSelector = RandomSelector.uniform(Arrays.asList("a", "b", "c"));
     String pick = randomSelector.pick();
     System.out.println(pick);
@@ -134,7 +134,7 @@ public class RandomString implements Weighted {
 使用方法:
 
 ```java
-public void test(){
+public void test() {
     List<RandomString> randomStrings = new ArrayList<>();
     RandomSelector<RandomString> randomSelector = RandomSelector.weighted(randomStrings);
     RandomString pick = randomSelector.pick();
@@ -145,7 +145,6 @@ public void test(){
 ### 菜单构建器
 
 菜单构建器它可以帮助你快速实现构建一个菜单
-
 
 一个简单的菜单构建器使用方法
 
@@ -176,7 +175,7 @@ public void createMenu(Player player) {
 ```java
 public void test() {
     // 创建配置文件管理器,如果文件不存在则新建
-    ConfigManager configManager = RegisterConfig.registerConfig(plugin, "test.yml",true);
+    ConfigManager configManager = RegisterConfig.registerConfig(plugin, "test.yml", true);
     // 获取配置文件
     YamlDocument config = configManager.getConfig();
     //写入数据
@@ -190,18 +189,132 @@ public void test() {
 
 本api封装了Pixelmon mod的一些常用方法,使用方法如下:
 
+## 类介绍
+
+`PokemonApi` 是一个宝可梦API类，提供了一系列的宝可梦相关的方法。
+
+## 方法介绍
+
+### getInstance()
+
+获取 `PokemonApi` 的实例。这个方法实现了单例模式，保证了全局只有一个 `PokemonApi` 的实例。
+
 ```java
-public void test(Player player) {
-    //从字符串创建一个pokemon 对象
-    Pokemon pokemon = pokemonApi.getPokemon("Mew");
-    //获得Pokemon照片
-    ItemStack pokemonPhoto = pokemonApi.getPokemonPhoto(pokemon);
-    //获得玩家的宝可梦队伍
-    PlayerPartyStorage playerPartyStorage = pokemonApi.getPlayerPartyStorage(player);
-    //获得玩家的宝可梦PC
-    PCStorage playerPCStorage = pokemonApi.getPCStorage(player);
-    //更多API请查看PokemonApi类
-}
+public static PokemonApi getInstance();
+```
+
+### getPokemon(String pokemonSpec)
+
+从宝可梦字符串构建宝可梦。这个方法接受一个宝可梦的规格字符串，然后创建一个对应的宝可梦对象。
+
+```java
+public Pokemon getPokemon(String pokemonSpec);
+```
+
+### getPokemon(NBTTagCompound nbtTagCompound)
+
+从宝可梦NBT构建宝可梦。这个方法接受一个宝可梦的NBT标签，然后创建一个对应的宝可梦对象。
+
+```java
+public Pokemon getPokemon(NBTTagCompound nbtTagCompound);
+```
+
+### getPlayerPartyStorage(OfflinePlayer player)
+
+获得玩家宝可梦队伍。这个方法接受一个玩家对象，然后返回这个玩家的宝可梦队伍。 已经过时，建议使用getPartyStorage方法。
+
+```java
+
+@Deprecated
+public PlayerPartyStorage getPlayerPartyStorage(OfflinePlayer player);
+```
+
+### getPartyStorage(OfflinePlayer player)
+
+获得玩家宝可梦队伍。这个方法接受一个玩家对象，然后返回这个玩家的宝可梦队伍。
+
+```java
+public PlayerPartyStorage getPartyStorage(OfflinePlayer player);
+```
+
+### getPCStorage(OfflinePlayer player)
+
+获得玩家宝可梦仓库。这个方法接受一个玩家对象，然后返回这个玩家的宝可梦仓库。
+
+```java
+public PCStorage getPCStorage(OfflinePlayer player);
+```
+
+### getPokemonPhoto(Pokemon pokemon)
+
+获得宝可梦的照片。这个方法接受一个宝可梦对象，然后返回这个宝可梦的照片。
+
+```java
+public ItemStack getPokemonPhoto(Pokemon pokemon);
+```
+
+### getPokemonGlowPhoto(Pokemon pokemon)
+
+获得宝可梦的照片(发光)。这个方法接受一个宝可梦对象，然后返回这个宝可梦的照片，这个照片会发光。
+
+```java
+public ItemStack getPokemonGlowPhoto(Pokemon pokemon);
+```
+
+### removePokemonFromParty(OfflinePlayer player, Pokemon pokemon);
+
+删除玩家宝可梦队伍中的宝可梦。这个方法接受一个玩家对象和一个宝可梦对象，然后从玩家的宝可梦队伍中删除这个宝可梦。
+
+```java
+public boolean removePokemonFromParty(OfflinePlayer player, Pokemon pokemon);
+```
+
+### removePokemonFromPc(OfflinePlayer player, Pokemon pokemon)
+
+删除玩家宝可梦仓库中的宝可梦。这个方法接受一个玩家对象和一个宝可梦对象，然后从玩家的宝可梦仓库中删除这个宝可梦。
+
+```java
+public boolean removePokemonFromPc(OfflinePlayer player, Pokemon pokemon);
+```
+
+### getMaxIv(Pokemon pokemon)
+
+获得宝可梦是几v的。这个方法接受一个宝可梦对象，然后返回这个宝可梦的IV值的数量。
+
+```java
+public int getMaxIv(Pokemon pokemon);
+```
+
+### getAttributes(Pokemon pokemon)
+
+获得宝可梦的属性。这个方法接受一个宝可梦对象，然后返回这个宝可梦的属性map。
+
+```java
+public Map<EnumPokeAttribute, Object> getAttributes(Pokemon pokemon);
+```
+
+### getPokemonPhotoInfo(Pokemon pokemon)
+
+获得带有宝可梦信息的照片。这个方法接受一个宝可梦对象，然后返回这个宝可梦的照片，这个照片上会有宝可梦的信息。
+
+```java
+public ItemStack getPokemonPhotoInfo(Pokemon pokemon);
+```
+
+### getPokemonPhotoInfo(Pokemon pokemon, String name, List<String> lore)
+
+获得带有宝可梦信息的照片，可以自定义名称和描述。这个方法接受一个宝可梦对象，一个自定义的名称和一个自定义的描述，然后返回这个宝可梦的照片，这个照片上会有宝可梦的信息，名称和描述是自定义的。
+
+```java
+public ItemStack getPokemonPhotoInfo(Pokemon pokemon, String name, List<String> lore);
+```
+
+### getAttribute(EnumPokeAttribute attribute, Pokemon pokemon)
+
+通过属性获取宝可梦的属性值。这个方法接受一个属性和一个宝可梦对象，然后返回这个宝可梦的这个属性的值。
+
+```java
+private Object getAttribute(EnumPokeAttribute attribute, Pokemon pokemon);
 ```
 
 ### 基础API
@@ -292,5 +405,3 @@ public void test(Player player) {
 ### json解析器
 
 ### 网络请求工具
-
-### sponge Configurate
