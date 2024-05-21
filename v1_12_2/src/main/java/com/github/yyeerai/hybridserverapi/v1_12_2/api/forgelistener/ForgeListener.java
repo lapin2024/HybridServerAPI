@@ -31,7 +31,7 @@ public class ForgeListener<E extends Event> implements IEventListener {
      * @param consumer   事件处理器
      * @param priority   事件优先级
      */
-    public ForgeListener(EventBus bus, Class<E> eventClass, Consumer<E> consumer, EventPriority priority) {
+    protected ForgeListener(EventBus bus, Class<E> eventClass, Consumer<E> consumer, EventPriority priority) {
         this.bus = bus;
         this.eventClass = eventClass;
         this.consumer = consumer;
@@ -69,13 +69,14 @@ public class ForgeListener<E extends Event> implements IEventListener {
      * 注册事件
      */
 
-    public void register() {
+    protected void register() {
         try {
             Constructor<E> ctr = getEventClass().getConstructor();
             ctr.setAccessible(true);
             Event event = ctr.newInstance();
             event.getListenerList().register(ForgeListener.getBusId(this.bus), this.getPriority(), this);
-        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException |
+                 InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }
@@ -83,7 +84,7 @@ public class ForgeListener<E extends Event> implements IEventListener {
     /**
      * 取消注册事件
      */
-    public void unregister() {
+    protected void unregister() {
         ListenerList.unregisterAll(ForgeListener.getBusId(this.bus), this);
     }
 

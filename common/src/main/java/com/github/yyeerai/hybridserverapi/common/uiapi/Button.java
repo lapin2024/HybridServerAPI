@@ -88,7 +88,7 @@ public class Button {
          * @param buttonHandle IButtonHandle对象
          * @return Builder对象，用于链式调用
          */
-        public Builder iButton(IButtonHandle buttonHandle) {
+        public Builder handle(IButtonHandle buttonHandle) {
             this.buttonHandle = buttonHandle;
             return this;
         }

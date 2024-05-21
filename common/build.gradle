@@ -13,6 +13,7 @@ dependencies {
     compileOnly "com.github.yyeerai:Spigot:1.16.5-build3096a"
     compileOnly "com.github.yyeerai:Spigot:1.12.2-build1573k"
     myConfig 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+    myConfig "dev.dejvokep:boosted-yaml:1.3.4"
 
     //myConfig 'com.squareup.okhttp3:okhttp:4.12.0'
     //myConfig 'com.alibaba:fastjson:2.0.28'

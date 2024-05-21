@@ -44,7 +44,7 @@ public class PokemonApi {
      * 这个构造函数是私有的，因为这个类使用了单例模式。要获取这个类的实例，应该使用getInstance()方法。
      */
     private PokemonApi() {
-        configManager = RegisterConfig.registerConfig((JavaPlugin) Bukkit.getPluginManager().getPlugin("HybridServerAPI"), "api/config.yml", false);
+        configManager = RegisterConfig.registerConfig((JavaPlugin) Bukkit.getPluginManager().getPlugin("HybridServerAPI"), "api/config.yml", ConfigManager.CreateType.RELEASE);
     }
 
     /**

@@ -47,53 +47,50 @@ public void test() {
 HybridAPI为基于Bukkit的提供了一个动态事件订阅器，无需实现Listener接口
 您可以使用一行简单的代码来订阅事件
 
-```java
-public void test() {
-    BukkitEvents.subscribe(this, PlayerJoinEvent.class, EventPriority.MONITOR).handler(event -> event.getPlayer().sendMessage(HexUtils.legacyColorify("&a还原来到本服务器!")));
-}
-```
+### ForgeEventListenerProcessor 类
 
-同样本api也为混合端Forge事件提供了一个动态事件订阅器，无需关心使用的是什么服务端,它可以支持所有基于forge + bukkit实现的服务端
+此类用于处理带有 `@ForgeEventListener` 注解的监听器方法。
 
-```java
-public void test() {
-    ForgeEvents.subscribe(Pixelmon.EVENT_BUS, LegendarySpawnEvent.DoSpawn.class, EventPriority.HIGH).handler(event -> System.out.println("刷新了" + event.getLegendary().getLocalizedName()));
-}
-```
+#### 方法
 
-事件订阅器还支持条件过滤
-比如这样
+##### `register(Object listener, EventBus eventBus)`
 
-```java
-public void test() {
-    BukkitEvents.subscribe(plugin, PlayerJoinEvent.class)
-            .filter(event -> event.getPlayer().getName().equals("yyeerai"))
-            .handler(event -> event.getPlayer().sendMessage("你好"));
-}
-```
+此方法用于注册带有 `@ForgeEventListener` 注解的监听器对象。此方法已过时，建议使用带有 `Plugin` 参数的方法。
 
-forge事件还可以使用注解方式监听
+参数：
 
-```java
+- `listener`：带有 `@ForgeEventListener` 注解的监听器对象
+- `eventBus`：事件总线，例如 `MinecraftForge.EVENT_BUS`
 
-@ForgeEventListener(value = LegendarySpawnEvent.DoSpawn.class, priority = EventPriority.HIGHEST)
-public void test(LegendarySpawnEvent.DoSpawn event) {
-    plugin.getLogger().info("刷新的神兽是: " + event.getLegendary().getLocalizedName());
-}
-```
+##### `register(Plugin plugin, Object listener, EventBus eventBus)`
 
-注解方式需要注册,请在插件的onEnable方法中调用
+此方法用于注册带有 `@ForgeEventListener` 注解的监听器对象，并将其关联到特定的插件。
 
-```java
-/*
-  注册forge事件
-  第一个参数为带有@ForgeEventListener注解的方法所在的类实例
-  第二个参数为事件总线(宝可梦就使用Pixelmon.EVENT_BUS,forge自带的事件就使用MinecraftForge.EVENT_BUS)
- */
-public void onEnable() {
-    ForgeEventListenerProcessor.register(this, Pixelmon.EVENT_BUS);
-}
-```
+参数：
+
+- `plugin`：插件
+- `listener`：带有 `@ForgeEventListener` 注解的监听器对象
+- `eventBus`：事件总线，例如 `MinecraftForge.EVENT_BUS`
+
+##### `unregister(Object listener)`
+
+此方法用于取消注册指定的监听器。
+
+参数：
+
+- `listener`：监听器对象
+
+##### `unregisterAll()`
+
+此方法用于取消注册所有已注册的监听器。
+
+##### `unregisterAll(Plugin plugin)`
+
+此方法用于取消注册指定插件的所有监听器。
+
+参数：
+
+- `plugin`：插件
 
 ## 随机选择器
 

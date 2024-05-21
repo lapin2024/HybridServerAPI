@@ -46,7 +46,7 @@ public class PokemonApi {
     public static PokemonApi POKEMON_API;
 
     private PokemonApi() {
-        configManager = RegisterConfig.registerConfig((JavaPlugin) Bukkit.getPluginManager().getPlugin("HybridServerAPI"), "api/config.yml", false);
+        configManager = RegisterConfig.registerConfig((JavaPlugin) Bukkit.getPluginManager().getPlugin("HybridServerAPI"), "api/config.yml", ConfigManager.CreateType.RELEASE);
     }
 
     public static PokemonApi getInstance() {

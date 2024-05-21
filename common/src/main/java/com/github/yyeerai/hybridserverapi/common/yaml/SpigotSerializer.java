@@ -1,6 +1,6 @@
 package com.github.yyeerai.hybridserverapi.common.yaml;
 
-import com.github.yyeerai.hybridserverapi.common.yaml.boostedyaml.utils.supplier.MapSupplier;
+import dev.dejvokep.boostedyaml.utils.supplier.MapSupplier;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.jetbrains.annotations.NotNull;
