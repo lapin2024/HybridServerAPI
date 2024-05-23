@@ -329,6 +329,9 @@ public class PokemonApi {
             case EGG:
                 return pokemon.isEgg() ? "是" : "否";
             case EGG_GROUP:
+                if (pokemon.getBaseStats().getEggGroups() == null){
+                    return "无";
+                }
                 return pokemon.getBaseStats().getEggGroups().stream().map(Enum::name).collect(Collectors.toList());
             case NUM_CLONED:
                 return pokemon.getExtraStats() instanceof MewStats ? ((MewStats) pokemon.getExtraStats()).numCloned : "不能克隆";

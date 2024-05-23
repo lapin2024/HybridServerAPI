@@ -283,7 +283,7 @@ public class PokemonApi {
                     pokemon.getPalette() != null ? pokemon.getPalette().getTranslatedName().getString() : "无";
             case EGG -> pokemon.isEgg() ? "是" : "否";
             case EGG_GROUP ->
-                    pokemon.getForm().getEggGroups().stream().map(s -> s.getTranslatedName().getString()).collect(Collectors.toList());
+                    pokemon.getForm().getEggGroups() != null ? pokemon.getForm().getEggGroups().stream().map(e -> e.getTranslatedName().getString()).collect(Collectors.joining(", ")) : "无";
             case NUM_CLONED ->
                     pokemon.getExtraStats() instanceof MewStats ? ((MewStats) pokemon.getExtraStats()).numCloned : "不能克隆";
             case NUM_ENCHANTED ->
