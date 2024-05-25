@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +37,20 @@ public class MenuInventory implements InventoryHolder {
     public MenuInventory(Player player, String title, List<String> layout, Map<Integer, PageButton> pageButtonMap) {
         this.player = player;
         this.inventory = Bukkit.createInventory(this, layout.size(), title);
+        // 布局
+        this.pageButtonMap = pageButtonMap;
+    }
+
+    /**
+     * 构造函数
+     * @param player 玩家
+     * @param title 标题
+     * @param size 大小
+     * @param pageButtonMap 页数按钮映射
+     */
+    public MenuInventory(Player player, String title, int size, Map<Integer, PageButton> pageButtonMap) {
+        this.player = player;
+        this.inventory = Bukkit.createInventory(this, size, title);
         // 布局
         this.pageButtonMap = pageButtonMap;
     }
@@ -78,10 +93,10 @@ public class MenuInventory implements InventoryHolder {
      * 根据插槽位置获取按钮，如果按钮存在，则处理点击事件
      * @param slot 插槽
      */
-    public void handleClick(int slot) {
+    public void handleClick(InventoryClickEvent event, int slot) {
         Button button = buttonMap.get(slot);
         if (button != null) {
-            button.handle();
+            button.handle(event);
         }
     }
 

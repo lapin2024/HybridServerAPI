@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -31,9 +32,9 @@ public class Button {
     /**
      * 处理按钮的行为
      */
-    public void handle() {
+    public void handle(InventoryClickEvent event) {
         if (buttonHandle != null) {
-            buttonHandle.handle();
+            buttonHandle.handle(event);
         }
     }
 
