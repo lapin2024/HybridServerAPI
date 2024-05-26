@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 宝可梦API类，提供了一系列的宝可梦相关的方法
@@ -329,10 +328,13 @@ public class PokemonApi {
             case EGG:
                 return pokemon.isEgg() ? "是" : "否";
             case EGG_GROUP:
-                if (pokemon.getBaseStats().getEggGroups() == null){
+                if (pokemon.getBaseStats() == null) {
                     return "无";
                 }
-                return pokemon.getBaseStats().getEggGroups().stream().map(Enum::name).collect(Collectors.toList());
+                if(pokemon.getBaseStats().getEggGroups() == null || pokemon.getBaseStats().getEggGroups().isEmpty()){
+                    return "无";
+                }
+                return pokemon.getBaseStats().getEggGroups().toString();
             case NUM_CLONED:
                 return pokemon.getExtraStats() instanceof MewStats ? ((MewStats) pokemon.getExtraStats()).numCloned : "不能克隆";
             case NUM_ENCHANTED:
@@ -404,17 +406,17 @@ public class PokemonApi {
             case HT_SPEED:
                 return pokemon.getIVs().isHyperTrained(StatsType.Speed) ? 31 : 0;
             case SPEC_HP:
-                return pokemon.getBaseStats().getStat(StatsType.HP);
+                return pokemon.getBaseStats() != null ? pokemon.getBaseStats().getStat(StatsType.HP) : 0;
             case SPEC_ATTACK:
-                return pokemon.getBaseStats().getStat(StatsType.Attack);
+                return pokemon.getBaseStats() != null ? pokemon.getBaseStats().getStat(StatsType.Attack) : 0;
             case SPEC_DEFENCE:
-                return pokemon.getBaseStats().getStat(StatsType.Defence);
+                return pokemon.getBaseStats() != null ? pokemon.getBaseStats().getStat(StatsType.Defence) : 0;
             case SPEC_SPECIAL_ATTACK:
-                return pokemon.getBaseStats().getStat(StatsType.SpecialAttack);
+                return pokemon.getBaseStats() != null ? pokemon.getBaseStats().getStat(StatsType.SpecialAttack) : 0;
             case SPEC_SPECIAL_DEFENCE:
-                return pokemon.getBaseStats().getStat(StatsType.SpecialDefence);
+                return pokemon.getBaseStats() != null ? pokemon.getBaseStats().getStat(StatsType.SpecialDefence) : 0;
             case SPEC_SPEED:
-                return pokemon.getBaseStats().getStat(StatsType.Speed);
+                return pokemon.getBaseStats() != null ? pokemon.getBaseStats().getStat(StatsType.Speed) : 0;
             case MOVE_1:
                 return (pokemon.getMoveset().get(0) != null ? pokemon.getMoveset().get(0).getMove().getLocalizedName() : "无");
             case MOVE_2:

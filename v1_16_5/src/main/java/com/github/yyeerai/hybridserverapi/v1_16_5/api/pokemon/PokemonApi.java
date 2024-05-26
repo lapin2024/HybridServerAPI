@@ -302,7 +302,7 @@ public class PokemonApi {
             case EGG:
                 return pokemon.isEgg() ? "是" : "否";
             case EGG_GROUP:
-                if(pokemon.getForm().getEggGroups() == null){
+                if(pokemon.getForm().getEggGroups() == null || pokemon.getForm().getEggGroups().isEmpty()){
                     return "无";
                 }
                 return pokemon.getForm().getEggGroups().stream().map(ITranslatable::getLocalizedName).collect(Collectors.toList());

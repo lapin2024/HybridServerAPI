@@ -17,6 +17,7 @@ import java.util.Map;
  * 菜单库存类，实现了库存持有者接口
  * 这个类用于管理玩家的菜单UI
  */
+@SuppressWarnings("unused")
 public class MenuInventory implements InventoryHolder {
 
     private final Player player;  // 玩家
@@ -29,9 +30,10 @@ public class MenuInventory implements InventoryHolder {
 
     /**
      * 构造函数
-     * @param player 玩家
-     * @param title 标题
-     * @param layout 布局
+     *
+     * @param player        玩家
+     * @param title         标题
+     * @param layout        布局
      * @param pageButtonMap 页数按钮映射
      */
     public MenuInventory(Player player, String title, List<String> layout, Map<Integer, PageButton> pageButtonMap) {
@@ -43,9 +45,10 @@ public class MenuInventory implements InventoryHolder {
 
     /**
      * 构造函数
-     * @param player 玩家
-     * @param title 标题
-     * @param size 大小
+     *
+     * @param player        玩家
+     * @param title         标题
+     * @param size          大小
      * @param pageButtonMap 页数按钮映射
      */
     public MenuInventory(Player player, String title, int size, Map<Integer, PageButton> pageButtonMap) {
@@ -69,7 +72,7 @@ public class MenuInventory implements InventoryHolder {
             currentPage = pageButtonMap.size();
         }
         PageButton buttonMap = pageButtonMap.getOrDefault(currentPage, null);
-        if(buttonMap == null) {
+        if (buttonMap == null) {
             return;
         }
         PageButton pageButton = pageButtonMap.get(currentPage);
@@ -91,6 +94,7 @@ public class MenuInventory implements InventoryHolder {
     /**
      * 处理点击
      * 根据插槽位置获取按钮，如果按钮存在，则处理点击事件
+     *
      * @param slot 插槽
      */
     public void handleClick(InventoryClickEvent event, int slot) {
@@ -102,10 +106,48 @@ public class MenuInventory implements InventoryHolder {
 
     /**
      * 获取库存
+     *
      * @return 库存
      */
     @Override
     public @NotNull Inventory getInventory() {
         return inventory;
     }
+
+
+    /**
+     * Builder类，用于创建MenuInventory对象
+     */
+    public static class Builder {
+        private Player player;
+        private String title;
+        private int size;
+        private Map<Integer, PageButton> pageButtonMap;
+
+        public Builder player(Player player) {
+            this.player = player;
+            return this;
+        }
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder size(int size) {
+            this.size = size;
+            return this;
+        }
+
+        public Builder pageButtonMap(Map<Integer, PageButton> pageButtonMap) {
+            this.pageButtonMap = pageButtonMap;
+            return this;
+        }
+
+        public MenuInventory build() {
+            return new MenuInventory(player, title, size, pageButtonMap);
+        }
+
+    }
+
 }
