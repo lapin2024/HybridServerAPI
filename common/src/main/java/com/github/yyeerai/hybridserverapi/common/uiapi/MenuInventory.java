@@ -97,10 +97,10 @@ public class MenuInventory implements InventoryHolder {
      *
      * @param slot 插槽
      */
-    public void handleClick(InventoryClickEvent event, int slot) {
+    public void handleClick(InventoryClickEvent event, MenuInventory menuInventory, int slot) {
         Button button = buttonMap.get(slot);
         if (button != null) {
-            button.handle(event);
+            button.handle(event, menuInventory);
         }
     }
 

@@ -20,7 +20,7 @@ public class InventoryClick implements Listener {
         if (event.getInventory().getHolder() instanceof MenuInventory) {
             event.setCancelled(true);
             MenuInventory menuInventory = (MenuInventory) event.getInventory().getHolder();
-            menuInventory.handleClick(event, event.getRawSlot());
+            menuInventory.handleClick(event, menuInventory, event.getRawSlot());
         }
     }
 

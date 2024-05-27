@@ -32,9 +32,9 @@ public class Button {
     /**
      * 处理按钮的行为
      */
-    public void handle(InventoryClickEvent event) {
+    public void handle(InventoryClickEvent event,MenuInventory menuInventory) {
         if (buttonHandle != null) {
-            buttonHandle.handle(event);
+            buttonHandle.handle(event,menuInventory);
         }
     }
 
