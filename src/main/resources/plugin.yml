@@ -4,6 +4,7 @@ main: com.github.yyeerai.hybridserverapi.HybridServerAPI
 api-version: 1.16
 depend:
   - PlaceholderAPI
+  - NBTAPI
 softdepend:
   - ProtocolLib
   - Vault

@@ -1,6 +1,9 @@
 package com.github.yyeerai.hybridserverapi.common.serializeitem;
 
 import com.github.yyeerai.hybridserverapi.common.colour.HexUtils;
+import com.github.yyeerai.hybridserverapi.common.util.NMSUtil;
+import de.tr7zw.nbtapi.NBT;
+import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -38,9 +41,9 @@ public class ItemUtil {
         ItemStack itemStack = new ItemStack(material, amount, (short) damage);
         if (args.containsKey("nbt")) {
             String nbt = (String) args.get("nbt");
-            if (nbt != null && !nbt.isEmpty()) {
-                itemStack = NbtUtil.setNbt(itemStack, nbt);
-            }
+            ReadWriteNBT readWriteNBT = NBT.itemStackToNBT(itemStack);
+            readWriteNBT.mergeCompound(NBT.parseNBT(nbt));
+            itemStack = NBT.itemStackFromNBT(readWriteNBT);
         }
         ItemMeta meta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemStack.getType());
         assert meta != null;
@@ -61,13 +64,15 @@ public class ItemUtil {
     public static Map<String, Object> serializeItemStack(ItemStack itemStack) {
         Map<String, Object> map = new HashMap<>();
         map.put("type", itemStack.getType().name());
-        map.put("damage", itemStack.getDurability());
+        if(NMSUtil.getVersionNumber() <= 13) {
+            map.put("damage", itemStack.getDurability());
+        }
         map.put("amount", itemStack.getAmount());
         ItemMeta meta = Optional.ofNullable(itemStack.getItemMeta())
                 .orElse(Bukkit.getItemFactory().getItemMeta(itemStack.getType()));
         Optional.ofNullable(meta.getDisplayName()).ifPresent(name -> map.put("name", name));
         Optional.ofNullable(meta.getLore()).ifPresent(lore -> map.put("lore", lore));
-        Optional.ofNullable(NbtUtil.getNbt(itemStack))
+        Optional.of(NBT.itemStackToNBT(itemStack))
                 .ifPresent(nbt -> map.put("nbt", nbt.toString()));
         return map;
     }
