@@ -5,7 +5,6 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 
 @Getter
 public class JavaScriptEngine {
