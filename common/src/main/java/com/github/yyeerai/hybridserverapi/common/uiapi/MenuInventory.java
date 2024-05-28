@@ -22,6 +22,7 @@ public class MenuInventory implements InventoryHolder {
 
     private final Player player;  // 玩家
     private final Inventory inventory;  // ui
+    @Getter
     private final Map<Integer, PageButton> pageButtonMap;  // 页数按钮映射
     private final Map<Integer, Button> buttonMap = new HashMap<>(); // 按钮映射
     @Getter
@@ -83,12 +84,19 @@ public class MenuInventory implements InventoryHolder {
     }
 
     /**
-     * 打开库存
+     * 打开ui界面
      * 先关闭玩家的库存，然后打开新的库存
      */
     public void open() {
         player.closeInventory();
         player.openInventory(inventory);
+    }
+
+    /**
+     * 关闭ui界面
+     */
+    public void close() {
+        player.closeInventory();
     }
 
     /**

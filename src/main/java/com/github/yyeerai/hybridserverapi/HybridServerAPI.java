@@ -2,15 +2,11 @@ package com.github.yyeerai.hybridserverapi;
 
 
 import com.github.yyeerai.hybridserverapi.common.broadcast.*;
-import com.github.yyeerai.hybridserverapi.common.javascriptparse.Util;
 import com.github.yyeerai.hybridserverapi.common.menu.api.RegisterService;
-import com.github.yyeerai.hybridserverapi.common.uiapi.Button;
 import com.github.yyeerai.hybridserverapi.common.uiapi.InventoryClick;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.event.HandlerList;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
@@ -41,13 +37,6 @@ public class HybridServerAPI extends JavaPlugin {
     public void onDisable() {
         HandlerList.unregisterAll(this);
         unregisterPokemonAPI();
-    }
-
-    @Override
-    public void onLoad() {
-        this.getLogger().info("HybridServerAPI已启动！");
-        Util util = new Util();
-        util.loadNashorn(this);
     }
 
     private void registerPokemonAPI() {

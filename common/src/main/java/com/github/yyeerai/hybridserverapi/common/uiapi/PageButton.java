@@ -11,7 +11,7 @@ import java.util.Map;
 @Getter
 public class PageButton {
 
-    private final Map<Integer,Button> buttonMap;
+    private final Map<Integer, Button> buttonMap; // 按钮映射, key为按钮的位置 slot , value为按钮对象 Button
 
     public PageButton(Map<Integer, Button> buttonMap) {
         this.buttonMap = buttonMap;

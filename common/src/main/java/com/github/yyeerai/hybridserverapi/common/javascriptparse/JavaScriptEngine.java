@@ -1,5 +1,6 @@
 package com.github.yyeerai.hybridserverapi.common.javascriptparse;
 
+import cn.hutool.script.ScriptUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 
@@ -13,9 +14,8 @@ public class JavaScriptEngine {
 
 
     static {
-        ScriptEngineManager manager = new ScriptEngineManager();
-        ENGINE = manager.getEngineByName("nashorn");
-        ENGINE.put("Bukkit", Bukkit.getServer());
+        ENGINE = ScriptUtil.getJsEngine();
+        ENGINE.put("Bukkit", Bukkit.getServer().broadcastMessage("Hello, world!"));
     }
 
 

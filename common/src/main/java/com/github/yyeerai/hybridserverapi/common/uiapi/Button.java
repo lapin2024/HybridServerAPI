@@ -1,6 +1,5 @@
 package com.github.yyeerai.hybridserverapi.common.uiapi;
 
-import lombok.Getter;
 import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
@@ -15,8 +14,6 @@ import java.util.List;
  */
 public class Button {
 
-    @Getter
-    private final int slot;
     // ItemStack对象，代表按钮
     private final ItemStack itemStack;
     // IButtonHandle对象，用于处理按钮的行为
@@ -24,8 +21,7 @@ public class Button {
     private IButtonHandle buttonHandle;
 
     // 私有构造函数，只能通过Builder创建Button对象
-    private Button(int slot, ItemStack itemStack) {
-        this.slot = slot;
+    private Button(ItemStack itemStack) {
         this.itemStack = itemStack;
     }
 
@@ -65,7 +61,6 @@ public class Button {
      * Button的构建者类，用于创建Button对象
      */
     public static class Builder {
-        private int slot;
         // ItemStack对象，代表按钮
         private ItemStack itemStack;
         // IButtonHandle对象，用于处理按钮的行为
@@ -77,8 +72,7 @@ public class Button {
          * @param itemStack ItemStack对象
          * @return Builder对象，用于链式调用
          */
-        public Builder itemStack(int slot, ItemStack itemStack) {
-            this.slot = slot;
+        public Builder itemStack(ItemStack itemStack) {
             this.itemStack = itemStack;
             return this;
         }
@@ -100,7 +94,7 @@ public class Button {
          * @return Button对象
          */
         public Button build() {
-            Button button = new Button(slot, itemStack);
+            Button button = new Button(itemStack);
             button.setButtonHandle(buttonHandle);
             return button;
         }
