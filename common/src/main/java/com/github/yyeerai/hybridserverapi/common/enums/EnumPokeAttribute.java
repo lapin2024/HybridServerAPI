@@ -136,6 +136,8 @@ public enum EnumPokeAttribute {
     MOVE_2,
     MOVE_3,
     MOVE_4,
+    TERASTAL_TYPE,
+    TERASTAL_INDEX,
     LEGENDARY,
     ULTRA_BEAST,
     HIDE_ABILITY,

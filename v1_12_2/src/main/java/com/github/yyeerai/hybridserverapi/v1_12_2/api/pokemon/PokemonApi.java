@@ -12,6 +12,7 @@ import com.pixelmonmod.pixelmon.api.storage.PCStorage;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.extraStats.LakeTrioStats;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.extraStats.MewStats;
+import com.pixelmonmod.pixelmon.enums.EnumType;
 import com.pixelmonmod.pixelmon.items.ItemPixelmonSprite;
 import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,6 +38,7 @@ public class PokemonApi {
 
     private final ConfigManager configManager;
     public static PokemonApi POKEMON_API;
+    private static final Map<Integer, EnumType> TYPE_MAP = new HashMap<>();
 
     /**
      * 构造函数，初始化配置管理器和宝可梦API实例
@@ -331,7 +333,7 @@ public class PokemonApi {
                 if (pokemon.getBaseStats() == null) {
                     return "无";
                 }
-                if(pokemon.getBaseStats().getEggGroups() == null || pokemon.getBaseStats().getEggGroups().isEmpty()){
+                if (pokemon.getBaseStats().getEggGroups() == null || pokemon.getBaseStats().getEggGroups().isEmpty()) {
                     return "无";
                 }
                 return pokemon.getBaseStats().getEggGroups().toString();
@@ -425,6 +427,12 @@ public class PokemonApi {
                 return (pokemon.getMoveset().get(2) != null ? pokemon.getMoveset().get(2).getMove().getLocalizedName() : "无");
             case MOVE_4:
                 return (pokemon.getMoveset().get(3) != null ? pokemon.getMoveset().get(3).getMove().getLocalizedName() : "无");
+            case TERASTAL_TYPE:
+                NBTTagCompound nbtTagCompound = pokemon.writeToNBT(new NBTTagCompound());
+                return nbtTagCompound.hasKey("TeraType") ? TYPE_MAP.getOrDefault(nbtTagCompound.getInteger("terastalType"), EnumType.Normal).getLocalizedName() : "无";
+            case TERASTAL_INDEX:
+                NBTTagCompound nbtTagCompound1 = pokemon.writeToNBT(new NBTTagCompound());
+                return nbtTagCompound1.hasKey("TeraType") ? nbtTagCompound1.getInteger("terastalIndex") + "" : "无";
             case LEGENDARY:
                 return pokemon.isLegendary() ? "是" : "否";
             case ULTRA_BEAST:
@@ -440,6 +448,27 @@ public class PokemonApi {
             default:
                 return null;
         }
+    }
+
+    static {
+        TYPE_MAP.put(1, EnumType.Normal);
+        TYPE_MAP.put(2, EnumType.Fire);
+        TYPE_MAP.put(3, EnumType.Water);
+        TYPE_MAP.put(4, EnumType.Grass);
+        TYPE_MAP.put(5, EnumType.Electric);
+        TYPE_MAP.put(6, EnumType.Ice);
+        TYPE_MAP.put(7, EnumType.Fighting);
+        TYPE_MAP.put(8, EnumType.Poison);
+        TYPE_MAP.put(9, EnumType.Ground);
+        TYPE_MAP.put(10, EnumType.Flying);
+        TYPE_MAP.put(11, EnumType.Psychic);
+        TYPE_MAP.put(12, EnumType.Bug);
+        TYPE_MAP.put(13, EnumType.Rock);
+        TYPE_MAP.put(14, EnumType.Ghost);
+        TYPE_MAP.put(15, EnumType.Dragon);
+        TYPE_MAP.put(16, EnumType.Dark);
+        TYPE_MAP.put(17, EnumType.Steel);
+        TYPE_MAP.put(18, EnumType.Fairy);
     }
 
 }

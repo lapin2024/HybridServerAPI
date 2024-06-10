@@ -251,7 +251,7 @@ public class PokemonApi {
             case EGG_GROUP ->
                     pokemon.getSpecies().getEggGroups().stream().map(EggGroup::getShowdownID$common).collect(Collectors.toList());
             case GROWTH, CUSTOM_TEXTURE, NUM_ENCHANTED, NUM_CLONED, HT_SPEED, HT_SPECIAL_DEFENCE,
-                 HT_SPECIAL_ATTACK, HT_DEFENCE, HT_ATTACK, HT_HP, EGG, HIDE_ABILITY -> "暂时不支持";
+                 HT_SPECIAL_ATTACK, HT_DEFENCE, HT_ATTACK, HT_HP, EGG, HIDE_ABILITY, TERASTAL_TYPE, TERASTAL_INDEX -> "暂时不支持";
             case NATURE -> pokemon.getNature().getDisplayName();
             case MINT_NATURE -> (pokemon.getMintedNature() != null ? pokemon.getMintedNature().getDisplayName() : "无");
             case GENDER -> pokemon.getGender().getShowdownName();

@@ -396,6 +396,9 @@ public class PokemonApi {
                 return (pokemon.getMoveset().get(2) != null ? pokemon.getMoveset().get(2).getMove().getLocalizedName() : "无");
             case MOVE_4:
                 return (pokemon.getMoveset().get(3) != null ? pokemon.getMoveset().get(3).getMove().getLocalizedName() : "无");
+            case TERASTAL_TYPE:
+            case TERASTAL_INDEX:
+                return "未知";
             case LEGENDARY:
                 return (pokemon.isLegendary() || pokemon.isMythical()) ? "是" : "否";
             case ULTRA_BEAST:

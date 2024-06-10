@@ -330,6 +330,7 @@ public class PokemonApi {
                     (pokemon.getMoveset().get(2) != null ? pokemon.getMoveset().get(2).getMove().getTranslatedName().getString() : "无");
             case MOVE_4 ->
                     (pokemon.getMoveset().get(3) != null ? pokemon.getMoveset().get(3).getMove().getTranslatedName().getString() : "无");
+            case TERASTAL_TYPE, TERASTAL_INDEX -> "未知";
             case LEGENDARY -> (pokemon.isLegendary() || pokemon.isMythical()) ? "是" : "否";
             case ULTRA_BEAST -> pokemon.isUltraBeast() ? "是" : "否";
             case HIDE_ABILITY -> pokemon.getAbilitySlot() == 2 ? "是" : "否";

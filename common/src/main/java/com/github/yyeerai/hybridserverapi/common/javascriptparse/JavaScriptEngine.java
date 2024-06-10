@@ -14,7 +14,7 @@ public class JavaScriptEngine {
 
     static {
         ENGINE = ScriptUtil.getJsEngine();
-        ENGINE.put("Bukkit", Bukkit.getServer().broadcastMessage("Hello, world!"));
+        ENGINE.put("Bukkit", Bukkit.getServer());
     }
 
 
