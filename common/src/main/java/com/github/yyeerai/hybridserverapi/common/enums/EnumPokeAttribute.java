@@ -64,6 +64,8 @@ package com.github.yyeerai.hybridserverapi.common.enums;
  * <li>MOVE_2: 宝可梦的技能2 (String)<li/>
  * <li>MOVE_3: 宝可梦的技能3 (String)<li/>
  * <li>MOVE_4: 宝可梦的技能4 (String)<li/>
+ * <li>TERASTAL_TYPE: 宝可梦的太晶化类型 (String)<li/>
+ * <li>TERASTAL_INDEX: 宝可梦的太晶化索引 (int)<li/>
  * <li>LEGENDARY: 宝可梦是否传说 (boolean)<li/>
  * <li>ULTRA_BEAST: 宝可梦是否究极异兽 (boolean)<li/>
  * <li>HIDE_ABILITY: 宝可梦是否隐藏特性 (boolean)<li/>

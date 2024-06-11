@@ -429,10 +429,10 @@ public class PokemonApi {
                 return (pokemon.getMoveset().get(3) != null ? pokemon.getMoveset().get(3).getMove().getLocalizedName() : "无");
             case TERASTAL_TYPE:
                 NBTTagCompound nbtTagCompound = pokemon.writeToNBT(new NBTTagCompound());
-                return nbtTagCompound.hasKey("TeraType") ? TYPE_MAP.getOrDefault(nbtTagCompound.getInteger("terastalType"), EnumType.Normal).getLocalizedName() : "无";
+                return nbtTagCompound.hasKey("Typess") ? TYPE_MAP.get(nbtTagCompound.getInteger("Typess")) != null ? TYPE_MAP.get(nbtTagCompound.getInteger("Typess")).getLocalizedName() : "无" : "无";
             case TERASTAL_INDEX:
                 NBTTagCompound nbtTagCompound1 = pokemon.writeToNBT(new NBTTagCompound());
-                return nbtTagCompound1.hasKey("TeraType") ? nbtTagCompound1.getInteger("terastalIndex") + "" : "无";
+                return nbtTagCompound1.hasKey("Typess") ? nbtTagCompound1.getInteger("Typess") + "" : "无";
             case LEGENDARY:
                 return pokemon.isLegendary() ? "是" : "否";
             case ULTRA_BEAST:
