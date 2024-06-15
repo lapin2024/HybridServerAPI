@@ -53,7 +53,7 @@ public class ForgeListener<E extends Event> implements IEventListener {
      * @param bus 事件总线
      * @return 事件总线id
      */
-    private static int getBusId(IEventBus bus) {
+    private int getBusId(IEventBus bus) {
         try {
             if (busId == null) {
                 busId = EventBus.class.getDeclaredField("busID");
@@ -82,7 +82,7 @@ public class ForgeListener<E extends Event> implements IEventListener {
             Constructor<E> ctr = getEventClass().getConstructor();
             ctr.setAccessible(true);
             Event event = ctr.newInstance();
-            event.getListenerList().register(ForgeListener.getBusId(this.bus), this.getPriority(), this);
+            event.getListenerList().register(getBusId(this.bus), this.getPriority(), this);
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException |
                  InvocationTargetException e) {
             throw new RuntimeException(e);
@@ -93,7 +93,7 @@ public class ForgeListener<E extends Event> implements IEventListener {
      * 取消注册事件
      */
     protected void unregister() {
-        ListenerList.unregisterAll(ForgeListener.getBusId(this.bus), this);
+        ListenerList.unregisterAll(getBusId(this.bus), this);
     }
 
     /**
@@ -103,9 +103,7 @@ public class ForgeListener<E extends Event> implements IEventListener {
      */
     @Override
     public void invoke(Event event) {
-        if (this.eventClass.isInstance(event)) {
-            this.on(this.eventClass.cast(event));
-        }
+        this.on(this.eventClass.cast(event));
     }
 
     /**

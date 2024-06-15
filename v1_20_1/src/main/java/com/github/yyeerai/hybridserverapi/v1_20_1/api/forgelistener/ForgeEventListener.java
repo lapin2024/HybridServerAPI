@@ -19,4 +19,5 @@ import java.lang.annotation.Target;
 public @interface ForgeEventListener {
     Class<?> value();
     EventPriority priority() default EventPriority.NORMAL;
+    boolean receiveCanceled() default false;
 }
