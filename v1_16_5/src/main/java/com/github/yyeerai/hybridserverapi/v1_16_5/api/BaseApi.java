@@ -205,7 +205,18 @@ public class BaseApi {
      * @return bukkit entity
      */
     @SuppressWarnings("all")
+    @Deprecated
     public static Entity getBukkitEntity(net.minecraft.entity.Entity entity, String world) {
+        return CraftEntity.getEntity(getCraftServer(), (net.minecraft.server.v1_16_R3.Entity) ((Object) entity));
+    }
+
+    /**
+     * 获得bukkit entity
+     * @param entity minecraft entity
+     * @return bukkit entity
+     */
+    @SuppressWarnings("all")
+    public static Entity getBukkitEntity(net.minecraft.entity.Entity entity) {
         return CraftEntity.getEntity(getCraftServer(), (net.minecraft.server.v1_16_R3.Entity) ((Object) entity));
     }
 

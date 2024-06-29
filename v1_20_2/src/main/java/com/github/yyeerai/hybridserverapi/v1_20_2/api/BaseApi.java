@@ -211,7 +211,17 @@ public class BaseApi {
      * @return bukkit的实体
      */
     @SuppressWarnings("all")
+    @Deprecated
     public static Entity getBukkitEntity(net.minecraft.world.entity.Entity entity, String world) {
+        return CraftEntity.getEntity(getCraftServer(), entity);
+    }
+
+    /**
+     * 将minecraft的实体转换为bukkit的实体。
+     * @param entity minecraft的实体
+     * @return bukkit的实体
+     */
+    public static Entity getBukkitEntity(net.minecraft.world.entity.Entity entity) {
         return CraftEntity.getEntity(getCraftServer(), entity);
     }
 

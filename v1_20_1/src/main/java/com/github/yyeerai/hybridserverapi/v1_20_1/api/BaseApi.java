@@ -210,7 +210,7 @@ public class BaseApi {
      * @return bukkit的实体
      */
     @SuppressWarnings("all")
-    public static Entity getBukkitEntity(net.minecraft.world.entity.Entity entity, String world) {
+    public static Entity getBukkitEntity(net.minecraft.world.entity.Entity entity) {
         return CraftEntity.getEntity(getCraftServer(), entity);
     }
 
